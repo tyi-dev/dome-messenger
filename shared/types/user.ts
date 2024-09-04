@@ -4,5 +4,8 @@ export enum USER_STATUS {
 }
 
 export type User = {
-
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber: string,
 }
