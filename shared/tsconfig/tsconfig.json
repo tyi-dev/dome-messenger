@@ -1,8 +1,10 @@
 {
-  "paths": {
-    "@shared/*":["../shared/*"],
-    "@client/*": ["../client/*"],
-    "@server/*": ["../server/*"],
-    "@root/*": ["../*"]
-  }
+  "compilerOptions": {
+    "baseUrl": "./../..",
+    "paths": {
+      "@shared/*":["./shared/*"],
+      "@client/*": ["./client/*"],
+      "@server/*": ["./server/*"],
+    },
+  },
 }
