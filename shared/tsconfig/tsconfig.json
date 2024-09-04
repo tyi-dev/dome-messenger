@@ -1,0 +1,8 @@
+{
+  "paths": {
+    "@shared/*":["../shared/*"],
+    "@client/*": ["../client/*"],
+    "@server/*": ["../server/*"],
+    "@root/*": ["../*"]
+  }
+}
