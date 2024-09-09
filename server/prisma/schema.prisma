@@ -8,6 +8,11 @@ generator client {
 }
 
 model User {
-  id   Int    @id @unique @default(autoincrement())
-  name String
+  id          Int       @id @unique @default(autoincrement())
+  firstName   String    @map("first_name")
+  lastName    String    @map("last_name")
+  lastSeen    DateTime? @default(now())
+  email       String    @unique
+  phoneNumber String    @unique @map("phone_number")
+  password    String
 }
