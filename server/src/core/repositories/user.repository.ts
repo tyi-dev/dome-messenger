@@ -1,12 +1,44 @@
-import { Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
-import { PrismaService } from "../../providers/prisma/prisma.service";
+import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { prismaExclude, PrismaService } from '../../providers/prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
+import { ConfigService } from '@nestjs/config';
+import { EnvironmentVariables } from '@server/src/core/config/environment-variables';
+import { SignInRequest } from '@server/src/api/dto/sign-in.request';
 
 @Injectable()
 export class UserRepository {
-  constructor(private readonly prisma: PrismaService) {}
+   constructor(
+      private readonly prisma: PrismaService,
+      private readonly configService: ConfigService<EnvironmentVariables>,
+   ) {}
 
-  public async create(data: Prisma.UserCreateInput) {
-    return this.prisma.user.create({ data });
-  }
+   public async create(data: Prisma.UserCreateInput) {
+      data.password = await this.hashPassword(data.password);
+      return this.prisma.user.create({ data });
+   }
+
+   public async singIn(data: SignInRequest) {
+      const user = await this.prisma.user.findUnique({ where: { email: data.email } });
+      if (!user) return null;
+
+      const { password: userPassword, ...userData } = user;
+      const match = await bcrypt.compare(data.password, userPassword);
+      if (!match) return null;
+
+      return userData;
+   }
+
+   //can return user by all unique params such as: id, email, phoneNumber
+   public async getUser(params: Prisma.UserWhereUniqueInput) {
+      return this.prisma.user.findUnique({ where: params, select: prismaExclude('User', ['password']) });
+   }
+
+   public async getUsers() {
+      return this.prisma.user.findMany();
+   }
+
+   private async hashPassword(password: string) {
+      return await bcrypt.hash(password, this.configService.get('BCRYPT_SALT_ROUNDS'));
+   }
 }
