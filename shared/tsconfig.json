@@ -5,7 +5,7 @@
       "@shared/*":["./shared/*"],
       "@webapp/*": ["./webapp/*"],
       "@server/*": ["./server/*"],
-      "@/": ["./website/src/*"]
+      "@/": ["./webapp/src/*"]
     },
   },
 }
