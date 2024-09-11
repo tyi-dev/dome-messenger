@@ -1,14 +1,13 @@
-import { LoginPayload, SignUpPayload } from '@shared/types/auth';
 import { TokenResponce } from '@shared/types/auth';
-import useSWR from 'swr';
 import { API_AUTH_URL, login, signUp } from './actions.ts';
+import useSWRMutation from 'swr/mutation';
 
-export function useLogin(loginPayload: LoginPayload) {
-   const { data, isLoading, error } = useSWR<TokenResponce>(API_AUTH_URL.LOGIN, () => login(loginPayload));
-   return { data, isLoading, error };
+export function useLogin() {
+   const { data, trigger, error } = useSWRMutation<TokenResponce>(API_AUTH_URL.LOGIN, login);
+   return { data, trigger, error };
 }
 
-export function useSignUp(signUpPayload: SignUpPayload) {
-   const { data, isLoading, error } = useSWR<TokenResponce>(API_AUTH_URL.SIGNUP, () => signUp(signUpPayload));
-   return { data, isLoading, error };
+export function useSignUp() {
+   const { data, trigger, error } = useSWRMutation<TokenResponce>(API_AUTH_URL.SIGNUP, signUp);
+   return { data, trigger, error };
 }

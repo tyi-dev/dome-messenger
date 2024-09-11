@@ -10,14 +10,14 @@ export const API_AUTH_URL = {
    SIGNUP: `${BASE_URL_AUTH}/register`,
 };
 
-export async function login(data: LoginPayload): Promise<TokenResponce> {
-   const res = await API.post<LoginPayload, TokenResponce>(API_AUTH_URL.LOGIN, data);
+export async function login(key: string, options: { arg: LoginPayload }): Promise<TokenResponce> {
+   const res = await API.post<LoginPayload, TokenResponce>(API_AUTH_URL.LOGIN, options.arg);
    setAuthToken(res?.data.domeAccessToken);
    return res?.data;
 }
 
-export async function signUp(data: SignUpPayload): Promise<TokenResponce> {
-   const res = await API.post<SignUpPayload, TokenResponce>(API_AUTH_URL.SIGNUP, data);
+export async function signUp(key: string, options: { arg: SignUpPayload }): Promise<TokenResponce> {
+   const res = await API.post<SignUpPayload, TokenResponce>(API_AUTH_URL.SIGNUP, options.arg);
    setAuthToken(res?.data.domeAccessToken);
    return res?.data;
 }
@@ -29,4 +29,5 @@ function setAuthToken(token: string) {
       secure: false, // Ensures cookie is sent only over HTTPS(true)
       sameSite: 'Strict',
    });
+   window.location.reload();
 }
