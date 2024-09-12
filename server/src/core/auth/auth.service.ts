@@ -17,26 +17,26 @@ export class AuthService {
       if (currentUser) throw new BadRequestException('User already exists');
 
       const createdUser = await this.userRepository.create(data);
-      const token = await this.signToken({
+      const domeAccessToken = await this.signToken({
          id: createdUser.id,
          email: createdUser.email,
          phoneNumber: createdUser.phoneNumber,
       });
 
-      return { token };
+      return { domeAccessToken };
    }
 
    public async signIn(data: SignInRequest) {
       const currentUser = await this.userRepository.singIn(data);
       if (!currentUser) throw new BadRequestException('User does not exist');
 
-      const token = await this.signToken({
+      const domeAccessToken = await this.signToken({
          id: currentUser.id,
          email: currentUser.email,
          phoneNumber: currentUser.phoneNumber,
       });
 
-      return { token };
+      return { domeAccessToken };
    }
 
    private async signToken(data: JwtAuthPayload) {
