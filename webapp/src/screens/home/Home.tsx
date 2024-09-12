@@ -1,6 +1,6 @@
 import { useCurrentUser } from '@webapp/src/api/user/hooks.ts';
-import HomeSidebar from '../../components/HomeHeader.tsx';
-import Spinner from '@webapp/src/components/Spinner.tsx';
+import HomeSidebar from '@webapp/src/components/home-sidebar/HomeSidebar';
+import Spinner from '@webapp/src/components/Spinner';
 
 export default function HomePage() {
    const { data } = useCurrentUser();
