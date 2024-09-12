@@ -11,13 +11,13 @@ export const API_AUTH_URL = {
 };
 
 export async function login(key: string, options: { arg: LoginPayload }): Promise<TokenResponce> {
-   const res = await API.post<LoginPayload, TokenResponce>(API_AUTH_URL.LOGIN, options.arg);
+   const res = await API.post<LoginPayload, TokenResponce>(key, options.arg);
    setAuthToken(res?.data.domeAccessToken);
    return res?.data;
 }
 
 export async function signUp(key: string, options: { arg: SignUpPayload }): Promise<TokenResponce> {
-   const res = await API.post<SignUpPayload, TokenResponce>(API_AUTH_URL.SIGNUP, options.arg);
+   const res = await API.post<SignUpPayload, TokenResponce>(key, options.arg);
    setAuthToken(res?.data.domeAccessToken);
    return res?.data;
 }

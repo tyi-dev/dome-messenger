@@ -34,7 +34,7 @@ export default function SignUpPage() {
    };
 
    return (
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-6 m-auto">
          <LogoImage />
          <div className="flex flex-row justify-around w-full">
             <p className="text-xl font-bold">Sign Up</p>

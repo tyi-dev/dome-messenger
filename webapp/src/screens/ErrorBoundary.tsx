@@ -6,4 +6,6 @@ export default function ErrorBoundary() {
    useEffect(() => {
       navigate('/');
    });
+
+   return <p>Error 404</p>;
 }
