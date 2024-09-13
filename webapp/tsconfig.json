@@ -15,7 +15,8 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "types": ["vite/client", "./src/types/svg.d.ts"]
   },
   "no-console": [true, "log", "error"],
   "include": ["src"],
