@@ -99,16 +99,18 @@ button:focus-visible {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
 
-    --general-dark: 0, 0%, 7%;
-    --general-light: 220, 14%, 21%;
+    --general-dark: 0, 100%, 0%;
+    --general-light: 0, 100%, 100%;
+    --general-gray: 139, 100%, 84%;
     --general-blue: 228, 97%, 71%;
     --general-orange: 49, 100%, 50%;
 
   }
   :root[data-theme='light'] {
 
-    --general-dark: 180, 0%, 93%;
-    --general-light: 40, 14%, 21%;
+    --general-dark: 0, 100%, 100%;
+    --general-light: 0, 100%, 0%;
+    --general-gray: 139, 100%, 84%;
     --general-blue: 228, 97%, 71%;
     --general-orange: 49, 100%, 50%;
 

@@ -7,12 +7,9 @@ type buttonDataSetType = {
 
 export default function SideBarButton({ icon, title }: buttonDataSetType) {
    return (
-      <Button
-         className="w-full flex flex-row gap-1 justify-start rounded-none py-4 mb-[1px] border-none"
-         variant="outline"
-      >
+      <Button className="w-full flex flex-col gap-1 justify-start rounded-none p-3 bg-general-dark border-none hover:bg-general-blue">
          {icon}
-         <div className="w-full">{title}</div>
+         <div className="w-full text-general-light">{title}</div>
       </Button>
    );
 }

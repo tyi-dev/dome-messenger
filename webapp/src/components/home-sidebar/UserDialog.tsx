@@ -17,14 +17,17 @@ export function UserDialog(props: { user: User }) {
       <Dialog>
          <DialogTrigger asChild>
             <div>
-               <SideBarButton title={`${user.firstName} ${user.lastName}`} icon={<LuUser />} />
+               <SideBarButton
+                  title={`${user.firstName} ${user.lastName}`}
+                  icon={<LuUser className="text-general-light" />}
+               />
             </div>
          </DialogTrigger>
          <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
                <DialogTitle>Your profile</DialogTitle>
             </DialogHeader>
-            <div>
+            <div className="text-general-dark">
                <p>{user.firstName}</p>
                <p>{user.lastName}</p>
                <p>{user.phoneNumber}</p>

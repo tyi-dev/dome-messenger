@@ -8,9 +8,12 @@ export default function HomeSidebar(props: { user: User }) {
    const { changeTheme } = useTheme();
 
    return (
-      <div className="flex flex-col w-52">
-         <LogoImage className="mx-auto my-8 text-general-blue" onClick={() => changeTheme()} />
-         <UserDialog user={user} />
+      <div className="flex flex-col w-32">
+         <LogoImage className="mx-auto my-8 text-general-light" onClick={() => changeTheme()} />
+         <div className="flex flex-col justify-between h-full w-full pb-24">
+            <div className="flex flex-col"></div>
+            <UserDialog user={user} />
+         </div>
       </div>
    );
 }

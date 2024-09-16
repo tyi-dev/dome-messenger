@@ -5,9 +5,9 @@ import AuthRouter from './AuthRouter.tsx';
 import Spinner from '@webapp/src/components/Spinner.tsx';
 
 const RootPage = () => {
-   const { data: userData, isLoading: isUserDataLoading } = useCurrentUser();
+   const userData = useCurrentUser();
 
-   if (isUserDataLoading)
+   if (userData?.isLoading)
       return (
          <div className="w-screen h-screen">
             <Spinner />
@@ -15,9 +15,9 @@ const RootPage = () => {
       );
 
    let NextRoutes: RouteObject[] = AuthRouter;
-   if (userData) {
+   if (userData?.data) {
       NextRoutes = AppRouter;
-   } else if (!userData) {
+   } else if (!userData?.data) {
       NextRoutes = AuthRouter;
    }
 
