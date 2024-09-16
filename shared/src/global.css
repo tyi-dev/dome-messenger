@@ -98,6 +98,22 @@ button:focus-visible {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    --general-dark: 0, 100%, 0%;
+    --general-light: 0, 100%, 100%;
+    --general-gray: 139, 100%, 84%;
+    --general-blue: 228, 97%, 71%;
+    --general-orange: 49, 100%, 50%;
+
+  }
+  :root[data-theme='light'] {
+
+    --general-dark: 0, 100%, 100%;
+    --general-light: 0, 100%, 0%;
+    --general-gray: 139, 100%, 84%;
+    --general-blue: 228, 97%, 71%;
+    --general-orange: 49, 100%, 50%;
+
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -124,6 +140,10 @@ button:focus-visible {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    svg{
+      color: var(--general-dark);
+    }
   }
 }
 

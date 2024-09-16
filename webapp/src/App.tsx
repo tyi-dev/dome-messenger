@@ -1,6 +1,11 @@
 import './App.css';
-import RootPage from './routing/Router';
+import { ThemeProvider } from './components/theme/Theme';
+import RootPage from '@webapp/src/routing/Router';
 
 export default function App() {
-   return <RootPage />;
+   return (
+      <ThemeProvider>
+         <RootPage />
+      </ThemeProvider>
+   );
 }

@@ -9,6 +9,7 @@ import { useSignUp } from '@webapp/src/api/auth/hooks';
 import LogoImage from '@shared/src/images/logo.svg?react';
 import SwitchModesButton from '@webapp/src/components/SwitchModesButton';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@webapp/src/components/theme/Theme';
 
 export default function SignUpPage() {
    const form = useForm<z.infer<typeof SignupSchema>>({
@@ -24,6 +25,7 @@ export default function SignUpPage() {
 
    const navigate = useNavigate();
    const { trigger: triggerSignUp } = useSignUp();
+   const { changeTheme } = useTheme();
 
    function onSubmit(values: z.infer<typeof SignupSchema>) {
       triggerSignUp(values);
@@ -34,14 +36,14 @@ export default function SignUpPage() {
    };
 
    return (
-      <div className="flex flex-col items-center gap-6 m-auto">
-         <LogoImage />
-         <div className="flex flex-row justify-around w-full">
-            <p className="text-xl font-bold">Sign Up</p>
+      <div className="flex flex-col items-center gap-6 m-auto w-72">
+         <LogoImage className="text-general-light" onClick={() => changeTheme()} />
+         <div className="flex flex-row justify-around w-44">
+            <p className="text-xl font-bold text-general-light">Sign Up</p>
             <SwitchModesButton callback={switchAuthMethod} />
          </div>
          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-full">
                <FormField
                   control={form.control}
                   name="firstName"
