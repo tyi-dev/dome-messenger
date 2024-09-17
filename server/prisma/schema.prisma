@@ -15,4 +15,56 @@ model User {
   email       String    @unique
   phoneNumber String    @unique @map("phone_number")
   password    String
+
+  conversations ConversationParticipant[]
+  messages      Message[]
+  messageStatus MessageStatus[]
+}
+
+model Conversation {
+  id        Int      @id @default(autoincrement())
+  title     String?
+  isGroup   Boolean  @default(false) @map("is_group")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  participants ConversationParticipant[]
+  messages     Message[]
+}
+
+model ConversationParticipant {
+  id             Int      @id @default(autoincrement())
+  userId         Int      @map("user_id")
+  conversationId Int      @map("conversation_id")
+  joinedAt       DateTime @default(now()) @map("joined_at")
+
+  user         User         @relation(fields: [userId], references: [id])
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+
+  @@unique([userId, conversationId])
+}
+
+model Message {
+  id             Int      @id @default(autoincrement())
+  content        String
+  senderId       Int      @map("sender_id")
+  conversationId Int      @map("conversation_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  sender       User            @relation(fields: [senderId], references: [id])
+  conversation Conversation    @relation(fields: [conversationId], references: [id])
+  status       MessageStatus[]
+}
+
+model MessageStatus {
+  id        Int       @id @default(autoincrement())
+  messageId Int       @map("message_id")
+  userId    Int       @map("user_id")
+  isRead    Boolean   @default(false) @map("is_read")
+  readAt    DateTime? @map("read_at")
+
+  message Message @relation(fields: [messageId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@unique([messageId, userId])
 }
