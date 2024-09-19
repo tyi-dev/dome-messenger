@@ -11,7 +11,7 @@ export class MessageStatusRepository {
       private readonly configService: ConfigService<EnvironmentVariables>,
    ) {}
 
-   public async create(data: Prisma.MessageStatusCreateInput) {
+   public async create(data: Prisma.MessageStatusUncheckedCreateInput) {
       return this.prisma.messageStatus.create({ data });
    }
 

@@ -11,12 +11,16 @@ export class ConversationParticipantRepository {
       private readonly configService: ConfigService<EnvironmentVariables>,
    ) {}
 
-   public async create(data: Prisma.ConversationParticipantCreateInput) {
+   public async create(data: Prisma.ConversationParticipantUncheckedCreateInput) {
       return this.prisma.conversationParticipant.create({ data });
    }
 
    public async update(participantId: number, data: Prisma.ConversationParticipantUpdateInput) {
       return this.prisma.conversationParticipant.update({ where: { id: participantId }, data: data });
+   }
+
+   public async getConversationParticipants(conversationId: number) {
+      return this.prisma.conversationParticipant.findMany({ where: { conversationId } });
    }
 
    public async getById(id: number) {
