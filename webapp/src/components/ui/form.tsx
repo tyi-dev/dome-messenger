@@ -74,14 +74,18 @@ FormItem.displayName = 'FormItem';
 
 const FormLabel = React.forwardRef<
    React.ElementRef<typeof LabelPrimitive.Root>,
-   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
+   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & { invertcolor?: boolean }
 >(({ className, ...props }, ref) => {
    const { error, formItemId } = useFormField();
 
    return (
       <Label
          ref={ref}
-         className={cn(error && 'text-destructive', 'flex ml-2 justify-start text-general-light', className)}
+         className={cn(
+            error && 'text-destructive',
+            `flex ml-2 justify-start  ${props.invertcolor ? 'text-general-dark' : 'text-general-light'}`,
+            className,
+         )}
          htmlFor={formItemId}
          {...props}
       />
