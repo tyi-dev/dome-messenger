@@ -38,7 +38,7 @@ model ConversationParticipant {
   conversationId Int      @map("conversation_id")
   joinedAt       DateTime @default(now()) @map("joined_at")
 
-  user         User         @relation(fields: [userId], references: [id])
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   conversation Conversation @relation(fields: [conversationId], references: [id])
 
   @@unique([userId, conversationId])
@@ -63,7 +63,7 @@ model MessageStatus {
   isRead    Boolean   @default(false) @map("is_read")
   readAt    DateTime? @map("read_at")
 
-  message Message @relation(fields: [messageId], references: [id])
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
   user    User    @relation(fields: [userId], references: [id])
 
   @@unique([messageId, userId])
