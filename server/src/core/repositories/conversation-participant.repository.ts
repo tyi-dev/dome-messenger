@@ -5,21 +5,21 @@ import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from '@server/src/core/config/environment-variables';
 
 @Injectable()
-export class MessageRepository {
+export class ConversationParticipantRepository {
    constructor(
       private readonly prisma: PrismaService,
       private readonly configService: ConfigService<EnvironmentVariables>,
    ) {}
 
-   public async create(data: Prisma.MessageCreateInput) {
-      return this.prisma.message.create({ data });
+   public async create(data: Prisma.ConversationParticipantCreateInput) {
+      return this.prisma.conversationParticipant.create({ data });
    }
 
-   public async update(messageId: number, data: Prisma.MessageUncheckedUpdateInput) {
-      return this.prisma.message.update({ where: { id: messageId }, data: data });
+   public async update(participantId: number, data: Prisma.ConversationParticipantUpdateInput) {
+      return this.prisma.conversationParticipant.update({ where: { id: participantId }, data: data });
    }
 
    public async getById(id: number) {
-      return this.prisma.message.findUnique({ where: { id: id } });
+      return this.prisma.conversationParticipant.findUnique({ where: { id: id } });
    }
 }
