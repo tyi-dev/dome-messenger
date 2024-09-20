@@ -19,6 +19,12 @@ export class ConversationParticipantRepository {
       return this.prisma.conversationParticipant.update({ where: { id: participantId }, data: data });
    }
 
+   public async checkIfUserIsAPartOfConversation(userId: number, conversationId: number) {
+      return this.prisma.conversationParticipant.findUnique({
+         where: { userId_conversationId: { userId: userId, conversationId: conversationId } },
+      });
+   }
+
    public async getConversationParticipants(conversationId: number) {
       return this.prisma.conversationParticipant.findMany({ where: { conversationId } });
    }

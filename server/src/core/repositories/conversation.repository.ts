@@ -32,7 +32,7 @@ export class ConversationRepository {
    }
 
    public async getById(conversationId: number) {
-      return this.prisma.conversation.findMany({
+      return this.prisma.conversation.findUnique({
          where: { id: conversationId },
          include: {
             participants: true,

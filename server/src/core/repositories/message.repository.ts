@@ -19,6 +19,10 @@ export class MessageRepository {
       return this.prisma.message.update({ where: { id: messageId }, data: data });
    }
 
+   public async delete(messageId: number) {
+      return this.prisma.message.delete({ where: { id: messageId } });
+   }
+
    public async getById(id: number) {
       return this.prisma.message.findUnique({ where: { id: id } });
    }
