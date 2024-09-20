@@ -26,7 +26,6 @@ export class ConversationApiController {
    @UseGuards(JwtGuarded)
    @Get('my-conversations')
    async getConversations(@CurrentUser() user: JwtAuthPayload) {
-      console.log(user.id);
       return this.conversationApiService.getUsersConversations(user.id);
    }
 }

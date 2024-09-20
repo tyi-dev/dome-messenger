@@ -26,7 +26,12 @@ export class ConversationParticipantRepository {
    }
 
    public async getConversationParticipants(conversationId: number) {
-      return this.prisma.conversationParticipant.findMany({ where: { conversationId } });
+      return this.prisma.conversationParticipant.findMany({
+         where: { conversationId },
+         include: {
+            user: true,
+         },
+      });
    }
 
    public async getById(id: number) {

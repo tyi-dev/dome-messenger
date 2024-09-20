@@ -3,8 +3,9 @@ import { AuthApiModule } from '@server/src/api/website/auth/auth-api.module';
 import { UserApiModule } from '@server/src/api/website/user/user-api.module';
 import { ConversationApiModule } from '@server/src/api/website/conversation/conversation-api.module';
 import { MessageApiModule } from '@server/src/api/website/message/message-api.module';
+import { ConversationParticipantApiModule } from '@server/src/api/website/conversation-participant/conversation-participant-api.module';
 
 @Module({
-   imports: [AuthApiModule, UserApiModule, ConversationApiModule, MessageApiModule],
+   imports: [AuthApiModule, UserApiModule, ConversationApiModule, MessageApiModule, ConversationParticipantApiModule],
 })
 export class WebsiteApiModule {}

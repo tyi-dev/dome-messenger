@@ -23,6 +23,15 @@ export class MessageRepository {
       return this.prisma.message.delete({ where: { id: messageId } });
    }
 
+   public async getConversationMessages(conversationId: number) {
+      return this.prisma.message.findMany({
+         where: { conversationId: conversationId },
+         include: {
+            status: true,
+         },
+      });
+   }
+
    public async getById(id: number) {
       return this.prisma.message.findUnique({ where: { id: id } });
    }

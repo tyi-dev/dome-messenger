@@ -1,4 +1,4 @@
-import { Body, Delete, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { WebsiteController } from '@server/src/decorators/website-controller.decorator';
 import { JwtGuarded } from '@server/src/decorators/jwt-guard.decorator';
 import { CreateMessageRequest } from '@server/src/api/website/message/dto/create-message.request';
@@ -31,5 +31,11 @@ export class MessageApiController {
    @Delete('delete/:id')
    async delete(@Param('id') id: number, @CurrentUser() user: JwtAuthPayload) {
       return this.messageApiService.deleteMessage(user.id, id);
+   }
+
+   @UseGuards(JwtGuarded)
+   @Get('get-messages/:conversationId')
+   async getConversationMessages(@Param('conversationId') conversationId: number, @CurrentUser() user: JwtAuthPayload) {
+      return this.messageApiService.getConversationMessages(user.id, conversationId);
    }
 }

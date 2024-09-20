@@ -34,20 +34,33 @@ export class MessageService {
    }
 
    public async updateMessage(senderId: number, messageId: number, data: UpdateMessageRequest) {
-      const userInConversation = await this.verifyIfUserIsInConversation(senderId, messageId);
+      const currentMessage = await this.verifyMessage(messageId);
+      if (!currentMessage) return null;
+
+      const userInConversation = await this.verifyIfUserIsInConversation(senderId, currentMessage.conversationId);
       if (!userInConversation) return null;
 
       return this.messageRepository.update(messageId, data);
    }
 
    public async deleteMessage(senderId: number, messageId: number) {
-      const userInConversation = await this.verifyIfUserIsInConversation(senderId, messageId);
+      const currentMessage = await this.verifyMessage(messageId);
+      if (!currentMessage) return null;
+
+      const userInConversation = await this.verifyIfUserIsInConversation(senderId, currentMessage.conversationId);
       if (!userInConversation) return null;
 
       return this.messageRepository.delete(messageId);
    }
 
-   public async verifyIfUserIsInConversation(userId: number, conversationId: number) {
+   public async getConversationMessages(userId: number, conversationId: number) {
+      const userInConversation = await this.verifyIfUserIsInConversation(userId, conversationId);
+      if (!userInConversation) return null;
+
+      return this.messageRepository.getConversationMessages(conversationId);
+   }
+
+   private async verifyIfUserIsInConversation(userId: number, conversationId: number) {
       const currentConversation = await this.conversationRepository.getById(conversationId);
       if (!currentConversation) throw new NotFoundException('Conversation does not exist');
 
@@ -58,5 +71,12 @@ export class MessageService {
       if (!userInConversation) throw new NotFoundException('You are not a part of this conversation');
 
       return userInConversation;
+   }
+
+   private async verifyMessage(messageId: number) {
+      const message = await this.messageRepository.getById(messageId);
+      if (!message) throw new NotFoundException('Message does not exist');
+
+      return message;
    }
 }

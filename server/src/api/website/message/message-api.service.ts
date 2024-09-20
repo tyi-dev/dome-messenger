@@ -18,4 +18,8 @@ export class MessageApiService {
    public async deleteMessage(senderId: number, messageId: number) {
       return this.messageService.deleteMessage(senderId, messageId);
    }
+
+   public async getConversationMessages(userId: number, conversationId: number) {
+      return this.messageService.getConversationMessages(userId, conversationId);
+   }
 }
