@@ -60,7 +60,6 @@ model MessageStatus {
   id        Int       @id @default(autoincrement())
   messageId Int       @map("message_id")
   userId    Int       @map("user_id")
-  isRead    Boolean   @default(false) @map("is_read")
   readAt    DateTime? @map("read_at")
 
   message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)

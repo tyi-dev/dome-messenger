@@ -5,8 +5,17 @@ import { RepositoriesModule } from '@server/src/core/repositories/repositories.m
 import { UserModule } from '@server/src/core/user/user.module';
 import { ConversationModule } from '@server/src/core/conversation/conversation.module';
 import { MessageModule } from '@server/src/core/message/message.module';
+import { MessageStatusModule } from '@server/src/core/message-status/message-status.module';
 
 @Module({
-   imports: [AuthModule, UserModule, ConfigModule, RepositoriesModule, ConversationModule, MessageModule],
+   imports: [
+      AuthModule,
+      UserModule,
+      ConfigModule,
+      RepositoriesModule,
+      ConversationModule,
+      MessageModule,
+      MessageStatusModule,
+   ],
 })
 export class CoreModule {}

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { PrismaService } from '../../providers/prisma/prisma.service';
+import { prismaExclude, PrismaService } from '../../providers/prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from '@server/src/core/config/environment-variables';
 
@@ -29,7 +29,9 @@ export class ConversationParticipantRepository {
       return this.prisma.conversationParticipant.findMany({
          where: { conversationId },
          include: {
-            user: true,
+            user: {
+               select: prismaExclude('User', ['password']),
+            },
          },
       });
    }
