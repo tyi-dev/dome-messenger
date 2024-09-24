@@ -34,6 +34,15 @@ export class UserRepository {
       return this.prisma.user.findUnique({ where: params, select: prismaExclude('User', ['password']) });
    }
 
+   public async updateUser(userId: number, data: Prisma.UserUpdateInput) {
+      return this.prisma.user.update({
+         where: {
+            id: userId,
+         },
+         data: data,
+      });
+   }
+
    public async getUsers() {
       return this.prisma.user.findMany();
    }
