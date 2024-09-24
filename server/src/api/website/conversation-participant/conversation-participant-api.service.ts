@@ -1,0 +1,11 @@
+import { Injectable } from '@nestjs/common';
+import { ConversationParticipantService } from '@server/src/core/conversation-participant/conversation-participant.service';
+
+@Injectable()
+export class ConversationParticipantApiService {
+   constructor(private readonly conversationParticipantService: ConversationParticipantService) {}
+
+   public async getConversationParticipants(conversationId: number) {
+      return this.conversationParticipantService.getConversationParticipants(conversationId);
+   }
+}

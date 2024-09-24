@@ -17,6 +17,10 @@ export class SignUpRequest {
 
    @IsString()
    @ApiProperty()
+   userName: string;
+
+   @IsString()
+   @ApiProperty()
    @Transform((e) => e.value.toLowerCase().trim())
    email: string;
 
