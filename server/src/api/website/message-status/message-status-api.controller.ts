@@ -1,4 +1,4 @@
-import { Body, Get, Param, Put, UseGuards } from '@nestjs/common';
+import { Body, Param, Put, UseGuards } from '@nestjs/common';
 import { WebsiteController } from '@server/src/decorators/website-controller.decorator';
 import { JwtGuarded } from '@server/src/decorators/jwt-guard.decorator';
 import { CurrentUser } from '@server/src/decorators/current-user.decorator';

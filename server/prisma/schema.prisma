@@ -9,6 +9,7 @@ generator client {
 
 model User {
   id          Int       @id @unique @default(autoincrement())
+  userName    String    @unique
   firstName   String    @map("first_name")
   lastName    String    @map("last_name")
   lastSeen    DateTime? @default(now())
