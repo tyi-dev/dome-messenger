@@ -11,6 +11,11 @@ export class UpdateUserRequest {
    @IsString()
    @IsOptional()
    @ApiProperty()
+   userName: string;
+
+   @IsString()
+   @IsOptional()
+   @ApiProperty()
    firstName: string;
 
    @IsString()

@@ -28,6 +28,7 @@ export function UserDialog(props: { user: User }) {
       defaultValues: {
          firstName: user.firstName,
          lastName: user.lastName,
+         userName: user.userName,
          phoneNumber: user.phoneNumber,
          email: user.email,
       },
@@ -74,6 +75,19 @@ export function UserDialog(props: { user: User }) {
                         render={({ field }) => (
                            <FormItem>
                               <FormLabel invertcolor>Last Name</FormLabel>
+                              <FormControl>
+                                 <Input {...field} invertcolor />
+                              </FormControl>
+                              <FormMessage />
+                           </FormItem>
+                        )}
+                     />
+                     <FormField
+                        control={form.control}
+                        name="userName"
+                        render={({ field }) => (
+                           <FormItem>
+                              <FormLabel invertcolor>UserName</FormLabel>
                               <FormControl>
                                  <Input {...field} invertcolor />
                               </FormControl>

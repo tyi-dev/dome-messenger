@@ -17,6 +17,7 @@ export default function SignUpPage() {
       defaultValues: {
          firstName: '',
          lastName: '',
+         userName: '',
          phoneNumber: '',
          email: '',
          password: '',
@@ -63,6 +64,19 @@ export default function SignUpPage() {
                   render={({ field }) => (
                      <FormItem>
                         <FormLabel>Last Name</FormLabel>
+                        <FormControl>
+                           <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                     </FormItem>
+                  )}
+               />
+               <FormField
+                  control={form.control}
+                  name="userName"
+                  render={({ field }) => (
+                     <FormItem>
+                        <FormLabel>UserName</FormLabel>
                         <FormControl>
                            <Input {...field} />
                         </FormControl>
