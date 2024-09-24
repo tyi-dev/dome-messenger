@@ -23,11 +23,11 @@ model User {
 }
 
 model Conversation {
-  id        Int      @id @default(autoincrement())
-  title     String?
-  isGroup   Boolean  @default(false) @map("is_group")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id               Int              @id @default(autoincrement())
+  title            String?
+  conversationType ConversationType @default(P2P) @map("conversation_type")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
 
   participants ConversationParticipant[]
   messages     Message[]
@@ -67,4 +67,10 @@ model MessageStatus {
   user    User    @relation(fields: [userId], references: [id])
 
   @@unique([messageId, userId])
+}
+
+enum ConversationType {
+  P2P
+  GROUP
+  CHANNEL
 }
