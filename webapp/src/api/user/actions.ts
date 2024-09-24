@@ -14,8 +14,6 @@ export async function getCurrentUser(): Promise<User> {
 }
 
 export async function updateProfile(key: string, options: { arg: Partial<User> }): Promise<User> {
-   console.log(key);
-   console.log(options.arg);
    const res = await API.put<Partial<User>, User>(key, options.arg);
    return res?.data || null;
 }

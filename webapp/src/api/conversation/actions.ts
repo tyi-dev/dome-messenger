@@ -1,5 +1,5 @@
 import API from '../api.ts';
-import { User } from '@shared/types/user.ts';
+import { Conversation } from '@shared/types/conversation.ts';
 
 export const BASE_URL_CONVERSATION = 'conversation';
 
@@ -9,12 +9,17 @@ export const API_CONVERSATION_URL = {
    CREATE: `${BASE_URL_CONVERSATION}/create`,
 };
 
-export async function getMyConversations(): Promise<User> {
-   const res = await API.get<User>(API_CONVERSATION_URL.MY_CONVERSATIONS);
+export async function getMyConversations(): Promise<Conversation[]> {
+   const res = await API.get<Conversation[]>(API_CONVERSATION_URL.MY_CONVERSATIONS);
    return res?.data || null;
 }
 
-export async function updateProfile(key: string, options: { arg: Partial<User> }): Promise<User> {
-   const res = await API.put<Partial<User>, User>(key, options.arg);
+export async function updateConversation(key: string, options: { arg: Partial<Conversation> }): Promise<Conversation> {
+   const res = await API.put<Partial<Conversation>, Conversation>(key, options.arg);
+   return res?.data || null;
+}
+
+export async function createConversation(key: string, options: { arg: Partial<Conversation> }): Promise<Conversation> {
+   const res = await API.post<Partial<Conversation>, Conversation>(key, options.arg);
    return res?.data || null;
 }
