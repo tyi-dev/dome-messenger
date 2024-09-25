@@ -1,4 +1,4 @@
-import { Body, Get, Put, UseGuards } from '@nestjs/common';
+import { Body, Get, Param, Put, UseGuards } from '@nestjs/common';
 import { WebsiteController } from '@server/src/decorators/website-controller.decorator';
 import { UserApiService } from '@server/src/api/website/user/user-api.service';
 import { CurrentUser } from '@server/src/decorators/current-user.decorator';
@@ -12,8 +12,20 @@ export class UserApiController {
 
    @UseGuards(JwtGuarded)
    @Get('me')
-   async signIn(@CurrentUser() user: JwtAuthPayload) {
+   async getMyProfile(@CurrentUser() user: JwtAuthPayload) {
       return this.userApiService.getUser(user);
+   }
+
+   @UseGuards(JwtGuarded)
+   @Get('search')
+   async getUsers(@CurrentUser() user: JwtAuthPayload) {
+      return this.userApiService.getUsers(user.id);
+   }
+
+   @UseGuards(JwtGuarded)
+   @Get(':userId')
+   async getUser(@Param('userId') userId: number) {
+      return this.userApiService.getUserById(userId);
    }
 
    @UseGuards(JwtGuarded)

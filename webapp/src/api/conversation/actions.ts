@@ -1,5 +1,6 @@
 import API from '../api.ts';
 import { Conversation } from '@shared/types/conversation.ts';
+import { User } from '@shared/types/user.ts';
 
 export const BASE_URL_CONVERSATION = 'conversation';
 
@@ -19,7 +20,7 @@ export async function updateConversation(key: string, options: { arg: Partial<Co
    return res?.data || null;
 }
 
-export async function createConversation(key: string, options: { arg: Partial<Conversation> }): Promise<Conversation> {
-   const res = await API.post<Partial<Conversation>, Conversation>(key, options.arg);
+export async function createConversation(key: string, options: { arg: { participants: User } }): Promise<Conversation> {
+   const res = await API.post<{ participants: User }, Conversation>(key, options.arg);
    return res?.data || null;
 }

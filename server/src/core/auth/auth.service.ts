@@ -21,6 +21,7 @@ export class AuthService {
          id: createdUser.id,
          email: createdUser.email,
          phoneNumber: createdUser.phoneNumber,
+         userName: createdUser.userName,
       });
 
       return { domeAccessToken };
@@ -34,6 +35,7 @@ export class AuthService {
          id: currentUser.id,
          email: currentUser.email,
          phoneNumber: currentUser.phoneNumber,
+         userName: currentUser.userName,
       });
 
       return { domeAccessToken };
