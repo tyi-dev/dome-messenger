@@ -2,17 +2,15 @@ import { Input } from '@webapp/src/components/ui/input.tsx';
 import { LuSendHorizonal } from 'react-icons/lu';
 import { useState } from 'react';
 import { useCreateMessage } from '../../api/message/hooks.ts';
-import { Conversation } from '@shared/types/conversation.ts';
 import { toast } from '@webapp/src/hooks/use-toast.ts';
-import { mutate } from 'swr';
-import { API_MESSAGE_URL } from '../../api/message/actions.ts';
+import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 
-export default function MessageOperationsInput(props: { conversation: Conversation | undefined }) {
-   const { conversation } = props;
+export default function MessageOperationsInput() {
+   const { currentConversation } = useChatContext();
    const [inputValue, setInputValue] = useState('');
    const { trigger: sendMessage } = useCreateMessage();
    const onMessageSend = () => {
-      if (!conversation) {
+      if (!currentConversation) {
          toast({
             variant: 'destructive',
             title: 'Select conversation first',
@@ -21,9 +19,8 @@ export default function MessageOperationsInput(props: { conversation: Conversati
       }
       sendMessage({
          content: inputValue,
-         conversationId: conversation.id,
+         conversationId: currentConversation.id,
       });
-      mutate(`${API_MESSAGE_URL.GET_MESSAGES}/${conversation.id}`);
    };
 
    return (

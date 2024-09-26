@@ -25,6 +25,6 @@ export class UserService {
    }
 
    public async getUsers(currentUserId: number) {
-      return this.userRepository.getUsers(currentUserId);
+      return this.userRepository.getUsersToCreateConversation(currentUserId);
    }
 }

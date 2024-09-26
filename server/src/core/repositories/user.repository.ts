@@ -47,7 +47,7 @@ export class UserRepository {
       });
    }
 
-   public async getUsers(currentUserId: number) {
+   public async getUsersToCreateConversation(currentUserId: number) {
       return this.prisma.user.findMany({
          select: {
             id: true,
@@ -56,6 +56,17 @@ export class UserRepository {
          where: {
             id: {
                not: currentUserId,
+            },
+            conversations: {
+               none: {
+                  conversation: {
+                     participants: {
+                        some: {
+                           userId: currentUserId,
+                        },
+                     },
+                  },
+               },
             },
          },
       });
