@@ -13,22 +13,16 @@ import {
 } from '@webapp/src/components/ui/dialog';
 import { useState } from 'react';
 import Spinner from '@webapp/src/components/Spinner.tsx';
-import { useToast } from '@webapp/src/hooks/use-toast.ts';
+import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { User } from '@shared/types/user.ts';
 
 export default function NewConversationDialog() {
    const { data: users } = useSearchUsers();
    const [isDialogOpen, setDialogOpen] = useState(false);
-   const { toast } = useToast();
+   const { setUserToCreateConversation } = useChatContext();
 
-   const onUserSelect = (userId: number | undefined) => {
-      if (!userId) {
-         toast({
-            variant: 'destructive',
-            title: 'Uh oh! Something went wrong.',
-            description: 'User ID was not provided',
-         });
-      } else {
-      }
+   const onUserSelect = (user: Pick<User, 'id' | 'userName'>) => {
+      setUserToCreateConversation(user);
       setDialogOpen(false);
    };
 
@@ -48,7 +42,7 @@ export default function NewConversationDialog() {
                   {users ? (
                      users.map((item, index) => {
                         return (
-                           <Button key={index} onClick={() => onUserSelect(item?.id)} className="w-full">
+                           <Button key={index} onClick={() => onUserSelect(item)} className="w-full">
                               {item?.userName}
                            </Button>
                         );

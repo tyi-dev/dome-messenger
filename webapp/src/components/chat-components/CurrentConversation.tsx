@@ -5,14 +5,18 @@ import { ScrollArea } from '@webapp/src/components/ui/scroll-area';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 
 export default function CurrentConversation() {
-   const { currentConversation } = useChatContext();
+   const { currentConversation, userToCreateConversationWith } = useChatContext();
 
-   if (!currentConversation)
-      return <p className="w-full h-full flex justify-center items-center">Select conversation</p>;
+   const containerClassName = 'w-full h-full flex justify-center items-center';
+
+   if (userToCreateConversationWith)
+      return <p className={containerClassName}>Start conversation with {userToCreateConversationWith.userName}</p>;
+
+   if (!currentConversation) return <p className={containerClassName}>Select conversation</p>;
 
    const { data: messages } = useConversationMessages(currentConversation.id);
    if (!messages) return <Spinner spinnerClassName="border-general-dark" />;
-   if (messages?.length === 0) return <p className="w-full h-full flex justify-center items-center">No messages yet</p>;
+   if (messages?.length === 0) return <p className={containerClassName}>No messages yet</p>;
 
    return (
       <ScrollArea className="flex flex-col h-full w-full pl-7 pr-12 pb-4 ">

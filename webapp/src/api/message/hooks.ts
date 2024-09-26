@@ -10,8 +10,8 @@ export function useCreateMessage() {
    return useSWRMutation(API_MESSAGE_URL.CREATE, createMessage);
 }
 
-export function useUpdateMessage(conversationId: number) {
-   return useSWRMutation(`${API_MESSAGE_URL.UPDATE}/${conversationId}`, updateMessage);
+export function useUpdateMessage(conversationId?: number) {
+   return useSWRMutation(conversationId ? `${API_MESSAGE_URL.UPDATE}/${conversationId}` : null, updateMessage);
 }
 
 export function useDeleteMessage(conversationId: number) {

@@ -20,7 +20,12 @@ export async function updateConversation(key: string, options: { arg: Partial<Co
    return res?.data || null;
 }
 
-export async function createConversation(key: string, options: { arg: { participants: User } }): Promise<Conversation> {
-   const res = await API.post<{ participants: User }, Conversation>(key, options.arg);
+type createConversationUserT = Required<Pick<User, 'id'>> & Partial<Omit<User, 'id'>>;
+type createConversationArgs = {
+   participants: createConversationUserT[];
+   title: string;
+};
+export async function createConversation(key: string, options: { arg: createConversationArgs }): Promise<Conversation> {
+   const res = await API.post<createConversationArgs, Conversation>(key, options.arg);
    return res?.data || null;
 }

@@ -1,25 +1,51 @@
 import { Input } from '@webapp/src/components/ui/input.tsx';
 import { LuSendHorizonal } from 'react-icons/lu';
 import { useState } from 'react';
-import { useCreateMessage } from '../../api/message/hooks.ts';
+import { useCreateMessage } from '@webapp/src/api/message/hooks.ts';
 import { toast } from '@webapp/src/hooks/use-toast.ts';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { useCreateConversation } from '@webapp/src/api/conversation/hooks.ts';
+import { useUpdateMessage } from '@webapp/src/api/message/hooks.ts';
 
 export default function MessageOperationsInput() {
-   const { currentConversation } = useChatContext();
+   const { currentConversation, messageToUpdate, userToCreateConversationWith, currentUser } = useChatContext();
    const [inputValue, setInputValue] = useState('');
    const { trigger: sendMessage } = useCreateMessage();
+   const { trigger: createConversation } = useCreateConversation();
+   const { trigger: updateMessage } = useUpdateMessage(messageToUpdate?.id);
    const onMessageSend = () => {
-      if (!currentConversation) {
+      if (userToCreateConversationWith) {
+         createConversation({
+            participants: [currentUser, userToCreateConversationWith],
+            title: 'New Conversation',
+         }).then((response) => {
+            sendMessage({
+               content: inputValue,
+               conversationId: response.id,
+            });
+         });
+         return;
+      }
+      if (messageToUpdate) {
+         updateMessage(messageToUpdate);
+         return;
+      }
+      if (currentConversation) {
+         sendMessage({
+            content: inputValue,
+            conversationId: currentConversation.id,
+         });
+         return;
+      } else if (!userToCreateConversationWith && !messageToUpdate) {
          toast({
             variant: 'destructive',
             title: 'Select conversation first',
          });
          return;
       }
-      sendMessage({
-         content: inputValue,
-         conversationId: currentConversation.id,
+      toast({
+         variant: 'destructive',
+         title: 'Woopsie something went wrong.',
       });
    };
 

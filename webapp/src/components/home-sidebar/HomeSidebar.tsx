@@ -1,10 +1,9 @@
 import LogoImage from '@shared/src/images/logo.svg?react';
-import { User } from '@shared/types/user';
 import { UserDialog } from '@webapp/src/components/home-sidebar/UserDialog';
 import { useTheme } from '@webapp/src/components/theme/Theme';
 import NewConversationDialog from '@webapp/src/components/home-sidebar/NewConversationDialog.tsx';
 
-export default function HomeSidebar({ user }: { user: User }) {
+export default function HomeSidebar() {
    const { changeTheme } = useTheme();
 
    return (
@@ -14,7 +13,7 @@ export default function HomeSidebar({ user }: { user: User }) {
             <div className="flex flex-col">
                <NewConversationDialog />
             </div>
-            <UserDialog user={user} />
+            <UserDialog />
          </div>
       </div>
    );
