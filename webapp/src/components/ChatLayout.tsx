@@ -6,14 +6,14 @@ import { useState } from 'react';
 import { Conversation } from '@shared/types/conversation';
 import { ChatContext } from '@webapp/src/components/chat-components/context.tsx';
 import { Nullable } from '@shared/types/nullable.ts';
+import { Message } from '@shared/types/message.ts';
 
 export default function ChatLayout(props: { user: User }) {
    const { user } = props;
    const [currentConversation, setCurrentConversation] = useState<Nullable<Conversation>>(null);
-
-   const setCurrentChat = (conversation: Conversation) => {
-      setCurrentConversation(conversation);
-   };
+   const [userToCreateConversationWith, setUserToCreateConversationWith] =
+      useState<Nullable<Pick<User, 'id' | 'userName'>>>(null);
+   const [messageToUpdate, setMessageToUpdate] = useState<Nullable<Message>>(null);
 
    return (
       <ChatContext.Provider
@@ -21,10 +21,14 @@ export default function ChatLayout(props: { user: User }) {
             currentConversation: currentConversation,
             setCurrentConversation: setCurrentConversation,
             currentUser: user,
+            messageToUpdate: messageToUpdate,
+            setMessageToUpdate: setMessageToUpdate,
+            userToCreateConversationWith: userToCreateConversationWith,
+            setUserToCreateConversation: setUserToCreateConversationWith,
          }}
       >
          <div className="w-full flex flex-row h-full">
-            <ConversationsList setConversation={setCurrentChat} />
+            <ConversationsList />
             <div className="w-full flex flex-col h-full">
                <CurrentConversation />
                <MessageOperationsInput />

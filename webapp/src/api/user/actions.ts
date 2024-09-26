@@ -20,8 +20,8 @@ export async function updateProfile(key: string, options: { arg: Partial<User> }
    return res?.data || null;
 }
 
-export async function getUsers(): Promise<Partial<User>[]> {
-   const res = await API.get<Partial<User>[]>(API_USER_URL.ALL);
+export async function getUsers(): Promise<Pick<User, 'id' | 'userName'>[]> {
+   const res = await API.get<Pick<User, 'id' | 'userName'>[]>(API_USER_URL.ALL);
    return res?.data || null;
 }
 

@@ -2,11 +2,9 @@ import { useMyConversations } from '@webapp/src/api/conversation/hooks.ts';
 import ConversationTile from './ConversationTile.tsx';
 import Spinner from '@webapp/src/components/Spinner.tsx';
 import { twMerge } from 'tailwind-merge';
-import { Conversation } from '@shared/types/conversation.ts';
 import { ScrollArea } from '@webapp/src/components/ui/scroll-area';
 
-export default function ConversationsList(props: { setConversation: (conversation: Conversation) => void }) {
-   const { setConversation } = props;
+export default function ConversationsList() {
    const containerClassName = 'w-52 h-full border-r border-general-dark';
    const { data: conversations } = useMyConversations();
    if (!conversations)
@@ -16,9 +14,7 @@ export default function ConversationsList(props: { setConversation: (conversatio
 
    return (
       <ScrollArea className={twMerge('flex flex-col', containerClassName)}>
-         {conversations?.map((item, index) => (
-            <ConversationTile key={index} conversation={item} setConversation={setConversation} />
-         ))}
+         {conversations?.map((item, index) => <ConversationTile key={index} conversation={item} />)}
       </ScrollArea>
    );
 }
