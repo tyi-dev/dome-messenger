@@ -5,7 +5,7 @@ import { ScrollArea } from '@webapp/src/components/ui/scroll-area';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 
 export default function CurrentConversation() {
-   const { currentUser, currentConversation } = useChatContext();
+   const { currentConversation } = useChatContext();
 
    if (!currentConversation)
       return <p className="w-full h-full flex justify-center items-center">Select conversation</p>;
@@ -17,7 +17,7 @@ export default function CurrentConversation() {
    return (
       <ScrollArea className="flex flex-col h-full w-full pl-7 pr-12 pb-4 ">
          <div className="flex flex-col justify-end gap-4">
-            {messages?.map((item, index) => <MessageComponent message={item} key={index} currentUser={currentUser} />)}
+            {messages?.map((item, index) => <MessageComponent message={item} key={index} />)}
          </div>
       </ScrollArea>
    );

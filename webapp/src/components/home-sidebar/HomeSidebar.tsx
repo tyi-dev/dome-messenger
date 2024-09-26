@@ -4,8 +4,7 @@ import { UserDialog } from '@webapp/src/components/home-sidebar/UserDialog';
 import { useTheme } from '@webapp/src/components/theme/Theme';
 import NewConversationDialog from '@webapp/src/components/home-sidebar/NewConversationDialog.tsx';
 
-export default function HomeSidebar(props: { user: User }) {
-   const { user } = props;
+export default function HomeSidebar({ user }: { user: User }) {
    const { changeTheme } = useTheme();
 
    return (

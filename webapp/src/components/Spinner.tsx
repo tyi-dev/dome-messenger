@@ -1,7 +1,12 @@
 import { twMerge } from 'tailwind-merge';
 
-export default function Spinner(props: { spinnerClassName?: string; containerClassName?: string }) {
-   const { spinnerClassName, containerClassName } = props;
+export default function Spinner({
+   spinnerClassName,
+   containerClassName,
+}: {
+   spinnerClassName?: string;
+   containerClassName?: string;
+}) {
    return (
       <div className={twMerge('w-full h-full flex items-center justify-center', containerClassName)}>
          <div

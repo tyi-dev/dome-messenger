@@ -1,9 +1,9 @@
 import { Message } from '@shared/types/message';
 import { useUserById } from '@webapp/src/api/user/hooks.ts';
-import { User } from '@shared/types/user.ts';
+import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 
-export default function MessageComponent(props: { message: Message; currentUser: User }) {
-   const { message, currentUser } = props;
+export default function MessageComponent({ message }: { message: Message }) {
+   const { currentUser } = useChatContext();
    const { data: user } = useUserById(message.senderId);
 
    const isMessageMine = () => {

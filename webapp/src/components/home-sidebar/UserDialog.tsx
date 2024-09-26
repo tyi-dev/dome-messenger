@@ -21,8 +21,7 @@ import { useUpdateUser } from '@webapp/src/api/user/hooks.ts';
 import { mutate } from 'swr';
 import { API_USER_URL } from '@webapp/src/api/user/actions.ts';
 
-export function UserDialog(props: { user: User }) {
-   const { user } = props;
+export function UserDialog({ user }: { user: User }) {
    const form = useForm<z.infer<typeof UserUpdateSchema>>({
       resolver: zodResolver(UserUpdateSchema),
       defaultValues: {

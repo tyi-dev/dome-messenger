@@ -8,8 +8,7 @@ import { ChatContext } from '@webapp/src/components/chat-components/context.tsx'
 import { Nullable } from '@shared/types/nullable.ts';
 import { Message } from '@shared/types/message.ts';
 
-export default function ChatLayout(props: { user: User }) {
-   const { user } = props;
+export default function ChatLayout({ user }: { user: User }) {
    const [currentConversation, setCurrentConversation] = useState<Nullable<Conversation>>(null);
    const [userToCreateConversationWith, setUserToCreateConversationWith] =
       useState<Nullable<Pick<User, 'id' | 'userName'>>>(null);
