@@ -29,6 +29,9 @@ export class MessageRepository {
          include: {
             status: true,
          },
+         orderBy: {
+            createdAt: 'asc',
+         },
       });
    }
 

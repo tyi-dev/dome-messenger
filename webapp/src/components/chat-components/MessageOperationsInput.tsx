@@ -14,6 +14,7 @@ export default function MessageOperationsInput() {
    const { trigger: createConversation } = useCreateConversation();
    const { trigger: updateMessage } = useUpdateMessage(messageToUpdate?.id);
    const onMessageSend = () => {
+      if (inputValue === '') return;
       if (userToCreateConversationWith) {
          createConversation({
             participants: [currentUser, userToCreateConversationWith],
@@ -24,10 +25,12 @@ export default function MessageOperationsInput() {
                conversationId: response.id,
             });
          });
+         setInputValue('');
          return;
       }
       if (messageToUpdate) {
-         updateMessage(messageToUpdate);
+         updateMessage({ content: inputValue });
+         setInputValue('');
          return;
       }
       if (currentConversation) {
@@ -35,6 +38,7 @@ export default function MessageOperationsInput() {
             content: inputValue,
             conversationId: currentConversation.id,
          });
+         setInputValue('');
          return;
       } else if (!userToCreateConversationWith && !messageToUpdate) {
          toast({

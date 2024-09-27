@@ -8,7 +8,6 @@ import { Conversation } from '@shared/types/conversation';
 import { ChatContext } from '@webapp/src/components/chat-components/context.tsx';
 import { Nullable } from '@shared/types/nullable.ts';
 import { Message } from '@shared/types/message.ts';
-
 export default function HomePage() {
    const { data: currentUser } = useCurrentUser();
    if (!currentUser) return <Spinner />;
@@ -20,6 +19,9 @@ export default function HomePage() {
    const setUserToCreateConversationFunc = (user: Nullable<Pick<User, 'id' | 'userName'>>) => {
       setUserToCreateConversationWith(user);
    };
+   const setMessageToUpdateFunc = (message: Nullable<Message>) => {
+      setMessageToUpdate(message);
+   };
    return (
       <ChatContext.Provider
          value={{
@@ -27,7 +29,7 @@ export default function HomePage() {
             setCurrentConversation: setCurrentConversation,
             currentUser: currentUser,
             messageToUpdate: messageToUpdate,
-            setMessageToUpdate: setMessageToUpdate,
+            setMessageToUpdate: setMessageToUpdateFunc,
             userToCreateConversationWith: userToCreateConversationWith,
             setUserToCreateConversation: setUserToCreateConversationFunc,
          }}

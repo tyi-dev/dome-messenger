@@ -15,8 +15,8 @@ export async function getConversationMessages(key: string): Promise<Message[]> {
    return res?.data || null;
 }
 
-export async function updateMessage(key: string, options: { arg: Partial<Message> }): Promise<Message> {
-   const res = await API.put<Partial<Message>, Message>(key, options.arg);
+export async function updateMessage(key: string, options: { arg: { content: string } }): Promise<Message> {
+   const res = await API.put<{ content: string }, Message>(key, options.arg);
    return res?.data || null;
 }
 
