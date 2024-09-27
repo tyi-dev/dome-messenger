@@ -29,9 +29,13 @@ export class UserRepository {
       return userData;
    }
 
-   //can return user by all unique params such as: id, email, phoneNumber
+   //can return user by unique params such as: id, email, phoneNumber
    public async getUser(params: Prisma.UserWhereUniqueInput) {
       return this.prisma.user.findUnique({ where: params, select: prismaExclude('User', ['password']) });
+   }
+
+   public async getUserById(id: number) {
+      return this.prisma.user.findUnique({ where: { id: id }, select: prismaExclude('User', ['password']) });
    }
 
    public async updateUser(userId: number, data: Prisma.UserUpdateInput) {
@@ -43,8 +47,29 @@ export class UserRepository {
       });
    }
 
-   public async getUsers() {
-      return this.prisma.user.findMany();
+   public async getUsersToCreateConversation(currentUserId: number) {
+      return this.prisma.user.findMany({
+         select: {
+            id: true,
+            userName: true,
+         },
+         where: {
+            id: {
+               not: currentUserId,
+            },
+            conversations: {
+               none: {
+                  conversation: {
+                     participants: {
+                        some: {
+                           userId: currentUserId,
+                        },
+                     },
+                  },
+               },
+            },
+         },
+      });
    }
 
    private async hashPassword(password: string) {

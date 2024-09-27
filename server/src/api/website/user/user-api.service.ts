@@ -11,7 +11,15 @@ export class UserApiService {
       return this.userService.getUser(data);
    }
 
+   public async getUserById(id: number) {
+      return this.userService.getUserById(id);
+   }
+
    public async updateUser(userId: number, data: UpdateUserRequest) {
       return this.userService.updateUser(userId, data);
+   }
+
+   public async getUsers(currentUserId: number) {
+      return this.userService.getUsers(currentUserId);
    }
 }

@@ -10,7 +10,6 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@webapp/src/components/ui/form';
 import { Input } from '@webapp/src/components/ui/input';
 import SideBarButton from './SideBarButton.tsx';
-import { User } from '@shared/types/user.ts';
 import { LuUser } from 'react-icons/lu';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -18,16 +17,16 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import UserUpdateSchema from '@shared/src/schemas/updateProfile.ts';
 import { useUpdateUser } from '@webapp/src/api/user/hooks.ts';
-import { mutate } from 'swr';
-import { API_USER_URL } from '@webapp/src/api/user/actions.ts';
+import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 
-export function UserDialog(props: { user: User }) {
-   const { user } = props;
+export function UserDialog() {
+   const { currentUser: user } = useChatContext();
    const form = useForm<z.infer<typeof UserUpdateSchema>>({
       resolver: zodResolver(UserUpdateSchema),
       defaultValues: {
          firstName: user.firstName,
          lastName: user.lastName,
+         userName: user.userName,
          phoneNumber: user.phoneNumber,
          email: user.email,
       },
@@ -35,17 +34,14 @@ export function UserDialog(props: { user: User }) {
    const { trigger: triggerUpdateUser } = useUpdateUser();
    const [isDialogOpen, setDialogOpen] = useState(false);
    function onSubmit(values: z.infer<typeof UserUpdateSchema>) {
-      triggerUpdateUser(values).then(() => mutate(API_USER_URL.ME));
+      triggerUpdateUser(values);
       setDialogOpen(false);
    }
    return (
       <Dialog open={isDialogOpen} onOpenChange={() => setDialogOpen(!isDialogOpen)}>
          <DialogTrigger asChild>
             <div>
-               <SideBarButton
-                  title={`${user.firstName} ${user.lastName}`}
-                  icon={<LuUser className="text-general-light" />}
-               />
+               <SideBarButton title={`${user.userName}`} icon={<LuUser className="text-general-light" />} />
             </div>
          </DialogTrigger>
          <DialogContent className="sm:max-w-[425px]">
@@ -74,6 +70,19 @@ export function UserDialog(props: { user: User }) {
                         render={({ field }) => (
                            <FormItem>
                               <FormLabel invertcolor>Last Name</FormLabel>
+                              <FormControl>
+                                 <Input {...field} invertcolor />
+                              </FormControl>
+                              <FormMessage />
+                           </FormItem>
+                        )}
+                     />
+                     <FormField
+                        control={form.control}
+                        name="userName"
+                        render={({ field }) => (
+                           <FormItem>
+                              <FormLabel invertcolor>UserName</FormLabel>
                               <FormControl>
                                  <Input {...field} invertcolor />
                               </FormControl>
