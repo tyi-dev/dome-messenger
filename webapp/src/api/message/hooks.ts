@@ -4,6 +4,7 @@ import { API_MESSAGE_URL, createMessage, deleteMessage, getConversationMessages,
 
 export function useConversationMessages(conversationId: number) {
    return useSWR(`${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}`, (key) => getConversationMessages(key));
+   // return useSWR(`${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}`, (key) => getConversationMessages(key));
 }
 
 export function useCreateMessage() {

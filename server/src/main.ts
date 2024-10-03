@@ -10,9 +10,6 @@ import { Server } from 'socket.io';
 async function bootstrap() {
    const app = await NestFactory.create(AppModule);
 
-   const io = new Server();
-   io.attachApp(app);
-
    app.useGlobalPipes(
       new ValidationPipe({
          transform: true,
