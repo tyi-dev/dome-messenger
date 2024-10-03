@@ -3,7 +3,7 @@ import useSWRMutation from 'swr/mutation';
 import { API_MESSAGE_URL, createMessage, deleteMessage, getConversationMessages, updateMessage } from './actions.ts';
 
 export function useConversationMessages(conversationId: number) {
-   return useSWR(`${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}`, (key) => getConversationMessages(key));
+   // return useSWR(`${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}`, (key) => getConversationMessages(key));
    // return useSWR(`${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}`, (key) => getConversationMessages(key));
 }
 

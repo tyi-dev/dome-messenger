@@ -3,7 +3,11 @@ import { io } from 'socket.io-client';
 
 type Response<T> = { data: T };
 
-const socket = io(import.meta.env.VITE_API_URL);
+const socket = io('ws://localhost:8080', {
+   auth: {
+      token: Cookies.get('domeAccessToken')
+    }  
+});
 
 async function http<T>(path: string, config: RequestInit): Promise<Response<T>> {
    const authorization = Cookies.get('domeAccessToken');
