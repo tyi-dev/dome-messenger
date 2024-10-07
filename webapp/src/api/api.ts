@@ -3,10 +3,10 @@ import { io } from 'socket.io-client';
 
 type Response<T> = { data: T };
 
-const socket = io('ws://localhost:8080', {
+const socket = io(import.meta.env.VITE_WEBSOCKET_URL, {
    auth: {
-      token: Cookies.get('domeAccessToken')
-    }  
+      token: Cookies.get('domeAccessToken'),
+   },
 });
 
 async function http<T>(path: string, config: RequestInit): Promise<Response<T>> {

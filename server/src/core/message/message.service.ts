@@ -5,6 +5,8 @@ import { CreateMessageRequest } from '@server/src/api/website/message/dto/create
 import { UpdateMessageRequest } from '@server/src/api/website/message/dto/update-message.request';
 import { ConversationParticipantRepository } from '@server/src/core/repositories/conversation-participant.repository';
 import { ConversationRepository } from '@server/src/core/repositories/conversation.repository';
+import { JwtService } from '@nestjs/jwt';
+import { JwtAuthPayload } from '@server/src/api/dto/jwt-auth-payload.request';
 
 @Injectable()
 export class MessageService {
@@ -13,6 +15,7 @@ export class MessageService {
       private readonly conversationParticipantsRepository: ConversationParticipantRepository,
       private readonly conversationRepository: ConversationRepository,
       private readonly messageStatusRepository: MessageStatusRepository,
+      private readonly jwtService: JwtService,
    ) {}
 
    public async createMessage(senderId: number, data: CreateMessageRequest) {
@@ -53,7 +56,9 @@ export class MessageService {
       return this.messageRepository.delete(messageId);
    }
 
-   public async getConversationMessages(userId: number, conversationId: number) {
+   public async getConversationMessages(userToken: string, conversationId: number) {
+      const { id: userId } = await this.jwtService.verifyAsync<JwtAuthPayload>(userToken);
+
       const userInConversation = await this.verifyIfUserIsInConversation(userId, conversationId);
       if (!userInConversation) return null;
 

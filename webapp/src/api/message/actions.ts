@@ -1,5 +1,7 @@
 import API from '../api.ts';
 import { Message } from '@shared/types/message.ts';
+import { SWRSubscriptionOptions } from 'swr/subscription';
+import { data } from 'autoprefixer';
 
 export const BASE_URL_MESSAGE = 'message';
 
@@ -17,10 +19,26 @@ export async function getConversationMessages(key: string): Promise<Message[]> {
 }
 */
 
-export async function getConversationMessages(key: string) {
-   API.socket.on('conversation', ({ data }) => {
+export async function getConversationMessages(key: string, { next }: SWRSubscriptionOptions<Message[], Error>) {
+   const handleUpdateMessages = ({ data }: { data: Message[] }) => {
       console.log(data);
+      next(undefined, data);
+   };
+
+   /*   API.socket.on('conversation', (socket) => {
+      console.log('asd' + socket);
+      socket.join('test123');
+   });*/
+
+   API.socket.on('connection', (socket) => {
+      console.log(socket);
+      socket.join('some room');
+      handleUpdateMessages(socket.);
    });
+
+   return () => {
+      API.socket.off('conversation', handleUpdateMessages);
+   };
 }
 
 export async function updateMessage(key: string, options: { arg: { content: string } }): Promise<Message> {

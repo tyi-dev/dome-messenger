@@ -32,10 +32,4 @@ export class MessageApiController {
    async delete(@Param('id') id: number, @CurrentUser() user: JwtAuthPayload) {
       return this.messageApiService.deleteMessage(user.id, id);
    }
-
-   @UseGuards(JwtGuarded)
-   @Get('get-messages/:conversationId')
-   async getConversationMessages(@Param('conversationId') conversationId: number, @CurrentUser() user: JwtAuthPayload) {
-      return this.messageApiService.getConversationMessages(user.id, conversationId);
-   }
 }

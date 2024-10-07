@@ -1,10 +1,11 @@
-import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { API_MESSAGE_URL, createMessage, deleteMessage, getConversationMessages, updateMessage } from './actions.ts';
+import useSWRSubscription from 'swr/subscription';
 
 export function useConversationMessages(conversationId: number) {
-   // return useSWR(`${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}`, (key) => getConversationMessages(key));
-   // return useSWR(`${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}`, (key) => getConversationMessages(key));
+   return useSWRSubscription(`${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}`, (key, { next }) =>
+      getConversationMessages(key, { next }),
+   );
 }
 
 export function useCreateMessage() {
