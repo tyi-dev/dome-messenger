@@ -2,7 +2,9 @@ import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSo
 import { Server } from 'socket.io';
 import { MessageApiService } from '@server/src/api/website/message/message-api.service';
 import { Socket } from 'socket.io';
-import { MessageWebsocketPayload } from '@shared/types/message';
+import { WSNamespace } from '@shared/types/websockets';
+import { CreateMessageRequest } from '@server/src/api/website/message/dto/create-message.request';
+import { UpdateMessageRequest } from '@server/src/api/website/message/dto/update-message.request';
 
 @WebSocketGateway({
    cors: {
@@ -15,26 +17,38 @@ export class MessageApiGateway {
    @WebSocketServer()
    server: Server;
 
-   @SubscribeMessage('conversation')
-   async getMessages(@MessageBody() payload: MessageWebsocketPayload, @ConnectedSocket() client: Socket) {
-      if (payload?.messageToCreate?.content)
-         await this.messageApiService.createMessage(client.handshake.auth.token, {
-            content: payload.messageToCreate.content,
-            conversationId: payload.conversationId,
-         });
+   @SubscribeMessage(WSNamespace.CONVERSATION_MESSAGES)
+   async getMessages(@MessageBody() payload: { conversationId: number }, @ConnectedSocket() client: Socket) {
+      client.join(`conversation-${payload.conversationId}`);
+      await this.emitConversationMessages(client.handshake.auth.token, payload.conversationId);
+   }
 
-      if (payload?.messageToUpdate?.content && payload?.messageToUpdate?.id)
-         await this.messageApiService.updateMessage(client.handshake.auth.token, payload.messageToUpdate.id, {
-            content: payload.messageToUpdate.content,
-         });
+   @SubscribeMessage(WSNamespace.CREATE_MESSAGE)
+   async createMessage(@MessageBody() payload: { data: CreateMessageRequest }, @ConnectedSocket() client: Socket) {
+      await this.messageApiService.createMessage(client.handshake.auth.token, payload.data);
+      await this.emitConversationMessages(client.handshake.auth.token, payload.data.conversationId);
+   }
 
-      if (payload?.messageToDelete?.id)
-         await this.messageApiService.deleteMessage(client.handshake.auth.token, payload.messageToDelete.id);
+   @SubscribeMessage(WSNamespace.UPDATE_MESSAGE)
+   async updateMessage(
+      @MessageBody() payload: { data: UpdateMessageRequest; conversationId: number },
+      @ConnectedSocket() client: Socket,
+   ) {
+      await this.messageApiService.updateMessage(client.handshake.auth.token, payload.data);
+      await this.emitConversationMessages(client.handshake.auth.token, payload.conversationId);
+   }
 
-      const conversationMessages = await this.messageApiService.getConversationMessages(
-         client.handshake.auth.token,
-         payload.conversationId,
-      );
-      client.emit('conversation', conversationMessages);
+   @SubscribeMessage(WSNamespace.DELETE_MESSAGE)
+   async deleteMessage(
+      @MessageBody() payload: { data: { messageId: number }; conversationId: number },
+      @ConnectedSocket() client: Socket,
+   ) {
+      await this.messageApiService.deleteMessage(client.handshake.auth.token, payload.data.messageId);
+      await this.emitConversationMessages(client.handshake.auth.token, payload.conversationId);
+   }
+
+   private async emitConversationMessages(userToken: string, conversationId: number) {
+      const conversationMessages = await this.messageApiService.getConversationMessages(userToken, conversationId);
+      this.server.to(`conversation-${conversationId}`).emit(WSNamespace.CONVERSATION_MESSAGES, conversationMessages);
    }
 }

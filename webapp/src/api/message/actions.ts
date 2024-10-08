@@ -1,6 +1,6 @@
 import API from '../api.ts';
-import { Message } from '@shared/types/message.ts';
-import { MessageCreatePayload, MessageUpdatePayload } from '../../../../shared/types/message.ts';
+import { MessageCreatePayload, MessageUpdatePayload } from '@shared/types/message.ts';
+import { WSNamespace } from '../../../../shared/types/websockets.ts';
 
 export const BASE_URL_MESSAGE = 'message';
 
@@ -21,31 +21,22 @@ export async function updateMessage(
    options: { arg: MessageUpdatePayload },
    conversationId: number | undefined,
 ) {
-   console.log(key);
-   console.log(conversationId);
-   console.log(options);
-   API.socket.emit('conversation', {
-      messageToUpdate: {
-         content: options.arg.content,
-         id: options.arg.id,
-      },
+   API.socket.emit(WSNamespace.UPDATE_MESSAGE, {
+      data: options.arg,
       conversationId: conversationId,
    });
 }
 
 export async function createMessage(key: string, options: { arg: MessageCreatePayload }) {
-   API.socket.emit('conversation', {
-      messageToCreate: {
-         content: options.arg.content,
-      },
-      conversationId: options.arg.conversationId,
+   API.socket.emit(WSNamespace.CREATE_MESSAGE, {
+      data: options.arg,
    });
 }
 
 export async function deleteMessage(messageId: number, conversationId: number) {
-   API.socket.emit('conversation', {
-      messageToDelete: {
-         id: messageId,
+   API.socket.emit(WSNamespace.DELETE_MESSAGE, {
+      data: {
+         messageId: messageId,
       },
       conversationId: conversationId,
    });

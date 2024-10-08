@@ -36,16 +36,16 @@ export class MessageService {
       return message;
    }
 
-   public async updateMessage(senderToken: string, messageId: number, data: UpdateMessageRequest) {
+   public async updateMessage(senderToken: string, data: UpdateMessageRequest) {
       const { id: senderId } = await this.userService.getUserByAuthToken(senderToken);
 
-      const currentMessage = await this.verifyMessage(messageId);
+      const currentMessage = await this.verifyMessage(data.id);
       if (!currentMessage) return null;
 
       const userInConversation = await this.verifyIfUserIsInConversation(senderId, currentMessage.conversationId);
       if (!userInConversation) return null;
 
-      return this.messageRepository.update(messageId, data);
+      return this.messageRepository.update(data.id, data);
    }
 
    public async deleteMessage(senderToken: string, messageId: number) {

@@ -3,6 +3,7 @@ import { API_MESSAGE_URL, createMessage, deleteMessage, updateMessage } from './
 import useSWRSubscription, { SWRSubscriptionOptions } from 'swr/subscription';
 import API from '../api.ts';
 import { Message } from '@shared/types/message.ts';
+import { WSNamespace } from '@shared/types/websockets.ts';
 
 export function useConversationMessages(conversationId: number) {
    return useSWRSubscription(
@@ -12,12 +13,12 @@ export function useConversationMessages(conversationId: number) {
             next(null, data);
          };
 
-         API.socket.on('conversation', handleUpdateMessages);
+         API.socket.on(WSNamespace.CONVERSATION_MESSAGES, handleUpdateMessages);
 
-         API.socket.emit('conversation', { conversationId: conversationId });
+         API.socket.emit(WSNamespace.CONVERSATION_MESSAGES, { conversationId: conversationId });
 
          return () => {
-            API.socket.off('conversation', handleUpdateMessages);
+            API.socket.off(WSNamespace.CONVERSATION_MESSAGES, handleUpdateMessages);
          };
       },
    );

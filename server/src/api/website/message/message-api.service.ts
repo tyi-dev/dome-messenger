@@ -11,8 +11,8 @@ export class MessageApiService {
       return this.messageService.createMessage(senderToken, data);
    }
 
-   public async updateMessage(senderToken: string, messageId: number, data: UpdateMessageRequest) {
-      return this.messageService.updateMessage(senderToken, messageId, data);
+   public async updateMessage(senderToken: string, data: UpdateMessageRequest) {
+      return this.messageService.updateMessage(senderToken, data);
    }
 
    public async deleteMessage(senderToken: string, messageId: number) {

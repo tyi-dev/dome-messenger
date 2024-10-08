@@ -1,9 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class UpdateMessageRequest {
+   @IsNumber()
+   @ApiProperty()
+   id: number;
+
    @IsString()
-   @IsOptional()
    @ApiProperty()
    content: string;
 }
