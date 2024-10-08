@@ -1,9 +1,8 @@
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { Param, UseGuards } from '@nestjs/common';
-import { JwtAuthPayload } from '@server/src/api/dto/jwt-auth-payload.request';
 import { MessageApiService } from '@server/src/api/website/message/message-api.service';
 import { Socket } from 'socket.io';
+import { MessageWebsocketPayload } from '@shared/types/message';
 
 @WebSocketGateway({
    cors: {
@@ -17,9 +16,25 @@ export class MessageApiGateway {
    server: Server;
 
    @SubscribeMessage('conversation')
-   async getMessages(@MessageBody() body: string, @ConnectedSocket() client: Socket) {
-      console.log(client);
-      this.server.emit('conversation', body);
-      return this.messageApiService.getConversationMessages(client.handshake.auth.token, 1);
+   async getMessages(@MessageBody() payload: MessageWebsocketPayload, @ConnectedSocket() client: Socket) {
+      if (payload?.messageToCreate?.content)
+         await this.messageApiService.createMessage(client.handshake.auth.token, {
+            content: payload.messageToCreate.content,
+            conversationId: payload.conversationId,
+         });
+
+      if (payload?.messageToUpdate?.content && payload?.messageToUpdate?.id)
+         await this.messageApiService.updateMessage(client.handshake.auth.token, payload.messageToUpdate.id, {
+            content: payload.messageToUpdate.content,
+         });
+
+      if (payload?.messageToDelete?.id)
+         await this.messageApiService.deleteMessage(client.handshake.auth.token, payload.messageToDelete.id);
+
+      const conversationMessages = await this.messageApiService.getConversationMessages(
+         client.handshake.auth.token,
+         payload.conversationId,
+      );
+      client.emit('conversation', conversationMessages);
    }
 }

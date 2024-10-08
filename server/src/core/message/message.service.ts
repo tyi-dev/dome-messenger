@@ -5,8 +5,7 @@ import { CreateMessageRequest } from '@server/src/api/website/message/dto/create
 import { UpdateMessageRequest } from '@server/src/api/website/message/dto/update-message.request';
 import { ConversationParticipantRepository } from '@server/src/core/repositories/conversation-participant.repository';
 import { ConversationRepository } from '@server/src/core/repositories/conversation.repository';
-import { JwtService } from '@nestjs/jwt';
-import { JwtAuthPayload } from '@server/src/api/dto/jwt-auth-payload.request';
+import { UserService } from '@server/src/core/user/user.service';
 
 @Injectable()
 export class MessageService {
@@ -15,10 +14,11 @@ export class MessageService {
       private readonly conversationParticipantsRepository: ConversationParticipantRepository,
       private readonly conversationRepository: ConversationRepository,
       private readonly messageStatusRepository: MessageStatusRepository,
-      private readonly jwtService: JwtService,
+      private readonly userService: UserService,
    ) {}
 
-   public async createMessage(senderId: number, data: CreateMessageRequest) {
+   public async createMessage(senderToken: string, data: CreateMessageRequest) {
+      const { id: senderId } = await this.userService.getUserByAuthToken(senderToken);
       const userInConversation = await this.verifyIfUserIsInConversation(senderId, data.conversationId);
       if (!userInConversation) return null;
 
@@ -36,7 +36,9 @@ export class MessageService {
       return message;
    }
 
-   public async updateMessage(senderId: number, messageId: number, data: UpdateMessageRequest) {
+   public async updateMessage(senderToken: string, messageId: number, data: UpdateMessageRequest) {
+      const { id: senderId } = await this.userService.getUserByAuthToken(senderToken);
+
       const currentMessage = await this.verifyMessage(messageId);
       if (!currentMessage) return null;
 
@@ -46,7 +48,9 @@ export class MessageService {
       return this.messageRepository.update(messageId, data);
    }
 
-   public async deleteMessage(senderId: number, messageId: number) {
+   public async deleteMessage(senderToken: string, messageId: number) {
+      const { id: senderId } = await this.userService.getUserByAuthToken(senderToken);
+
       const currentMessage = await this.verifyMessage(messageId);
       if (!currentMessage) return null;
 
@@ -57,7 +61,7 @@ export class MessageService {
    }
 
    public async getConversationMessages(userToken: string, conversationId: number) {
-      const { id: userId } = await this.jwtService.verifyAsync<JwtAuthPayload>(userToken);
+      const { id: userId } = await this.userService.getUserByAuthToken(userToken);
 
       const userInConversation = await this.verifyIfUserIsInConversation(userId, conversationId);
       if (!userInConversation) return null;

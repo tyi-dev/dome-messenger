@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from '@server/src/core/repositories/user.repository';
 import { JwtAuthPayload } from '@server/src/api/dto/jwt-auth-payload.request';
 import { UpdateUserRequest } from '@server/src/api/website/user/dto/update-user.request';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-   constructor(private readonly userRepository: UserRepository) {}
+   constructor(
+      private readonly userRepository: UserRepository,
+      private readonly jwtService: JwtService,
+   ) {}
 
    public async getUser(data: JwtAuthPayload) {
       return this.userRepository.getUser(data);
@@ -14,6 +18,11 @@ export class UserService {
    public async getUserById(id: number) {
       if (!id) return null;
       return this.userRepository.getUserById(id);
+   }
+
+   public async getUserByAuthToken(token: string) {
+      const user = await this.jwtService.verifyAsync<JwtAuthPayload>(token);
+      return { ...user };
    }
 
    public async updateUser(userId: number, data: UpdateUserRequest) {

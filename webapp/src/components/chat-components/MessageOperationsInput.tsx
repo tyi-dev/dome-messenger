@@ -8,11 +8,12 @@ import { useCreateConversation } from '@webapp/src/api/conversation/hooks.ts';
 import { useUpdateMessage } from '@webapp/src/api/message/hooks.ts';
 
 export default function MessageOperationsInput() {
-   const { currentConversation, messageToUpdate, userToCreateConversationWith, currentUser } = useChatContext();
+   const { currentConversation, messageToUpdate, userToCreateConversationWith, currentUser, setMessageToUpdate } =
+      useChatContext();
    const [inputValue, setInputValue] = useState('');
    const { trigger: sendMessage } = useCreateMessage();
    const { trigger: createConversation } = useCreateConversation();
-   const { trigger: updateMessage } = useUpdateMessage(messageToUpdate?.id);
+   const { trigger: updateMessage } = useUpdateMessage(messageToUpdate?.id, messageToUpdate?.conversationId);
    const onMessageSend = () => {
       if (inputValue === '') return;
       if (userToCreateConversationWith) {
@@ -29,7 +30,8 @@ export default function MessageOperationsInput() {
          return;
       }
       if (messageToUpdate) {
-         updateMessage({ content: inputValue });
+         updateMessage({ content: inputValue, id: messageToUpdate.id });
+         setMessageToUpdate(null);
          setInputValue('');
          return;
       }

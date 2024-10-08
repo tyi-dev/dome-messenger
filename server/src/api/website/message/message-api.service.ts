@@ -7,16 +7,16 @@ import { UpdateMessageRequest } from '@server/src/api/website/message/dto/update
 export class MessageApiService {
    constructor(private readonly messageService: MessageService) {}
 
-   public async createMessage(senderId: number, data: CreateMessageRequest) {
-      return this.messageService.createMessage(senderId, data);
+   public async createMessage(senderToken: string, data: CreateMessageRequest) {
+      return this.messageService.createMessage(senderToken, data);
    }
 
-   public async updateMessage(senderId: number, messageId: number, data: UpdateMessageRequest) {
-      return this.messageService.updateMessage(senderId, messageId, data);
+   public async updateMessage(senderToken: string, messageId: number, data: UpdateMessageRequest) {
+      return this.messageService.updateMessage(senderToken, messageId, data);
    }
 
-   public async deleteMessage(senderId: number, messageId: number) {
-      return this.messageService.deleteMessage(senderId, messageId);
+   public async deleteMessage(senderToken: string, messageId: number) {
+      return this.messageService.deleteMessage(senderToken, messageId);
    }
 
    public async getConversationMessages(userToken: string, conversationId: number) {

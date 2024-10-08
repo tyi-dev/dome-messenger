@@ -15,7 +15,6 @@ export default function CurrentConversation() {
    if (!currentConversation) return <p className={containerClassName}>Select conversation</p>;
 
    const { data: messages } = useConversationMessages(currentConversation.id);
-   console.log(messages);
    if (!messages) return <Spinner spinnerClassName="border-general-dark" />;
    if (messages.length === 0) return <p className={containerClassName}>No messages yet</p>;
 
