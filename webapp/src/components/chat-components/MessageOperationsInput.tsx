@@ -15,7 +15,7 @@ export default function MessageOperationsInput() {
    const [inputValue, setInputValue] = useState('');
    const { trigger: sendMessage } = useCreateMessage();
    const { trigger: createConversation } = useCreateConversation();
-   const { trigger: updateMessage } = useUpdateMessage(messageToUpdate?.id, messageToUpdate?.conversationId);
+   const { trigger: updateMessage } = useUpdateMessage(messageToUpdate?.id);
    const onMessageSend = () => {
       if (inputValue === '') return;
       if (userToCreateConversationWith) {
@@ -33,7 +33,11 @@ export default function MessageOperationsInput() {
          return;
       }
       if (messageToUpdate) {
-         updateMessage({ content: inputValue, id: messageToUpdate.id });
+         updateMessage({
+            content: inputValue,
+            id: messageToUpdate.id,
+            conversationId: messageToUpdate.conversationId,
+         });
          setMessageToUpdate(null);
          setInputValue('');
          return;

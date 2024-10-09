@@ -16,18 +16,14 @@ export const API_MESSAGE_URL = {
    return res?.data || null;
 }*/
 
-export async function updateMessage(
-   key: string,
-   options: { arg: MessageUpdatePayload },
-   conversationId: number | undefined,
-) {
+export async function updateMessage(_key: string, options: { arg: MessageUpdatePayload }) {
    API.socket.emit(WSNamespace.UPDATE_MESSAGE, {
       data: options.arg,
-      conversationId: conversationId,
+      conversationId: options.arg.conversationId,
    });
 }
 
-export async function createMessage(key: string, options: { arg: MessageCreatePayload }) {
+export async function createMessage(_key: string, options: { arg: MessageCreatePayload }) {
    API.socket.emit(WSNamespace.CREATE_MESSAGE, {
       data: options.arg,
    });

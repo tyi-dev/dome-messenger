@@ -37,13 +37,10 @@ export class MessageApiGateway {
    }
 
    @SubscribeMessage(WSNamespace.UPDATE_MESSAGE)
-   async updateMessage(
-      @MessageBody() payload: { data: UpdateMessageRequest; conversationId: number },
-      @ConnectedSocket() client: Socket,
-   ) {
+   async updateMessage(@MessageBody() payload: { data: UpdateMessageRequest }, @ConnectedSocket() client: Socket) {
       const { id: currentUserId } = await this.getUserByToken(client.handshake.auth.token);
       await this.messageApiService.updateMessage(currentUserId, payload.data);
-      await this.emitConversationMessages(currentUserId, payload.conversationId);
+      await this.emitConversationMessages(currentUserId, payload.data.conversationId);
    }
 
    @SubscribeMessage(WSNamespace.DELETE_MESSAGE)

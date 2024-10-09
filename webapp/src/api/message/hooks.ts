@@ -8,7 +8,7 @@ import { WSNamespace } from '@shared/types/websockets.ts';
 export function useConversationMessages(conversationId: number) {
    return useSWRSubscription(
       `${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}`,
-      (key, { next }: SWRSubscriptionOptions<Message[], Error>) => {
+      (_key, { next }: SWRSubscriptionOptions<Message[], Error>) => {
          const handleUpdateMessages = (data: Message[]) => {
             next(null, data);
          };
@@ -28,11 +28,8 @@ export function useCreateMessage() {
    return useSWRMutation(API_MESSAGE_URL.CREATE, createMessage);
 }
 
-export function useUpdateMessage(messageId?: number, conversationId?: number) {
-   return useSWRMutation(
-      messageId && conversationId ? `${API_MESSAGE_URL.UPDATE}/${messageId}` : null,
-      (key, options) => updateMessage(key, options, conversationId),
-   );
+export function useUpdateMessage(messageId?: number) {
+   return useSWRMutation(messageId ? `${API_MESSAGE_URL.UPDATE}/${messageId}` : null, updateMessage);
 }
 
 export function useDeleteMessage(messageId: number, conversationId: number) {

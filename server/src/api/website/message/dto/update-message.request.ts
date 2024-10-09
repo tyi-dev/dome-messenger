@@ -9,4 +9,8 @@ export class UpdateMessageRequest {
    @IsString()
    @ApiProperty()
    content: string;
+
+   @IsNumber()
+   @ApiProperty()
+   conversationId: number;
 }
