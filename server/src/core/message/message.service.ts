@@ -17,8 +17,7 @@ export class MessageService {
       private readonly userService: UserService,
    ) {}
 
-   public async createMessage(senderToken: string, data: CreateMessageRequest) {
-      const { id: senderId } = await this.userService.getUserByAuthToken(senderToken);
+   public async createMessage(senderId: number, data: CreateMessageRequest) {
       const userInConversation = await this.verifyIfUserIsInConversation(senderId, data.conversationId);
       if (!userInConversation) return null;
 
@@ -36,9 +35,7 @@ export class MessageService {
       return message;
    }
 
-   public async updateMessage(senderToken: string, data: UpdateMessageRequest) {
-      const { id: senderId } = await this.userService.getUserByAuthToken(senderToken);
-
+   public async updateMessage(senderId: number, data: UpdateMessageRequest) {
       const currentMessage = await this.verifyMessage(data.id);
       if (!currentMessage) return null;
 
@@ -48,9 +45,7 @@ export class MessageService {
       return this.messageRepository.update(data.id, data);
    }
 
-   public async deleteMessage(senderToken: string, messageId: number) {
-      const { id: senderId } = await this.userService.getUserByAuthToken(senderToken);
-
+   public async deleteMessage(senderId: number, messageId: number) {
       const currentMessage = await this.verifyMessage(messageId);
       if (!currentMessage) return null;
 
@@ -60,9 +55,7 @@ export class MessageService {
       return this.messageRepository.delete(messageId);
    }
 
-   public async getConversationMessages(userToken: string, conversationId: number) {
-      const { id: userId } = await this.userService.getUserByAuthToken(userToken);
-
+   public async getConversationMessages(userId: number, conversationId: number) {
       const userInConversation = await this.verifyIfUserIsInConversation(userId, conversationId);
       if (!userInConversation) return null;
 

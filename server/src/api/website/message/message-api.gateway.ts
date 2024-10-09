@@ -5,6 +5,8 @@ import { Socket } from 'socket.io';
 import { WSNamespace } from '@shared/types/websockets';
 import { CreateMessageRequest } from '@server/src/api/website/message/dto/create-message.request';
 import { UpdateMessageRequest } from '@server/src/api/website/message/dto/update-message.request';
+import { JwtService } from '@nestjs/jwt';
+import { JwtAuthPayload } from '@server/src/api/dto/jwt-auth-payload.request';
 
 @WebSocketGateway({
    cors: {
@@ -12,21 +14,26 @@ import { UpdateMessageRequest } from '@server/src/api/website/message/dto/update
    },
 })
 export class MessageApiGateway {
-   constructor(private readonly messageApiService: MessageApiService) {}
+   constructor(
+      private readonly messageApiService: MessageApiService,
+      private readonly jwtService: JwtService,
+   ) {}
 
    @WebSocketServer()
    server: Server;
 
    @SubscribeMessage(WSNamespace.CONVERSATION_MESSAGES)
    async getMessages(@MessageBody() payload: { conversationId: number }, @ConnectedSocket() client: Socket) {
+      const { id: currentUserId } = await this.getUserByToken(client.handshake.auth.token);
       client.join(`conversation-${payload.conversationId}`);
-      await this.emitConversationMessages(client.handshake.auth.token, payload.conversationId);
+      await this.emitConversationMessages(currentUserId, payload.conversationId);
    }
 
    @SubscribeMessage(WSNamespace.CREATE_MESSAGE)
    async createMessage(@MessageBody() payload: { data: CreateMessageRequest }, @ConnectedSocket() client: Socket) {
-      await this.messageApiService.createMessage(client.handshake.auth.token, payload.data);
-      await this.emitConversationMessages(client.handshake.auth.token, payload.data.conversationId);
+      const { id: currentUserId } = await this.getUserByToken(client.handshake.auth.token);
+      await this.messageApiService.createMessage(currentUserId, payload.data);
+      await this.emitConversationMessages(currentUserId, payload.data.conversationId);
    }
 
    @SubscribeMessage(WSNamespace.UPDATE_MESSAGE)
@@ -34,8 +41,9 @@ export class MessageApiGateway {
       @MessageBody() payload: { data: UpdateMessageRequest; conversationId: number },
       @ConnectedSocket() client: Socket,
    ) {
-      await this.messageApiService.updateMessage(client.handshake.auth.token, payload.data);
-      await this.emitConversationMessages(client.handshake.auth.token, payload.conversationId);
+      const { id: currentUserId } = await this.getUserByToken(client.handshake.auth.token);
+      await this.messageApiService.updateMessage(currentUserId, payload.data);
+      await this.emitConversationMessages(currentUserId, payload.conversationId);
    }
 
    @SubscribeMessage(WSNamespace.DELETE_MESSAGE)
@@ -43,12 +51,17 @@ export class MessageApiGateway {
       @MessageBody() payload: { data: { messageId: number }; conversationId: number },
       @ConnectedSocket() client: Socket,
    ) {
-      await this.messageApiService.deleteMessage(client.handshake.auth.token, payload.data.messageId);
-      await this.emitConversationMessages(client.handshake.auth.token, payload.conversationId);
+      const { id: currentUserId } = await this.getUserByToken(client.handshake.auth.token);
+      await this.messageApiService.deleteMessage(currentUserId, payload.data.messageId);
+      await this.emitConversationMessages(currentUserId, payload.conversationId);
    }
 
-   private async emitConversationMessages(userToken: string, conversationId: number) {
-      const conversationMessages = await this.messageApiService.getConversationMessages(userToken, conversationId);
+   private async getUserByToken(token: string) {
+      return this.jwtService.verifyAsync<JwtAuthPayload>(token);
+   }
+
+   private async emitConversationMessages(userId: number, conversationId: number) {
+      const conversationMessages = await this.messageApiService.getConversationMessages(userId, conversationId);
       this.server.to(`conversation-${conversationId}`).emit(WSNamespace.CONVERSATION_MESSAGES, conversationMessages);
    }
 }

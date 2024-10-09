@@ -5,7 +5,7 @@ import { ConversationParticipantService } from '@server/src/core/conversation-pa
 export class ConversationParticipantApiService {
    constructor(private readonly conversationParticipantService: ConversationParticipantService) {}
 
-   public async getConversationParticipants(conversationId: number) {
-      return this.conversationParticipantService.getConversationParticipants(conversationId);
+   public async getConversationParticipants(conversationId: number, currentUserId: number) {
+      return this.conversationParticipantService.getConversationParticipants(conversationId, currentUserId);
    }
 }

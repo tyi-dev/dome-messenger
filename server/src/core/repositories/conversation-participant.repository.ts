@@ -25,9 +25,30 @@ export class ConversationParticipantRepository {
       });
    }
 
-   public async getConversationParticipants(conversationId: number) {
+   public async getConversationParticipants(conversationId: number, currentUserId?: number) {
+      if (!currentUserId)
+         return this.prisma.conversationParticipant.findMany({
+            where: { conversationId },
+            include: {
+               user: {
+                  select: prismaExclude('User', ['password']),
+               },
+            },
+         });
+
+      const conversation = await this.prisma.conversation.findUnique({
+         where: { id: conversationId },
+         select: { conversationType: true },
+      });
+
       return this.prisma.conversationParticipant.findMany({
-         where: { conversationId },
+         where: {
+            conversationId,
+            ...(conversation.conversationType === 'P2P' && {
+               userId: { not: currentUserId },
+            }),
+         },
+
          include: {
             user: {
                select: prismaExclude('User', ['password']),
