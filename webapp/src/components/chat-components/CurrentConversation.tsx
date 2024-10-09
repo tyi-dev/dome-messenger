@@ -20,6 +20,7 @@ export default function CurrentConversation() {
 
    return (
       <ScrollArea className="flex flex-col h-full w-full pl-7 pr-12 pb-4 ">
+         <div>Header here</div>
          <div className="flex flex-col justify-end gap-4">
             {messages?.map((item, index) => <MessageComponent message={item} key={index} />)}
          </div>
