@@ -5,6 +5,7 @@ import { EnvironmentVariables } from '@server/src/core/config/environment-variab
 import { Logger, ValidationPipe } from '@nestjs/common';
 import * as process from 'node:process';
 import { CommonResponseInterceptor } from '@server/src/interceptors/common-responce.interceptor';
+import { Server } from 'socket.io';
 
 async function bootstrap() {
    const app = await NestFactory.create(AppModule);

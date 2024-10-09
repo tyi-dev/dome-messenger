@@ -13,3 +13,16 @@ export type MessageStatus = {
    userId: number;
    readAt: null | string;
 };
+
+export type MessageCreatePayload = Pick<Message, 'content' | 'conversationId'>;
+
+export type MessageUpdatePayload = Pick<Message, 'content' | 'id' | 'conversationId'>;
+
+export type MessageDeletePayload = Pick<Message, 'id'>;
+
+export type MessageWebsocketPayload = {
+   messageToCreate?: MessageCreatePayload;
+   messageToUpdate?: MessageUpdatePayload;
+   messageToDelete?: MessageDeletePayload;
+   conversationId: number;
+};

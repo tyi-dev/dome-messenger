@@ -12,7 +12,7 @@ import { useDeleteMessage } from '@webapp/src/api/message/hooks.ts';
 export default function MessageComponent({ message }: { message: Message }) {
    const { currentUser, setMessageToUpdate, messageToUpdate } = useChatContext();
    const { data: user } = useUserById(message.senderId);
-   const { trigger: deleteMessage } = useDeleteMessage(message.id);
+   const { trigger: deleteMessage } = useDeleteMessage(message.id, message.conversationId);
 
    const isMessageMine = () => {
       return user?.id === currentUser.id;

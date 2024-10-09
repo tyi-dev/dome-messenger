@@ -1,6 +1,13 @@
 import Cookies from 'js-cookie';
+import { io } from 'socket.io-client';
 
 type Response<T> = { data: T };
+
+const socket = io(import.meta.env.VITE_WEBSOCKET_URL, {
+   auth: {
+      token: Cookies.get('domeAccessToken'),
+   },
+});
 
 async function http<T>(path: string, config: RequestInit): Promise<Response<T>> {
    const authorization = Cookies.get('domeAccessToken');
@@ -66,6 +73,7 @@ export async function _delete<T>(path: string, config?: RequestInit): Promise<Re
 }
 
 const API = {
+   socket,
    get,
    post,
    put,

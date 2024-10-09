@@ -5,7 +5,7 @@ import { ConversationParticipantRepository } from '@server/src/core/repositories
 export class ConversationParticipantService {
    constructor(private readonly conversationParticipantsRepository: ConversationParticipantRepository) {}
 
-   public async getConversationParticipants(conversationId: number) {
-      return this.conversationParticipantsRepository.getConversationParticipants(conversationId);
+   public async getConversationParticipants(conversationId: number, currentUserId: number) {
+      return this.conversationParticipantsRepository.getConversationParticipants(conversationId, currentUserId);
    }
 }

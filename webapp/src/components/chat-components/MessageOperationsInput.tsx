@@ -6,9 +6,12 @@ import { toast } from '@webapp/src/hooks/use-toast.ts';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 import { useCreateConversation } from '@webapp/src/api/conversation/hooks.ts';
 import { useUpdateMessage } from '@webapp/src/api/message/hooks.ts';
+import { mutate } from 'swr';
+import { API_CONVERSATION_PARTICIPANT_URL } from '../../api/conversation-participant/actions.ts';
 
 export default function MessageOperationsInput() {
-   const { currentConversation, messageToUpdate, userToCreateConversationWith, currentUser } = useChatContext();
+   const { currentConversation, messageToUpdate, userToCreateConversationWith, currentUser, setMessageToUpdate } =
+      useChatContext();
    const [inputValue, setInputValue] = useState('');
    const { trigger: sendMessage } = useCreateMessage();
    const { trigger: createConversation } = useCreateConversation();
@@ -24,12 +27,18 @@ export default function MessageOperationsInput() {
                content: inputValue,
                conversationId: response.id,
             });
+            mutate(API_CONVERSATION_PARTICIPANT_URL.GET_PARTICIPANTS);
          });
          setInputValue('');
          return;
       }
       if (messageToUpdate) {
-         updateMessage({ content: inputValue });
+         updateMessage({
+            content: inputValue,
+            id: messageToUpdate.id,
+            conversationId: messageToUpdate.conversationId,
+         });
+         setMessageToUpdate(null);
          setInputValue('');
          return;
       }

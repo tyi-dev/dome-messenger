@@ -5,6 +5,7 @@ import { CreateMessageRequest } from '@server/src/api/website/message/dto/create
 import { UpdateMessageRequest } from '@server/src/api/website/message/dto/update-message.request';
 import { ConversationParticipantRepository } from '@server/src/core/repositories/conversation-participant.repository';
 import { ConversationRepository } from '@server/src/core/repositories/conversation.repository';
+import { UserService } from '@server/src/core/user/user.service';
 
 @Injectable()
 export class MessageService {
@@ -13,6 +14,7 @@ export class MessageService {
       private readonly conversationParticipantsRepository: ConversationParticipantRepository,
       private readonly conversationRepository: ConversationRepository,
       private readonly messageStatusRepository: MessageStatusRepository,
+      private readonly userService: UserService,
    ) {}
 
    public async createMessage(senderId: number, data: CreateMessageRequest) {
@@ -33,14 +35,14 @@ export class MessageService {
       return message;
    }
 
-   public async updateMessage(senderId: number, messageId: number, data: UpdateMessageRequest) {
-      const currentMessage = await this.verifyMessage(messageId);
+   public async updateMessage(senderId: number, data: UpdateMessageRequest) {
+      const currentMessage = await this.verifyMessage(data.id);
       if (!currentMessage) return null;
 
       const userInConversation = await this.verifyIfUserIsInConversation(senderId, currentMessage.conversationId);
       if (!userInConversation) return null;
 
-      return this.messageRepository.update(messageId, data);
+      return this.messageRepository.update(data.id, data);
    }
 
    public async deleteMessage(senderId: number, messageId: number) {

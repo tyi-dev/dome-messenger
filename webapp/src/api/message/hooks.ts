@@ -1,19 +1,37 @@
-import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { API_MESSAGE_URL, createMessage, deleteMessage, getConversationMessages, updateMessage } from './actions.ts';
+import { API_MESSAGE_URL, createMessage, deleteMessage, updateMessage } from './actions.ts';
+import useSWRSubscription, { SWRSubscriptionOptions } from 'swr/subscription';
+import API from '../api.ts';
+import { Message } from '@shared/types/message.ts';
+import { WSNamespace } from '@shared/types/websockets.ts';
 
 export function useConversationMessages(conversationId: number) {
-   return useSWR(`${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}`, (key) => getConversationMessages(key));
+   return useSWRSubscription(
+      `${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}`,
+      (_key, { next }: SWRSubscriptionOptions<Message[], Error>) => {
+         const handleUpdateMessages = (data: Message[]) => {
+            next(null, data);
+         };
+
+         API.socket.on(WSNamespace.CONVERSATION_MESSAGES, handleUpdateMessages);
+
+         API.socket.emit(WSNamespace.CONVERSATION_MESSAGES, { conversationId: conversationId });
+
+         return () => {
+            API.socket.off(WSNamespace.CONVERSATION_MESSAGES, handleUpdateMessages);
+         };
+      },
+   );
 }
 
 export function useCreateMessage() {
    return useSWRMutation(API_MESSAGE_URL.CREATE, createMessage);
 }
 
-export function useUpdateMessage(conversationId?: number) {
-   return useSWRMutation(conversationId ? `${API_MESSAGE_URL.UPDATE}/${conversationId}` : null, updateMessage);
+export function useUpdateMessage(messageId?: number) {
+   return useSWRMutation(messageId ? `${API_MESSAGE_URL.UPDATE}/${messageId}` : null, updateMessage);
 }
 
-export function useDeleteMessage(conversationId: number) {
-   return useSWRMutation(`${API_MESSAGE_URL.DELETE}/${conversationId}`, deleteMessage);
+export function useDeleteMessage(messageId: number, conversationId: number) {
+   return useSWRMutation(`${API_MESSAGE_URL.DELETE}/${messageId}`, () => deleteMessage(messageId, conversationId));
 }

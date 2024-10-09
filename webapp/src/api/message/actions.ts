@@ -1,5 +1,6 @@
 import API from '../api.ts';
-import { Message } from '@shared/types/message.ts';
+import { MessageCreatePayload, MessageUpdatePayload } from '@shared/types/message.ts';
+import { WSNamespace } from '../../../../shared/types/websockets.ts';
 
 export const BASE_URL_MESSAGE = 'message';
 
@@ -10,22 +11,29 @@ export const API_MESSAGE_URL = {
    GET_MESSAGES: `${BASE_URL_MESSAGE}/get-messages`,
 };
 
-export async function getConversationMessages(key: string): Promise<Message[]> {
+/*export async function getConversationMessages(key: string): Promise<Message[]> {
    const res = await API.get<Message[]>(key);
    return res?.data || null;
+}*/
+
+export async function updateMessage(_key: string, options: { arg: MessageUpdatePayload }) {
+   API.socket.emit(WSNamespace.UPDATE_MESSAGE, {
+      data: options.arg,
+      conversationId: options.arg.conversationId,
+   });
 }
 
-export async function updateMessage(key: string, options: { arg: { content: string } }): Promise<Message> {
-   const res = await API.put<{ content: string }, Message>(key, options.arg);
-   return res?.data || null;
+export async function createMessage(_key: string, options: { arg: MessageCreatePayload }) {
+   API.socket.emit(WSNamespace.CREATE_MESSAGE, {
+      data: options.arg,
+   });
 }
 
-export async function createMessage(key: string, options: { arg: Partial<Message> }): Promise<Message> {
-   const res = await API.post<Partial<Message>, Message>(key, options.arg);
-   return res?.data || null;
-}
-
-export async function deleteMessage(key: string): Promise<Message> {
-   const res = await API.delete<Message>(key);
-   return res?.data || null;
+export async function deleteMessage(messageId: number, conversationId: number) {
+   API.socket.emit(WSNamespace.DELETE_MESSAGE, {
+      data: {
+         messageId: messageId,
+      },
+      conversationId: conversationId,
+   });
 }

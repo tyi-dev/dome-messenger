@@ -16,7 +16,7 @@ export default function CurrentConversation() {
 
    const { data: messages } = useConversationMessages(currentConversation.id);
    if (!messages) return <Spinner spinnerClassName="border-general-dark" />;
-   if (messages?.length === 0) return <p className={containerClassName}>No messages yet</p>;
+   if (messages.length === 0) return <p className={containerClassName}>No messages yet</p>;
 
    return (
       <ScrollArea className="flex flex-col h-full w-full pl-7 pr-12 pb-4 ">
