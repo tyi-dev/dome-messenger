@@ -6,7 +6,8 @@ import { useConversationParticipants } from '@webapp/src/api/conversation-partic
 import Spinner from '@webapp/src/components/Spinner.tsx';
 
 export default function ConversationTile({ conversation }: { conversation: Conversation }) {
-   const { setCurrentConversation, setMessageToUpdate, setUserToCreateConversation } = useChatContext();
+   const { setCurrentConversation, setMessageToUpdate, setUserToCreateConversation, currentConversation } =
+      useChatContext();
 
    const { data: participants } = useConversationParticipants(conversation.id);
 
@@ -26,14 +27,14 @@ export default function ConversationTile({ conversation }: { conversation: Conve
    };
    return (
       <Button
-         className="flex w-full flex-col"
+         className={`flex w-full flex-col rounded-none ${conversation.id === currentConversation?.id ? 'bg-general-blue hover:border-transparent' : ''}`}
          onClick={() => {
             setCurrentConversation(conversation);
             setMessageToUpdate(null);
             setUserToCreateConversation(null);
          }}
       >
-         <p>{returnConversationTitle()}</p>
+         <p className="w-full truncate flex items-start">{returnConversationTitle()}</p>
       </Button>
    );
 }

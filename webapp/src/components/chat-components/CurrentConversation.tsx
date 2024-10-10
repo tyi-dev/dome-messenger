@@ -7,7 +7,7 @@ import { useChatContext } from '@webapp/src/components/chat-components/context.t
 export default function CurrentConversation() {
    const { currentConversation, userToCreateConversationWith } = useChatContext();
 
-   const containerClassName = 'w-full h-full flex justify-center items-center';
+   const containerClassName = 'w-full h-full flex justify-center items-center text-general-dark';
 
    if (userToCreateConversationWith)
       return <p className={containerClassName}>Start conversation with {userToCreateConversationWith.userName}</p>;

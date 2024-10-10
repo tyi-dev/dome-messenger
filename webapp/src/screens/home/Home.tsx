@@ -5,7 +5,7 @@ import ChatLayout from '@webapp/src/components/ChatLayout';
 import { User } from '@shared/types/user.ts';
 import { useState } from 'react';
 import { Conversation } from '@shared/types/conversation';
-import { ChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { ChatContext, InputPayload } from '@webapp/src/components/chat-components/context.tsx';
 import { Nullable } from '@shared/types/nullable.ts';
 import { Message } from '@shared/types/message.ts';
 export default function HomePage() {
@@ -16,11 +16,21 @@ export default function HomePage() {
    const [userToCreateConversationWith, setUserToCreateConversationWith] =
       useState<Nullable<Pick<User, 'id' | 'userName'>>>(null);
    const [messageToUpdate, setMessageToUpdate] = useState<Nullable<Message>>(null);
+   const [inputPayload, setInputPayload] = useState<InputPayload>({
+      text: null,
+   });
+
+   const setInputPayloadFunc = (payload: Partial<InputPayload>) => {
+      setInputPayload((prevState) => ({ ...prevState, ...payload }));
+   };
    const setUserToCreateConversationFunc = (user: Nullable<Pick<User, 'id' | 'userName'>>) => {
       setUserToCreateConversationWith(user);
    };
    const setMessageToUpdateFunc = (message: Nullable<Message>) => {
       setMessageToUpdate(message);
+      setInputPayloadFunc({
+         text: message?.content,
+      });
    };
    return (
       <ChatContext.Provider
@@ -32,6 +42,8 @@ export default function HomePage() {
             setMessageToUpdate: setMessageToUpdateFunc,
             userToCreateConversationWith: userToCreateConversationWith,
             setUserToCreateConversation: setUserToCreateConversationFunc,
+            inputPayload: inputPayload,
+            setInputPayload: setInputPayloadFunc,
          }}
       >
          <div className="flex flex-row w-full h-full">
