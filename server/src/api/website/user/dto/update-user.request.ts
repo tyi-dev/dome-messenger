@@ -26,6 +26,11 @@ export class UpdateUserRequest {
    @IsString()
    @IsOptional()
    @ApiProperty()
+   lastSeen: string;
+
+   @IsString()
+   @IsOptional()
+   @ApiProperty()
    phoneNumber: string;
 
    @IsString()

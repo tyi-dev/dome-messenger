@@ -2,6 +2,7 @@ import { useChatContext } from '@webapp/src/components/chat-components/context.t
 import { ConversationType } from '@shared/types/conversation.ts';
 import { useConversationParticipants } from '@webapp/src/api/conversation-participant/hooks.ts';
 import Spinner from '@webapp/src/components/Spinner.tsx';
+import { formatDistance } from 'date-fns';
 
 export default function CurrentConversationHeader() {
    const { currentConversation, userToCreateConversationWith } = useChatContext();
@@ -26,7 +27,9 @@ export default function CurrentConversationHeader() {
          return (
             <div className={containerClassName}>
                <p className={titleClassName}>{`${participants[0].user.firstName} ${participants[0].user.lastName}`}</p>
-               <p className={secondaryTitleClassName}>{`${participants[0].user.userName}`}</p>
+               <p
+                  className={secondaryTitleClassName}
+               >{`last seen ${formatDistance(participants[0].user.lastSeen, new Date())} ago`}</p>
             </div>
          );
       default:
