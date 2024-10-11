@@ -24,24 +24,16 @@ export default function CurrentConversation() {
       <ScrollArea className="flex flex-col h-full w-full pl-7 pr-12 pb-4 mt-1">
          <div className="flex flex-col justify-end gap-4">
             {messages?.map((item, index) => {
-               if (index === 0)
-                  return (
-                     <>
+               return (
+                  <>
+                     {format(item.createdAt, 'dd/MM/yyyy') !==
+                        format(messages[index - 1] ? messages[index - 1]?.createdAt : new Date(), 'dd/MM/yyyy') ||
+                     index === 0 ? (
                         <DateSeparator date={item.createdAt} key={`separator-${index}`} />
-                        <MessageComponent message={item} key={`message-${index}`} />
-                     </>
-                  );
-               if (
-                  format(item.createdAt, 'dd/MM/yyyy') !==
-                  format(messages[index - 1] ? messages[index - 1]?.createdAt : new Date(), 'dd/MM/yyyy')
-               )
-                  return (
-                     <>
-                        <DateSeparator date={item.createdAt} key={`separator-${index}`} />
-                        <MessageComponent message={item} key={`message-${index}`} />
-                     </>
-                  );
-               return <MessageComponent message={item} key={`message-${index}`} />;
+                     ) : null}
+                     <MessageComponent message={item} key={`message-${index}`} />
+                  </>
+               );
             })}
          </div>
       </ScrollArea>

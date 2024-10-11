@@ -24,7 +24,7 @@ export default function MessageComponent({ message }: { message: Message }) {
    function Message() {
       return (
          <div
-            className={`flex flex-col gap-2 bg-general-dark/[0.1] ${isMessageMine() ? 'ml-auto bg-general-blue/[0.3]' : 'mr-auto bg-general-black/[0.2]'} ${messageToUpdate?.id === message.id ? 'animate-pulse' : ''} py-2 px-4 rounded-xl max-w-96`}
+            className={`flex flex-col gap-2 ${isMessageMine() ? 'ml-auto bg-general-blue/[0.2]' : 'mr-auto bg-general-dark/[0.1]'} ${messageToUpdate?.id === message.id ? 'animate-pulse' : ''} py-2 px-4 rounded-xl max-w-96`}
          >
             <div className={`flex ${isMessageMine() ? 'ml-auto' : 'mr-auto'} text-general-dark font-semibold text-sm`}>
                {`${user?.firstName} ${user?.lastName}`}
