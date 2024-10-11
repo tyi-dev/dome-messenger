@@ -3,6 +3,7 @@ import CurrentConversation from '@webapp/src/components/chat-components/CurrentC
 import MessageOperationsInput from '@webapp/src/components/chat-components/MessageOperationsInput';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 import CurrentConversationHeader from '@webapp/src/components/chat-components/CurrentConversationHeader.tsx';
+import EditingMessageBar from '@webapp/src/components/chat-components/EditingMessageBar.tsx';
 
 export default function ChatLayout() {
    const { currentConversation, userToCreateConversationWith } = useChatContext();
@@ -13,6 +14,7 @@ export default function ChatLayout() {
          <div className="w-full flex flex-col h-full">
             {currentConversation || userToCreateConversationWith ? <CurrentConversationHeader /> : null}
             <CurrentConversation />
+            <EditingMessageBar />
             {currentConversation || userToCreateConversationWith ? <MessageOperationsInput /> : null}
          </div>
       </div>

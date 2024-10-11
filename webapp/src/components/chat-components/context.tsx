@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, LegacyRef, useContext } from 'react';
 import { Conversation } from '@shared/types/conversation.ts';
 import { Nullable } from '@shared/types/nullable.ts';
 import { User } from '@shared/types/user.ts';
@@ -18,6 +18,7 @@ export type TChatContext = {
    setMessageToUpdate: (message: Nullable<Message>) => void;
    inputPayload: InputPayload;
    setInputPayload: (inputPayload: Partial<InputPayload>) => void;
+   inputRef: Nullable<LegacyRef<HTMLInputElement>>;
 };
 
 export const ChatContext = createContext<TChatContext>({
@@ -30,6 +31,7 @@ export const ChatContext = createContext<TChatContext>({
       lastName: '',
       email: '',
       phoneNumber: '',
+      lastSeen: '',
    },
    userToCreateConversationWith: null,
    messageToUpdate: null,
@@ -39,6 +41,7 @@ export const ChatContext = createContext<TChatContext>({
       text: null,
    },
    setInputPayload: () => {},
+   inputRef: null,
 });
 
 export const useChatContext = (): TChatContext => useContext(ChatContext);

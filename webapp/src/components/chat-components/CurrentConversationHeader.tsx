@@ -26,7 +26,12 @@ export default function CurrentConversationHeader() {
       case ConversationType.P2P:
          return (
             <div className={containerClassName}>
-               <p className={titleClassName}>{`${participants[0].user.firstName} ${participants[0].user.lastName}`}</p>
+               <div className="flex flex-row gap-2 items-baseline">
+                  <p
+                     className={titleClassName}
+                  >{`${participants[0].user.firstName} ${participants[0].user.lastName}`}</p>
+                  <p className="text-general-dark/[0.6] text-sm">{participants[0].user.userName}</p>
+               </div>
                <p
                   className={secondaryTitleClassName}
                >{`last seen ${formatDistance(participants[0].user.lastSeen, new Date())} ago`}</p>

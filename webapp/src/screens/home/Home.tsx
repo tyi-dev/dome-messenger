@@ -3,7 +3,7 @@ import HomeSidebar from '@webapp/src/components/home-sidebar/HomeSidebar';
 import Spinner from '@webapp/src/components/Spinner';
 import ChatLayout from '@webapp/src/components/ChatLayout';
 import { User } from '@shared/types/user.ts';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Conversation } from '@shared/types/conversation';
 import { ChatContext, InputPayload } from '@webapp/src/components/chat-components/context.tsx';
 import { Nullable } from '@shared/types/nullable.ts';
@@ -11,6 +11,8 @@ import { Message } from '@shared/types/message.ts';
 export default function HomePage() {
    const { data: currentUser } = useCurrentUser();
    if (!currentUser) return <Spinner />;
+
+   const inputRef = useRef<HTMLInputElement>(null);
 
    const [currentConversation, setCurrentConversation] = useState<Nullable<Conversation>>(null);
    const [userToCreateConversationWith, setUserToCreateConversationWith] =
@@ -31,6 +33,10 @@ export default function HomePage() {
       setInputPayloadFunc({
          text: message?.content,
       });
+      console.log(inputRef.current);
+      if (inputRef.current) {
+         inputRef.current.click();
+      }
    };
    return (
       <ChatContext.Provider
@@ -44,6 +50,7 @@ export default function HomePage() {
             setUserToCreateConversation: setUserToCreateConversationFunc,
             inputPayload: inputPayload,
             setInputPayload: setInputPayloadFunc,
+            inputRef: inputRef,
          }}
       >
          <div className="flex flex-row w-full h-full">

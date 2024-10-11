@@ -4,6 +4,7 @@ import { useChatContext } from '@webapp/src/components/chat-components/context.t
 import { ConversationType } from '@shared/types/conversation.ts';
 import { useConversationParticipants } from '@webapp/src/api/conversation-participant/hooks.ts';
 import Spinner from '@webapp/src/components/Spinner.tsx';
+import ChatAvatar from '@webapp/src/components/UserAvatar.tsx';
 
 export default function ConversationTile({ conversation }: { conversation: Conversation }) {
    const { setCurrentConversation, setMessageToUpdate, setUserToCreateConversation, currentConversation } =
@@ -27,13 +28,14 @@ export default function ConversationTile({ conversation }: { conversation: Conve
    };
    return (
       <Button
-         className={`flex w-full flex-col rounded-none ${conversation.id === currentConversation?.id ? 'bg-general-blue hover:border-transparent' : ''}`}
+         className={`flex w-full flex-row rounded-none ${conversation.id === currentConversation?.id ? 'bg-general-blue hover:border-transparent' : ''}`}
          onClick={() => {
             setCurrentConversation(conversation);
             setMessageToUpdate(null);
             setUserToCreateConversation(null);
          }}
       >
+         {/*<ChatAvatar />*/}
          <p className="w-full truncate flex items-start">{returnConversationTitle()}</p>
       </Button>
    );

@@ -13,8 +13,6 @@ export class UserApiController {
    @UseGuards(JwtGuarded)
    @Get('me')
    async getMyProfile(@CurrentUser() user: JwtAuthPayload) {
-      const now = new Date();
-      const nowISO = now.toISOString();
       const updateLastSeen: UpdateUserRequest = {
          email: user.email,
          firstName: undefined,
@@ -22,7 +20,7 @@ export class UserApiController {
          lastName: undefined,
          phoneNumber: user.phoneNumber,
          userName: user.userName,
-         lastSeen: nowISO,
+         lastSeen: new Date().toISOString(),
       };
       await this.userApiService.updateUser(user.id, updateLastSeen);
       return this.userApiService.getUser(user);

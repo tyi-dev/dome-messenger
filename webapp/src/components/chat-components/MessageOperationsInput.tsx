@@ -18,13 +18,16 @@ export default function MessageOperationsInput() {
       setMessageToUpdate,
       inputPayload: inputValue,
       setInputPayload: setInputValue,
+      inputRef,
    } = useChatContext();
    const { trigger: sendMessage } = useCreateMessage();
    const { trigger: createConversation } = useCreateConversation();
    const { trigger: updateMessage } = useUpdateMessage(messageToUpdate?.id);
 
    const handleEnterPress: KeyboardEventHandler<HTMLInputElement> = (event) => {
+      console.log(event);
       if (event.key === 'Enter') onMessageSend();
+      if (event.key === 'Escape') setMessageToUpdate(null);
    };
 
    const clearInputValues = () => {
@@ -84,11 +87,13 @@ export default function MessageOperationsInput() {
             placeholder="Write a message..."
             className="w-full py-5 text-general-dark rounded-none focus-visible:ring-0 border-none"
             value={inputValue.text ? inputValue.text : ''}
+            ref={inputRef}
             onChange={(e) =>
                setInputValue({
                   text: e.target.value,
                })
             }
+            onClick={(e) => console.log(e)}
             onKeyDown={handleEnterPress}
          />
          <div
