@@ -4,7 +4,7 @@ import { useChatContext } from '@webapp/src/components/chat-components/context.t
 import { ConversationType } from '@shared/types/conversation.ts';
 import { useConversationParticipants } from '@webapp/src/api/conversation-participant/hooks.ts';
 import Spinner from '@webapp/src/components/Spinner.tsx';
-import ChatAvatar from '@webapp/src/components/UserAvatar.tsx';
+/*import ChatAvatar from '@webapp/src/components/UserAvatar.tsx';*/
 
 export default function ConversationTile({ conversation }: { conversation: Conversation }) {
    const { setCurrentConversation, setMessageToUpdate, setUserToCreateConversation, currentConversation } =
@@ -36,7 +36,7 @@ export default function ConversationTile({ conversation }: { conversation: Conve
          }}
       >
          {/*<ChatAvatar />*/}
-         <p className="w-full truncate flex items-start">{returnConversationTitle()}</p>
+         <div className="w-full truncate flex items-start">{returnConversationTitle()}</div>
       </Button>
    );
 }

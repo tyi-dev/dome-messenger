@@ -3,6 +3,8 @@ import Spinner from '@webapp/src/components/Spinner.tsx';
 import MessageComponent from '@webapp/src/components/chat-components/Message.tsx';
 import { ScrollArea } from '@webapp/src/components/ui/scroll-area';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { format } from 'date-fns';
+import DateSeparator from '@webapp/src/components/chat-components/DateSeparator.tsx';
 
 export default function CurrentConversation() {
    const { currentConversation, userToCreateConversationWith } = useChatContext();
@@ -19,9 +21,28 @@ export default function CurrentConversation() {
    if (messages.length === 0) return <p className={containerClassName}>No messages yet</p>;
 
    return (
-      <ScrollArea className="flex flex-col h-full w-full pl-7 pr-12 pb-4 ">
+      <ScrollArea className="flex flex-col h-full w-full pl-7 pr-12 pb-4 mt-1">
          <div className="flex flex-col justify-end gap-4">
-            {messages?.map((item, index) => <MessageComponent message={item} key={index} />)}
+            {messages?.map((item, index) => {
+               if (index === 0)
+                  return (
+                     <>
+                        <DateSeparator date={item.createdAt} key={`separator-${index}`} />
+                        <MessageComponent message={item} key={`message-${index}`} />
+                     </>
+                  );
+               if (
+                  format(item.createdAt, 'dd/MM/yyyy') !==
+                  format(messages[index - 1] ? messages[index - 1]?.createdAt : new Date(), 'dd/MM/yyyy')
+               )
+                  return (
+                     <>
+                        <DateSeparator date={item.createdAt} key={`separator-${index}`} />
+                        <MessageComponent message={item} key={`message-${index}`} />
+                     </>
+                  );
+               return <MessageComponent message={item} key={`message-${index}`} />;
+            })}
          </div>
       </ScrollArea>
    );
