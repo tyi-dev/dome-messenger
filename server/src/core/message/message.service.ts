@@ -6,6 +6,8 @@ import { UpdateMessageRequest } from '@server/src/api/website/message/dto/update
 import { ConversationParticipantRepository } from '@server/src/core/repositories/conversation-participant.repository';
 import { ConversationRepository } from '@server/src/core/repositories/conversation.repository';
 import { UserService } from '@server/src/core/user/user.service';
+import { ConversationType } from '@shared/types/conversation';
+import { ParticipantRole } from '@prisma/client';
 
 @Injectable()
 export class MessageService {
@@ -19,6 +21,13 @@ export class MessageService {
 
    public async createMessage(senderId: number, data: CreateMessageRequest) {
       const userInConversation = await this.verifyIfUserIsInConversation(senderId, data.conversationId);
+      const currentConversation = await this.conversationRepository.getById(data.conversationId);
+      if (
+         currentConversation.conversationType === ConversationType.CHANNEL &&
+         userInConversation.role !== ParticipantRole.OWNER
+      )
+         throw new NotFoundException('Cant post messages to a channel you dont own');
+
       if (!userInConversation) return null;
 
       const message = await this.messageRepository.create({ senderId: senderId, ...data });

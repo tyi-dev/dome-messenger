@@ -8,4 +8,8 @@ export class ConversationParticipantApiService {
    public async getConversationParticipants(conversationId: number, currentUserId: number) {
       return this.conversationParticipantService.getConversationParticipants(conversationId, currentUserId);
    }
+
+   public async getConversationParticipant(conversationId: number, currentUserId: number) {
+      return this.conversationParticipantService.getConversationParticipant(conversationId, currentUserId);
+   }
 }

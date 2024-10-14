@@ -56,7 +56,7 @@ export default function NewConversationDialog() {
                   prevState.findIndex((item) => item.id === user.id),
                   1,
                );
-               return prevState;
+               return [...prevState];
             });
          } else {
             setUsersToCreateConversationWith((prevState) => [...prevState, user]);
@@ -68,7 +68,6 @@ export default function NewConversationDialog() {
       if (currentConversationType === ConversationType.P2P) return user.id === userToCreateConversationWith?.id;
       if (currentConversationType === ConversationType.CHANNEL || currentConversationType === ConversationType.GROUP) {
          const res = usersToCreateConversationWith.filter((item) => item.id === user.id);
-         console.log(usersToCreateConversationWith);
          return !!res.length;
       }
    };

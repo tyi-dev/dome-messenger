@@ -1,15 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { prismaExclude, PrismaService } from '../../providers/prisma/prisma.service';
-import { ConfigService } from '@nestjs/config';
-import { EnvironmentVariables } from '@server/src/core/config/environment-variables';
+import { prismaExclude, PrismaService } from '@server/src/providers/prisma/prisma.service';
 
 @Injectable()
 export class ConversationParticipantRepository {
-   constructor(
-      private readonly prisma: PrismaService,
-      private readonly configService: ConfigService<EnvironmentVariables>,
-   ) {}
+   constructor(private readonly prisma: PrismaService) {}
 
    public async create(data: Prisma.ConversationParticipantUncheckedCreateInput) {
       return this.prisma.conversationParticipant.create({ data });
@@ -22,6 +17,17 @@ export class ConversationParticipantRepository {
    public async checkIfUserIsAPartOfConversation(userId: number, conversationId: number) {
       return this.prisma.conversationParticipant.findUnique({
          where: { userId_conversationId: { userId: userId, conversationId: conversationId } },
+      });
+   }
+
+   public async getConversationParticipant(conversationId: number, currentUserId: number) {
+      return this.prisma.conversationParticipant.findUnique({
+         where: {
+            userId_conversationId: {
+               userId: currentUserId,
+               conversationId: conversationId,
+            },
+         },
       });
    }
 

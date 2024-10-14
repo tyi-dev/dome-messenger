@@ -5,6 +5,7 @@ import { ScrollArea } from '@webapp/src/components/ui/scroll-area';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 import { format } from 'date-fns';
 import DateSeparator from '@webapp/src/components/chat-components/DateSeparator.tsx';
+import React from 'react';
 
 export default function CurrentConversation() {
    const { currentConversation, userToCreateConversationWith } = useChatContext();
@@ -25,14 +26,14 @@ export default function CurrentConversation() {
          <div className="flex flex-col justify-end gap-4">
             {messages?.map((item, index) => {
                return (
-                  <>
+                  <React.Fragment key={`conversationElement-${index}`}>
                      {format(item.createdAt, 'dd/MM/yyyy') !==
                         format(messages[index - 1] ? messages[index - 1]?.createdAt : new Date(), 'dd/MM/yyyy') ||
                      index === 0 ? (
-                        <DateSeparator date={item.createdAt} key={`separator-${index}`} />
+                        <DateSeparator date={item.createdAt} />
                      ) : null}
-                     <MessageComponent message={item} key={`message-${index}`} />
-                  </>
+                     <MessageComponent message={item} />
+                  </React.Fragment>
                );
             })}
          </div>
