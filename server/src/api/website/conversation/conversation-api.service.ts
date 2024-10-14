@@ -7,8 +7,8 @@ import { UpdateConversationRequest } from '@server/src/api/website/conversation/
 export class ConversationApiService {
    constructor(private readonly conversationService: ConversationService) {}
 
-   public async createConversation(data: CreateConversationRequest) {
-      return this.conversationService.createConversation(data);
+   public async createConversation(userCreatedById: number, data: CreateConversationRequest) {
+      return this.conversationService.createConversation(userCreatedById, data);
    }
 
    public async updateConversation(conversationId: number, data: UpdateConversationRequest) {

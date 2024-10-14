@@ -42,7 +42,7 @@ export class MessageService {
       const userInConversation = await this.verifyIfUserIsInConversation(senderId, currentMessage.conversationId);
       if (!userInConversation) return null;
 
-      return this.messageRepository.update(data.id, data);
+      return this.messageRepository.update(data.id, { ...data, editedAt: new Date().toISOString() });
    }
 
    public async deleteMessage(senderId: number, messageId: number) {

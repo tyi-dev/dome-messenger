@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from '@server/src/core/config/environment-variables';
 import { SignInRequest } from '@server/src/api/dto/sign-in.request';
+import { ConversationType } from '@shared/types/conversation';
 
 @Injectable()
 export class UserRepository {
@@ -47,8 +48,8 @@ export class UserRepository {
       });
    }
 
-   public async getUsersToCreateConversation(currentUserId: number) {
-      return this.prisma.user.findMany({
+   public async getUsersToCreateConversation(currentUserId: number, conversationType: ConversationType) {
+      const P2PRequest = {
          select: {
             id: true,
             userName: true,
@@ -69,7 +70,19 @@ export class UserRepository {
                },
             },
          },
-      });
+      };
+      const defaultRequest = {
+         select: {
+            id: true,
+            userName: true,
+         },
+         where: {
+            id: {
+               not: currentUserId,
+            },
+         },
+      };
+      return this.prisma.user.findMany(conversationType === ConversationType.P2P ? P2PRequest : defaultRequest);
    }
 
    private async hashPassword(password: string) {

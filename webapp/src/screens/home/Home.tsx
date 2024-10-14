@@ -2,7 +2,7 @@ import { useCurrentUser } from '@webapp/src/api/user/hooks.ts';
 import HomeSidebar from '@webapp/src/components/home-sidebar/HomeSidebar';
 import Spinner from '@webapp/src/components/Spinner';
 import ChatLayout from '@webapp/src/components/ChatLayout';
-import { User } from '@shared/types/user.ts';
+import { SearchUserRes } from '@shared/types/user.ts';
 import { useRef, useState } from 'react';
 import { Conversation } from '@shared/types/conversation';
 import { ChatContext, InputPayload } from '@webapp/src/components/chat-components/context.tsx';
@@ -15,8 +15,7 @@ export default function HomePage() {
    const inputRef = useRef<HTMLInputElement>(null);
 
    const [currentConversation, setCurrentConversation] = useState<Nullable<Conversation>>(null);
-   const [userToCreateConversationWith, setUserToCreateConversationWith] =
-      useState<Nullable<Pick<User, 'id' | 'userName'>>>(null);
+   const [userToCreateConversationWith, setUserToCreateConversationWith] = useState<Nullable<SearchUserRes>>(null);
    const [messageToUpdate, setMessageToUpdate] = useState<Nullable<Message>>(null);
    const [inputPayload, setInputPayload] = useState<InputPayload>({
       text: null,
@@ -25,7 +24,7 @@ export default function HomePage() {
    const setInputPayloadFunc = async (payload: Partial<InputPayload>): Promise<void> => {
       setInputPayload((prevState) => ({ ...prevState, ...payload }));
    };
-   const setUserToCreateConversationFunc = (user: Nullable<Pick<User, 'id' | 'userName'>>) => {
+   const setUserToCreateConversationFunc = (user: Nullable<SearchUserRes>) => {
       setUserToCreateConversationWith(user);
    };
    const setMessageToUpdateFunc = (message: Nullable<Message>) => {

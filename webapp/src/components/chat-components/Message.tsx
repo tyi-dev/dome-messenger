@@ -26,11 +26,12 @@ export default function MessageComponent({ message }: { message: Message }) {
          <div
             className={`flex flex-col gap-2 ${isMessageMine() ? 'ml-auto bg-general-blue/[0.2]' : 'mr-auto bg-general-dark/[0.1]'} ${messageToUpdate?.id === message.id ? 'animate-pulse' : ''} py-2 px-4 rounded-xl max-w-96`}
          >
-            <div className={`flex ${isMessageMine() ? 'ml-auto' : 'mr-auto'} text-general-dark font-semibold text-sm`}>
+            <div className={`flex w-full justify-start text-general-dark font-semibold text-sm`}>
                {`${user?.firstName} ${user?.lastName}`}
             </div>
             <div className={`flex text-general-dark/[0.9]`}>{message.content}</div>
             <div className={`w-full justify-end items-center flex flex-row gap-2`}>
+               {message.editedAt ? <p className="text-general-dark/[0.5] text-sm">edited</p> : null}
                <p className="flex justify-end text-general-dark/[0.5]">{format(message.createdAt, 'H:mm')}</p>
                {message.status.find((item) => item.readAt) ? (
                   <LuCheckCheck className="text-general-dark" />

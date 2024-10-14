@@ -7,4 +7,5 @@ export const colors: ThemeConfig['colors'] = {
    'general-light': 'hsla(var(--general-light))',
    'general-blue': 'hsla(var(--general-blue))',
    'general-orange': 'hsla(var(--general-orange))',
+   'general-green': 'hsla(var(--general-green))',
 };

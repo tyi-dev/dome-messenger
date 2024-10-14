@@ -34,26 +34,28 @@ model Conversation {
 }
 
 model ConversationParticipant {
-  id             Int      @id @default(autoincrement())
-  userId         Int      @map("user_id")
-  conversationId Int      @map("conversation_id")
-  joinedAt       DateTime @default(now()) @map("joined_at")
+  id             Int             @id @default(autoincrement())
+  userId         Int             @map("user_id")
+  conversationId Int             @map("conversation_id")
+  joinedAt       DateTime        @default(now()) @map("joined_at")
+  role           ParticipantRole @default(MEMBER)
 
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  conversation Conversation @relation(fields: [conversationId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@unique([userId, conversationId])
 }
 
 model Message {
-  id             Int      @id @default(autoincrement())
+  id             Int       @id @default(autoincrement())
   content        String
-  senderId       Int      @map("sender_id")
-  conversationId Int      @map("conversation_id")
-  createdAt      DateTime @default(now()) @map("created_at")
+  senderId       Int       @map("sender_id")
+  conversationId Int       @map("conversation_id")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  editedAt       DateTime? @map("edited_at")
 
   sender       User            @relation(fields: [senderId], references: [id])
-  conversation Conversation    @relation(fields: [conversationId], references: [id])
+  conversation Conversation    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   status       MessageStatus[]
 }
 
@@ -67,6 +69,12 @@ model MessageStatus {
   user    User    @relation(fields: [userId], references: [id])
 
   @@unique([messageId, userId])
+}
+
+enum ParticipantRole {
+  MEMBER
+  ADMIN
+  OWNER
 }
 
 enum ConversationType {

@@ -25,7 +25,6 @@ export default function MessageOperationsInput() {
    const { trigger: updateMessage } = useUpdateMessage(messageToUpdate?.id);
 
    const handleEnterPress: KeyboardEventHandler<HTMLInputElement> = (event) => {
-      console.log(event);
       if (event.key === 'Enter') onMessageSend();
       if (event.key === 'Escape') setMessageToUpdate(null);
    };

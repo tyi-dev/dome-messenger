@@ -3,6 +3,7 @@ import { UserRepository } from '@server/src/core/repositories/user.repository';
 import { JwtAuthPayload } from '@server/src/api/dto/jwt-auth-payload.request';
 import { UpdateUserRequest } from '@server/src/api/website/user/dto/update-user.request';
 import { JwtService } from '@nestjs/jwt';
+import { ConversationType } from '@shared/types/conversation';
 
 @Injectable()
 export class UserService {
@@ -33,7 +34,7 @@ export class UserService {
       return this.userRepository.updateUser(userId, data);
    }
 
-   public async getUsers(currentUserId: number) {
-      return this.userRepository.getUsersToCreateConversation(currentUserId);
+   public async getUsers(currentUserId: number, conversationType?: ConversationType) {
+      return this.userRepository.getUsersToCreateConversation(currentUserId, conversationType);
    }
 }

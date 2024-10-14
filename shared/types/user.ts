@@ -7,3 +7,5 @@ export type User = {
    email: string;
    phoneNumber: string;
 };
+
+export type SearchUserRes = Pick<User, 'id' | 'userName'>;

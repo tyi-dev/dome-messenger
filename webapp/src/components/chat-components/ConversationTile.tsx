@@ -5,6 +5,8 @@ import { ConversationType } from '@shared/types/conversation.ts';
 import { useConversationParticipants } from '@webapp/src/api/conversation-participant/hooks.ts';
 import Spinner from '@webapp/src/components/Spinner.tsx';
 /*import ChatAvatar from '@webapp/src/components/UserAvatar.tsx';*/
+import { LuUsers2 } from 'react-icons/lu';
+import { LuMegaphone } from 'react-icons/lu';
 
 export default function ConversationTile({ conversation }: { conversation: Conversation }) {
    const { setCurrentConversation, setMessageToUpdate, setUserToCreateConversation, currentConversation } =
@@ -19,9 +21,19 @@ export default function ConversationTile({ conversation }: { conversation: Conve
          case ConversationType.P2P:
             return `${participants[0].user.firstName} ${participants[0].user.lastName}`;
          case ConversationType.CHANNEL:
-            return conversation.title;
+            return (
+               <div className="flex flex-row">
+                  <LuMegaphone />
+                  {conversation.title}
+               </div>
+            );
          case ConversationType.GROUP:
-            return conversation.title;
+            return (
+               <div className="flex flex-row">
+                  <LuUsers2 />
+                  {conversation.title}
+               </div>
+            );
          default:
             return <Spinner />;
       }
