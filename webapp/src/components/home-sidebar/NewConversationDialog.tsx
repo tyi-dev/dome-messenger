@@ -30,7 +30,7 @@ export default function NewConversationDialog() {
       <Dialog open={isDialogOpen} onOpenChange={() => setDialogOpen(!isDialogOpen)}>
          <DialogTrigger asChild>
             <div>
-               <SideBarButton title={`Create conversation`} icon={<LuPlus className="text-general-light" />} />
+               <SideBarButton title={`Create conversation`} icon={<LuPlus className="text-general-dark" />} />
             </div>
          </DialogTrigger>
          <DialogContent className="sm:max-w-[425px]">

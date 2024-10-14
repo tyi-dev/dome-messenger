@@ -22,7 +22,7 @@ export default function HomePage() {
       text: null,
    });
 
-   const setInputPayloadFunc = (payload: Partial<InputPayload>) => {
+   const setInputPayloadFunc = async (payload: Partial<InputPayload>): Promise<void> => {
       setInputPayload((prevState) => ({ ...prevState, ...payload }));
    };
    const setUserToCreateConversationFunc = (user: Nullable<Pick<User, 'id' | 'userName'>>) => {
@@ -32,11 +32,9 @@ export default function HomePage() {
       setMessageToUpdate(message);
       setInputPayloadFunc({
          text: message?.content,
+      }).then(() => {
+         if (inputRef.current) inputRef.current.focus();
       });
-      console.log(inputRef.current);
-      if (inputRef.current) {
-         inputRef.current.click();
-      }
    };
    return (
       <ChatContext.Provider

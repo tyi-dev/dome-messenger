@@ -7,8 +7,8 @@ export default function HomeSidebar() {
    const { changeTheme } = useTheme();
 
    return (
-      <div className="flex flex-col w-40">
-         <LogoImage className="mx-auto my-8 text-general-light" onClick={() => changeTheme()} />
+      <div className="flex flex-col w-40 bg-general-light border-r border-general-dark/[0.3]">
+         <LogoImage className="mx-auto my-8 text-general-dark" onClick={() => changeTheme()} />
          <div className="flex flex-col justify-between h-full w-full pb-24">
             <div className="flex flex-col">
                <NewConversationDialog />
