@@ -8,6 +8,7 @@ import { useCreateConversation } from '@webapp/src/api/conversation/hooks.ts';
 import { useUpdateMessage } from '@webapp/src/api/message/hooks.ts';
 import { mutate } from 'swr';
 import { API_CONVERSATION_PARTICIPANT_URL } from '@webapp/src/api/conversation-participant/actions.ts';
+import { ConversationType } from '@shared/types/conversation.ts';
 
 export default function MessageOperationsInput() {
    const {
@@ -39,6 +40,7 @@ export default function MessageOperationsInput() {
       if (inputValue.text === '' || !inputValue.text) return;
       if (userToCreateConversationWith) {
          createConversation({
+            conversationType: ConversationType.P2P,
             participants: [currentUser, userToCreateConversationWith],
             title: 'New Conversation',
          }).then((response) => {

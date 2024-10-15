@@ -1,5 +1,4 @@
 import { useSearchUsers } from '@webapp/src/api/user/hooks.ts';
-import { ScrollArea } from '@webapp/src/components/ui/scroll-area';
 import SideBarButton from './SideBarButton.tsx';
 import { LuPlus } from 'react-icons/lu';
 import { Button } from '@webapp/src/components/ui/button';
@@ -12,20 +11,22 @@ import {
    DialogTrigger,
 } from '@webapp/src/components/ui/dialog';
 import { useState } from 'react';
-import Spinner from '@webapp/src/components/Spinner.tsx';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 import { SearchUserRes } from '@shared/types/user.ts';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@webapp/src/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@webapp/src/components/ui/tabs';
 import { ConversationType } from '@shared/types/conversation.ts';
-import { LuCheckCircle2 } from 'react-icons/lu';
 import { useCreateConversation } from '@webapp/src/api/conversation/hooks.ts';
+import UsersList from '@webapp/src/components/UsersSelectList.tsx';
+import { Input } from '@webapp/src/components/ui/input.tsx';
 
 export default function NewConversationDialog() {
    const [currentConversationType, setCurrentConversationType] = useState<ConversationType>(ConversationType.P2P);
    const { data: users } = useSearchUsers(currentConversationType);
    const [isDialogOpen, setDialogOpen] = useState(false);
-   const [userToCreateConversationWith, setUserToCreateConversationWith] = useState<SearchUserRes>();
+   const [userToCreateConversationWith, setUserToCreateConversationWith] = useState<SearchUserRes | null>(null);
    const [usersToCreateConversationWith, setUsersToCreateConversationWith] = useState<SearchUserRes[]>([]);
+   const [nameInputValue, setNameInputValue] = useState<string>('');
+   const [renderErrors, setRenderErrors] = useState<boolean>(false);
    const { setUserToCreateConversation, currentUser } = useChatContext();
    const { trigger: createConversation } = useCreateConversation();
 
@@ -33,71 +34,21 @@ export default function NewConversationDialog() {
       if (currentConversationType === ConversationType.P2P && userToCreateConversationWith) {
          setUserToCreateConversation(userToCreateConversationWith);
          setDialogOpen(false);
-      }
+      } else setRenderErrors(true);
       if (
          currentConversationType === ConversationType.GROUP ||
-         (currentConversationType === ConversationType.CHANNEL && usersToCreateConversationWith.length > 0)
+         (currentConversationType === ConversationType.CHANNEL &&
+            usersToCreateConversationWith.length > 0 &&
+            nameInputValue.length > 0)
       ) {
          createConversation({
-            title: `new ${currentConversationType}`,
+            title: nameInputValue,
             participants: [...usersToCreateConversationWith, currentUser],
             conversationType: currentConversationType,
          });
          setDialogOpen(false);
-      }
+      } else setRenderErrors(true);
    };
-
-   const onUserSelect = (user: SearchUserRes) => {
-      if (currentConversationType === ConversationType.P2P) setUserToCreateConversationWith(user);
-      if (currentConversationType === ConversationType.CHANNEL || currentConversationType === ConversationType.GROUP) {
-         if (isUserSelected(user)) {
-            setUsersToCreateConversationWith((prevState) => {
-               prevState.splice(
-                  prevState.findIndex((item) => item.id === user.id),
-                  1,
-               );
-               return [...prevState];
-            });
-         } else {
-            setUsersToCreateConversationWith((prevState) => [...prevState, user]);
-         }
-      }
-   };
-
-   const isUserSelected = (user: SearchUserRes) => {
-      if (currentConversationType === ConversationType.P2P) return user.id === userToCreateConversationWith?.id;
-      if (currentConversationType === ConversationType.CHANNEL || currentConversationType === ConversationType.GROUP) {
-         const res = usersToCreateConversationWith.filter((item) => item.id === user.id);
-         return !!res.length;
-      }
-   };
-
-   function UsersList({ users }: { users?: SearchUserRes[] }) {
-      return (
-         <div className="text-general-dark mt-4">
-            <ScrollArea className="h-72 w-full rounded-md border p-1">
-               {users ? (
-                  users.length !== 0 ? (
-                     users.map((item, index) => (
-                        <Button
-                           key={index}
-                           onClick={() => onUserSelect(item)}
-                           className={`w-full flex items-center justify-center gap-3`}
-                        >
-                           {item?.userName}
-                           {isUserSelected(item) ? <LuCheckCircle2 className="text-general-green" /> : null}
-                        </Button>
-                     ))
-                  ) : (
-                     <p className="w-full m-2 flex justify-center items-center">You sure have got a lot of friends!</p>
-                  )
-               ) : (
-                  <Spinner spinnerClassName="border-general-dark" containerClassName="pt-10" />
-               )}
-            </ScrollArea>
-         </div>
-      );
-   }
 
    return (
       <Dialog open={isDialogOpen} onOpenChange={() => setDialogOpen(!isDialogOpen)}>
@@ -114,6 +65,8 @@ export default function NewConversationDialog() {
                defaultValue={ConversationType.P2P}
                onValueChange={(value) => {
                   setCurrentConversationType(value as ConversationType);
+                  setUsersToCreateConversationWith([]);
+                  setUserToCreateConversation(null);
                }}
             >
                <TabsList className="w-full">
@@ -127,16 +80,29 @@ export default function NewConversationDialog() {
                      Channel
                   </TabsTrigger>
                </TabsList>
-               <TabsContent value={ConversationType.P2P}>
-                  <UsersList users={users} />
-               </TabsContent>
-               <TabsContent value={ConversationType.GROUP}>
-                  <UsersList users={users} />
-               </TabsContent>
-               <TabsContent value={ConversationType.CHANNEL}>
-                  <UsersList users={users} />
-               </TabsContent>
             </Tabs>
+            {currentConversationType === ConversationType.GROUP ||
+            currentConversationType === ConversationType.CHANNEL ? (
+               <div className="flex flex-col gap-3">
+                  <p className="text-sm font-semibold ml-2 text-general-dark">
+                     Provide {currentConversationType.toLowerCase()} name
+                  </p>
+                  <Input
+                     value={nameInputValue}
+                     onChange={(e) => setNameInputValue(e.target.value)}
+                     className="text-general-dark"
+                  />
+                  {renderErrors ? <p className="text-sm font-semibold ml-2 text-red-600">Name is required</p> : null}
+               </div>
+            ) : null}
+            <UsersList
+               users={users}
+               currentConversationType={currentConversationType}
+               userToCreateConversationWith={userToCreateConversationWith}
+               usersToCreateConversationWith={usersToCreateConversationWith}
+               setUserToCreateConversationWith={setUserToCreateConversationWith}
+               setUsersToCreateConversationWith={setUsersToCreateConversationWith}
+            />
             <DialogFooter>
                <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
                <Button onClick={onConfirm} className="bg-general-dark text-general-light">
