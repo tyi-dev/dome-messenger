@@ -13,7 +13,10 @@ const UserSelectSchema = z.object({
 
 export const ConversationOperationsSchema = (conversationType: ConversationType) =>
    z.object({
-      title: conversationType === ConversationType.P2P ? z.string().optional() : z.string().min(1, 'Cant be empty'),
+      title:
+         conversationType === ConversationType.P2P
+            ? z.string().optional()
+            : z.string().min(1, 'Provide name for conversation'),
       participants: z.array(UserSelectSchema),
    });
 
