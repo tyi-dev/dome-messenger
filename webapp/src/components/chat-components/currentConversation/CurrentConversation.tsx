@@ -1,10 +1,10 @@
 import { useConversationMessages } from '@webapp/src/api/message/hooks.ts';
 import Spinner from '@webapp/src/components/Spinner.tsx';
-import MessageComponent from '@webapp/src/components/chat-components/Message.tsx';
+import MessageComponent from '@webapp/src/components/chat-components/currentConversation/Message.tsx';
 import { ScrollArea } from '@webapp/src/components/ui/scroll-area';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 import { format } from 'date-fns';
-import DateSeparator from '@webapp/src/components/chat-components/DateSeparator.tsx';
+import DateSeparator from '@webapp/src/components/chat-components/currentConversation/DateSeparator.tsx';
 import React from 'react';
 
 export default function CurrentConversation() {

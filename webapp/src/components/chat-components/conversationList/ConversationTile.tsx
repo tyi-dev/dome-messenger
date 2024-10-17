@@ -1,5 +1,5 @@
 import { Conversation } from '@shared/types/conversation';
-import { Button } from '../ui/button.tsx';
+import { Button } from '@webapp/src/components/ui/button';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 import { ConversationType } from '@shared/types/conversation.ts';
 import { useConversationParticipants } from '@webapp/src/api/conversation-participant/hooks.ts';
