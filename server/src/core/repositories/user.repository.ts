@@ -53,6 +53,8 @@ export class UserRepository {
          select: {
             id: true,
             userName: true,
+            firstName: true,
+            lastName: true,
          },
          where: {
             id: {
@@ -61,6 +63,7 @@ export class UserRepository {
             conversations: {
                none: {
                   conversation: {
+                     conversationType: ConversationType.P2P,
                      participants: {
                         some: {
                            userId: currentUserId,
@@ -75,6 +78,8 @@ export class UserRepository {
          select: {
             id: true,
             userName: true,
+            firstName: true,
+            lastName: true,
          },
          where: {
             id: {
