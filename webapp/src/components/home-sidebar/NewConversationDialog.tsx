@@ -1,21 +1,22 @@
 import { useSearchUsers } from '@webapp/src/api/user/hooks.ts';
 import SideBarButton from './SideBarButton.tsx';
 import { LuPlus } from 'react-icons/lu';
-import { Button } from '@webapp/src/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@webapp/src/components/ui/dialog';
 import { useState } from 'react';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 import { Tabs, TabsList, TabsTrigger } from '@webapp/src/components/ui/tabs';
-import { ConversationType } from '@shared/types/conversation.ts';
+import { Conversation, ConversationType } from '@shared/types/conversation.ts';
 import { useCreateConversation } from '@webapp/src/api/conversation/hooks.ts';
 import UsersList from '@webapp/src/components/UsersSelectList.tsx';
 import { ConversationSchemaResultType } from '@shared/src/schemas/conversationOperations.ts';
+import { mutate } from 'swr';
+import { API_CONVERSATION_URL } from '@webapp/src/api/conversation/actions.ts';
 
 export default function NewConversationDialog() {
    const [currentConversationType, setCurrentConversationType] = useState<ConversationType>(ConversationType.P2P);
    const { data: users } = useSearchUsers(currentConversationType);
    const [isDialogOpen, setDialogOpen] = useState(false);
-   const { setUserToCreateConversation, currentUser } = useChatContext();
+   const { setUserToCreateConversation, currentUser, setCurrentConversation } = useChatContext();
    const { trigger: createConversation } = useCreateConversation();
 
    const onSubmit = (data: ConversationSchemaResultType) => {
@@ -28,6 +29,9 @@ export default function NewConversationDialog() {
             title: data.title ? data.title : '',
             participants: [...data.participants, currentUser],
             conversationType: currentConversationType,
+         }).then((conversation: Conversation) => {
+            mutate(API_CONVERSATION_URL.MY_CONVERSATIONS);
+            setCurrentConversation(conversation);
          });
          setDialogOpen(false);
       }

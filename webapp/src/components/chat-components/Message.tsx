@@ -32,7 +32,12 @@ export default function MessageComponent({ message }: { message: Message }) {
                </div>
             ) : null}
 
-            <div className={`flex text-general-dark/[0.9]`}>{message.content}</div>
+            <p
+               className="flex text-general-dark/[0.9] text-balance items-start justify-start text-left"
+               style={{ wordBreak: 'break-word' }}
+            >
+               {message.content}
+            </p>
             <div className={`w-full justify-end items-center flex flex-row gap-2`}>
                {message.editedAt ? <p className="text-general-dark/[0.5] text-sm">edited</p> : null}
                <p className="flex justify-end text-general-dark/[0.5]">{format(message.createdAt, 'H:mm')}</p>

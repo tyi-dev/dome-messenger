@@ -93,6 +93,7 @@ export default function UsersList({
                   )}
                />
             ) : null}
+            <p className="text-general-dark font-semibold">Select participants</p>
             <ScrollArea className="h-72 w-full rounded-md border p-1">
                {users ? (
                   users.length !== 0 ? (
