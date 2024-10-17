@@ -1,5 +1,5 @@
 import { useSearchUsers } from '@webapp/src/api/user/hooks.ts';
-import SideBarButton from './SideBarButton.tsx';
+import SideBarButton from '@webapp/src/components/home-sidebar/SideBarButton.tsx';
 import { LuPlus } from 'react-icons/lu';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@webapp/src/components/ui/dialog';
 import { useState } from 'react';
@@ -7,10 +7,10 @@ import { useChatContext } from '@webapp/src/components/chat-components/context.t
 import { Tabs, TabsList, TabsTrigger } from '@webapp/src/components/ui/tabs';
 import { Conversation, ConversationType } from '@shared/types/conversation.ts';
 import { useCreateConversation } from '@webapp/src/api/conversation/hooks.ts';
-import UsersList from '@webapp/src/components/UsersSelectList.tsx';
 import { ConversationSchemaResultType } from '@shared/src/schemas/conversationOperations.ts';
 import { mutate } from 'swr';
 import { API_CONVERSATION_URL } from '@webapp/src/api/conversation/actions.ts';
+import ParticipantsSelectList from '@webapp/src/components/participantsLists/ParticipantsSelectList.tsx';
 
 export default function NewConversationDialog() {
    const [currentConversationType, setCurrentConversationType] = useState<ConversationType>(ConversationType.P2P);
@@ -19,10 +19,15 @@ export default function NewConversationDialog() {
    const { setUserToCreateConversation, currentUser, setCurrentConversation } = useChatContext();
    const { trigger: createConversation } = useCreateConversation();
 
+   const onClose = () => {
+      setCurrentConversationType(ConversationType.P2P);
+      setDialogOpen(false);
+   };
+
    const onSubmit = (data: ConversationSchemaResultType) => {
       if (currentConversationType === ConversationType.P2P) {
          setUserToCreateConversation(data.participants[0]);
-         setDialogOpen(false);
+         onClose();
       }
       if (currentConversationType === ConversationType.GROUP || currentConversationType === ConversationType.CHANNEL) {
          createConversation({
@@ -33,12 +38,18 @@ export default function NewConversationDialog() {
             mutate(API_CONVERSATION_URL.MY_CONVERSATIONS);
             setCurrentConversation(conversation);
          });
-         setDialogOpen(false);
+         onClose();
       }
    };
 
    return (
-      <Dialog open={isDialogOpen} onOpenChange={() => setDialogOpen(!isDialogOpen)}>
+      <Dialog
+         open={isDialogOpen}
+         onOpenChange={(open) => {
+            if (!open) setCurrentConversationType(ConversationType.P2P);
+            setDialogOpen(!isDialogOpen);
+         }}
+      >
          <DialogTrigger asChild>
             <div>
                <SideBarButton title={`Create conversation`} icon={<LuPlus className="text-general-dark" />} />
@@ -66,11 +77,11 @@ export default function NewConversationDialog() {
                   </TabsTrigger>
                </TabsList>
             </Tabs>
-            <UsersList
+            <ParticipantsSelectList
                users={users}
                conversationType={currentConversationType}
                onSubmit={onSubmit}
-               onCancel={() => setDialogOpen(false)}
+               onCancel={() => onClose()}
             />
          </DialogContent>
       </Dialog>

@@ -94,7 +94,6 @@ export default function MessageOperationsInput() {
                   text: e.target.value,
                })
             }
-            onClick={(e) => console.log(e)}
             onKeyDown={handleEnterPress}
          />
          <div

@@ -4,8 +4,8 @@ import { ConversationType } from '../../types/conversation';
 const UserSelectSchema = z.object({
    id: z.number(),
    userName: z.string(),
-   firstName: z.string().optional(),
-   lastName: z.string().optional(),
+   firstName: z.string(),
+   lastName: z.string(),
    lastSeen: z.string().optional(),
    email: z.string().email().optional(),
    phoneNumber: z.string().optional(),

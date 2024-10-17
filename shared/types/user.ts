@@ -8,4 +8,4 @@ export type User = {
    phoneNumber: string;
 };
 
-export type SearchUserRes = Pick<User, 'id' | 'userName'>;
+export type SearchUserRes = Pick<User, 'id' | 'userName' | 'firstName' | 'lastName'>;

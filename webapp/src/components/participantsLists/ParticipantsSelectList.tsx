@@ -14,8 +14,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Spinner from '@webapp/src/components/Spinner.tsx';
 import { Button } from '@webapp/src/components/ui/button';
 import { useState } from 'react';
+import UserTile from '@webapp/src/components/participantsLists/UserTile.tsx';
 
-export default function UsersList({
+export default function ParticipantsSelectList({
    users,
    conversationType,
    onSubmit,
@@ -104,7 +105,7 @@ export default function UsersList({
                            onClick={() => onUserSelect(item)}
                            className={`w-full flex items-center justify-center gap-3 ${isUserSelected(item) ? 'hover:border-red-600' : 'hover:border-general-green'}`}
                         >
-                           {item?.userName}
+                           <UserTile user={item} />
                            {isUserSelected(item) ? <LuCheckCircle2 className="text-general-green" /> : null}
                         </Button>
                      ))

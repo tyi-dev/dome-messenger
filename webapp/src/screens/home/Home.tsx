@@ -13,6 +13,16 @@ export default function HomePage() {
    if (!currentUser) return <Spinner />;
 
    const inputRef = useRef<HTMLInputElement>(null);
+   const conversationBottomRef = useRef<HTMLDivElement>(null);
+
+   const scrollToBottom = () => {
+      if (conversationBottomRef?.current) {
+         conversationBottomRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'end',
+         });
+      }
+   };
 
    const [currentConversation, setCurrentConversation] = useState<Nullable<Conversation>>(null);
    const [userToCreateConversationWith, setUserToCreateConversationWith] = useState<Nullable<SearchUserRes>>(null);
@@ -48,6 +58,8 @@ export default function HomePage() {
             inputPayload: inputPayload,
             setInputPayload: setInputPayloadFunc,
             inputRef: inputRef,
+            conversationBottomRef: conversationBottomRef,
+            scrollToBottom: scrollToBottom,
          }}
       >
          <div className="flex flex-row w-full h-full">

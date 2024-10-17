@@ -1,7 +1,7 @@
-import { createContext, LegacyRef, useContext } from 'react';
+import { createContext, LegacyRef, Ref, useContext } from 'react';
 import { Conversation } from '@shared/types/conversation.ts';
 import { Nullable } from '@shared/types/nullable.ts';
-import { User } from '@shared/types/user.ts';
+import { SearchUserRes, User } from '@shared/types/user.ts';
 import { Message } from '@shared/types/message.ts';
 
 export type InputPayload = {
@@ -12,13 +12,15 @@ export type TChatContext = {
    currentConversation: Nullable<Conversation>;
    setCurrentConversation: (conversation: Nullable<Conversation>) => void;
    currentUser: User;
-   userToCreateConversationWith: Nullable<Pick<User, 'id' | 'userName'>>;
+   userToCreateConversationWith: Nullable<SearchUserRes>;
    messageToUpdate: Nullable<Message>;
-   setUserToCreateConversation: (user: Nullable<Pick<User, 'id' | 'userName'>>) => void;
+   setUserToCreateConversation: (user: Nullable<SearchUserRes>) => void;
    setMessageToUpdate: (message: Nullable<Message>) => void;
    inputPayload: InputPayload;
    setInputPayload: (inputPayload: Partial<InputPayload>) => void;
    inputRef: Nullable<LegacyRef<HTMLInputElement>>;
+   conversationBottomRef: Ref<HTMLDivElement>;
+   scrollToBottom: () => void;
 };
 
 export const ChatContext = createContext<TChatContext>({
@@ -42,6 +44,8 @@ export const ChatContext = createContext<TChatContext>({
    },
    setInputPayload: () => {},
    inputRef: null,
+   conversationBottomRef: null,
+   scrollToBottom: () => {},
 });
 
 export const useChatContext = (): TChatContext => useContext(ChatContext);
