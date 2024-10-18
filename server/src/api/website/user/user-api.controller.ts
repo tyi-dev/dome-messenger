@@ -6,6 +6,7 @@ import { JwtAuthPayload } from '@server/src/api/dto/jwt-auth-payload.request';
 import { JwtGuarded } from '@server/src/decorators/jwt-guard.decorator';
 import { UpdateUserRequest } from '@server/src/api/website/user/dto/update-user.request';
 import { ConversationType } from '@shared/types/conversation';
+import { UpdateLastSeenRequest } from '@server/src/api/website/user/dto/update-last-seen.request';
 
 @WebsiteController('users')
 export class UserApiController {
@@ -14,16 +15,6 @@ export class UserApiController {
    @UseGuards(JwtGuarded)
    @Get('me')
    async getMyProfile(@CurrentUser() user: JwtAuthPayload) {
-      const updateLastSeen: UpdateUserRequest = {
-         email: user.email,
-         firstName: undefined,
-         id: user.id,
-         lastName: undefined,
-         phoneNumber: user.phoneNumber,
-         userName: user.userName,
-         lastSeen: new Date().toISOString(),
-      };
-      await this.userApiService.updateUser(user.id, updateLastSeen);
       return this.userApiService.getUser(user);
    }
 
@@ -43,5 +34,11 @@ export class UserApiController {
    @Put('update-profile')
    async updateUser(@CurrentUser() user: JwtAuthPayload, @Body() data: UpdateUserRequest) {
       return this.userApiService.updateUser(user.id, data);
+   }
+
+   @UseGuards(JwtGuarded)
+   @Put('update-last-seen')
+   async updateLastSeen(@CurrentUser() user: JwtAuthPayload, @Body() data: UpdateLastSeenRequest) {
+      return this.userApiService.updateLastSeen(user.id, data);
    }
 }

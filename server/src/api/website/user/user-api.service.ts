@@ -3,6 +3,7 @@ import { UserService } from '@server/src/core/user/user.service';
 import { JwtAuthPayload } from '@server/src/api/dto/jwt-auth-payload.request';
 import { UpdateUserRequest } from '@server/src/api/website/user/dto/update-user.request';
 import { ConversationType } from '@shared/types/conversation';
+import { UpdateLastSeenRequest } from '@server/src/api/website/user/dto/update-last-seen.request';
 
 @Injectable()
 export class UserApiService {
@@ -14,6 +15,10 @@ export class UserApiService {
 
    public async getUserById(id: number) {
       return this.userService.getUserById(id);
+   }
+
+   public async updateLastSeen(userId: number, data: UpdateLastSeenRequest) {
+      return this.userService.updateLastSeen(userId, data);
    }
 
    public async updateUser(userId: number, data: UpdateUserRequest) {
