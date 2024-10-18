@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateUserRequest {
@@ -26,11 +25,15 @@ export class UpdateUserRequest {
    @IsString()
    @IsOptional()
    @ApiProperty()
+   lastSeen: string;
+
+   @IsString()
+   @IsOptional()
+   @ApiProperty()
    phoneNumber: string;
 
    @IsString()
    @IsOptional()
    @ApiProperty()
-   @Transform((e) => e.value.toLowerCase().trim())
    email: string;
 }

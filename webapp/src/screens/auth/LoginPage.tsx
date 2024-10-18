@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import LoginSchema from '@shared/src/schemas/login';
+import LoginSchema from '@shared/src/schemas/login.ts';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@webapp/src/components/ui/button';

@@ -17,4 +17,13 @@ export class ConversationParticipantApiController {
    ) {
       return this.conversationParticipantApiService.getConversationParticipants(conversationId, currentUser.id);
    }
+
+   @UseGuards(JwtGuarded)
+   @Get('get-participant/:conversationId')
+   async getConversationParticipant(
+      @Param('conversationId') conversationId: number,
+      @CurrentUser() currentUser: JwtAuthPayload,
+   ) {
+      return this.conversationParticipantApiService.getConversationParticipant(conversationId, currentUser.id);
+   }
 }

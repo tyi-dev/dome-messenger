@@ -1,5 +1,5 @@
 import API from '../api.ts';
-import { Conversation } from '@shared/types/conversation.ts';
+import { Conversation, ConversationType } from '@shared/types/conversation.ts';
 import { User } from '@shared/types/user.ts';
 
 export const BASE_URL_CONVERSATION = 'conversation';
@@ -24,6 +24,7 @@ type createConversationUserT = Required<Pick<User, 'id'>> & Partial<Omit<User, '
 type createConversationArgs = {
    participants: createConversationUserT[];
    title: string;
+   conversationType: ConversationType;
 };
 export async function createConversation(key: string, options: { arg: createConversationArgs }): Promise<Conversation> {
    const res = await API.post<createConversationArgs, Conversation>(key, options.arg);

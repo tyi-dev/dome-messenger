@@ -3,6 +3,9 @@ export type User = {
    userName: string;
    firstName: string;
    lastName: string;
+   lastSeen: string;
    email: string;
    phoneNumber: string;
 };
+
+export type SearchUserRes = Pick<User, 'id' | 'userName' | 'firstName' | 'lastName'>;

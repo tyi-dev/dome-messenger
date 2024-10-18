@@ -13,8 +13,8 @@ export class ConversationApiController {
 
    @UseGuards(JwtGuarded)
    @Post('create')
-   async create(@Body() data: CreateConversationRequest) {
-      return this.conversationApiService.createConversation(data);
+   async create(@Body() data: CreateConversationRequest, @CurrentUser() user: JwtAuthPayload) {
+      return this.conversationApiService.createConversation(user.id, data);
    }
 
    @UseGuards(JwtGuarded)

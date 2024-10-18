@@ -1,11 +1,11 @@
 import { useMyConversations } from '@webapp/src/api/conversation/hooks.ts';
-import ConversationTile from './ConversationTile.tsx';
+import ConversationTile from '@webapp/src/components/chat-components/conversationList/ConversationTile';
 import Spinner from '@webapp/src/components/Spinner.tsx';
 import { twMerge } from 'tailwind-merge';
 import { ScrollArea } from '@webapp/src/components/ui/scroll-area';
 
 export default function ConversationsList() {
-   const containerClassName = 'w-52 h-full border-r border-general-dark';
+   const containerClassName = 'w-72 h-full border-r border-general-dark/[0.2]';
    const { data: conversations } = useMyConversations();
    if (!conversations)
       return <Spinner spinnerClassName="border-general-dark" containerClassName={containerClassName} />;

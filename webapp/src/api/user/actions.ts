@@ -1,5 +1,5 @@
 import API from '../api.ts';
-import { User } from '@shared/types/user.ts';
+import { SearchUserRes, User } from '@shared/types/user.ts';
 
 export const BASE_URL_USER = 'users';
 
@@ -20,12 +20,12 @@ export async function updateProfile(key: string, options: { arg: Partial<User> }
    return res?.data || null;
 }
 
-export async function getUsers(): Promise<Pick<User, 'id' | 'userName'>[]> {
-   const res = await API.get<Pick<User, 'id' | 'userName'>[]>(API_USER_URL.ALL);
+export async function getUsers(key: string): Promise<SearchUserRes[]> {
+   const res = await API.get<SearchUserRes[]>(key);
    return res?.data || null;
 }
 
-export async function getUserById(key: string): Promise<Partial<User>> {
-   const res = await API.get<Partial<User>>(key);
+export async function getUserById(key: string): Promise<User> {
+   const res = await API.get<User>(key);
    return res?.data || null;
 }

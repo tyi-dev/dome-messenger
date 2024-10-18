@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '@server/src/core/user/user.service';
 import { JwtAuthPayload } from '@server/src/api/dto/jwt-auth-payload.request';
 import { UpdateUserRequest } from '@server/src/api/website/user/dto/update-user.request';
+import { ConversationType } from '@shared/types/conversation';
 
 @Injectable()
 export class UserApiService {
@@ -19,7 +20,7 @@ export class UserApiService {
       return this.userService.updateUser(userId, data);
    }
 
-   public async getUsers(currentUserId: number) {
-      return this.userService.getUsers(currentUserId);
+   public async getUsers(currentUserId: number, conversationType?: ConversationType) {
+      return this.userService.getUsers(currentUserId, conversationType);
    }
 }

@@ -104,6 +104,7 @@ button:focus-visible {
     --general-gray: 139, 100%, 84%;
     --general-blue: 228, 97%, 71%;
     --general-orange: 49, 100%, 50%;
+    --general-green: 122, 100%, 62%;
 
   }
   :root[data-theme='light'] {
@@ -113,6 +114,7 @@ button:focus-visible {
     --general-gray: 139, 100%, 84%;
     --general-blue: 228, 97%, 71%;
     --general-orange: 49, 100%, 50%;
+    --general-green: 122, 100%, 62%;
 
   }
   .dark {
