@@ -25,7 +25,7 @@ export async function getUsers(key: string): Promise<SearchUserRes[]> {
    return res?.data || null;
 }
 
-export async function getUserById(key: string): Promise<Partial<User>> {
-   const res = await API.get<Partial<User>>(key);
+export async function getUserById(key: string): Promise<User> {
+   const res = await API.get<User>(key);
    return res?.data || null;
 }
