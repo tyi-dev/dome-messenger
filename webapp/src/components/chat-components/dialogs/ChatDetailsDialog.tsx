@@ -7,6 +7,7 @@ import Spinner from '@webapp/src/components/Spinner.tsx';
 import { ConversationParticipant } from '@shared/types/conversation-participant.ts';
 import ParticipantsOverviewList from '@webapp/src/components/participantsLists/ParticipantsOverviewList.tsx';
 import { capitalize } from '@shared/src/utils/capitalize.ts';
+import UserAvatar from '@webapp/src/components/UserAvatar.tsx';
 
 export default function ChatDetailsDialog({
    conversation,
@@ -34,8 +35,8 @@ export default function ChatDetailsDialog({
                      </Button>
                   </DialogHeader>
                   <div className="w-full flex flex-col">
-                     <div className="w-full flex flex-row">
-                        {/*INSERT AVATAR*/}
+                     <div className="w-full flex flex-row items-center gap-4">
+                        <UserAvatar firstWord={conversation.title} className="h-12 w-12" />
                         <div className="w-full flex flex-col gap-2">
                            <p className="text-general-dark font-semibold">{`${conversation?.title}`}</p>
                            <p className="text-general-dark/[0.7]">{`${participants.length} members`}</p>

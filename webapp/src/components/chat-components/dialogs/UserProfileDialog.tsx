@@ -4,6 +4,7 @@ import { ReactNode, useState } from 'react';
 import returnLastSeen from '@shared/src/utils/lastSeen.ts';
 import { LuX } from 'react-icons/lu';
 import { Button } from '@webapp/src/components/ui/button.tsx';
+import UserAvatar from '@webapp/src/components/UserAvatar.tsx';
 
 export default function UserProfileDialog({ user, trigger }: { user: User; trigger: ReactNode }) {
    const [isDialogOpen, setDialogOpen] = useState(false);
@@ -21,8 +22,8 @@ export default function UserProfileDialog({ user, trigger }: { user: User; trigg
                </Button>
             </DialogHeader>
             <div className="w-full flex flex-col">
-               <div className="w-full flex flex-row">
-                  {/*INSERT AVATAR*/}
+               <div className="w-full flex flex-row items-center gap-3">
+                  <UserAvatar firstWord={user.firstName} secondWord={user.lastName} className="h-12 w-12" />
                   <div className="w-full flex flex-col gap-2">
                      <div className="w-full flex flex-row gap-3 items-center">
                         <p className="text-general-dark font-semibold">{`${user?.firstName} ${user?.lastName}`}</p>

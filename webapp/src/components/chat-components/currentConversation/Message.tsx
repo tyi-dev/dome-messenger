@@ -11,6 +11,7 @@ import { useDeleteMessage } from '@webapp/src/api/message/hooks.ts';
 import { format } from 'date-fns';
 import { LuCheck, LuCheckCheck } from 'react-icons/lu';
 import { ConversationType } from '@shared/types/conversation.ts';
+import UserProfileDialog from '@webapp/src/components/chat-components/dialogs/UserProfileDialog.tsx';
 
 export default function MessageComponent({ message }: { message: Message }) {
    const { currentUser, setMessageToUpdate, messageToUpdate, currentConversation } = useChatContext();
@@ -26,10 +27,15 @@ export default function MessageComponent({ message }: { message: Message }) {
          <div
             className={`flex flex-col gap-2 ${isMessageMine() ? 'ml-auto bg-general-blue/[0.2]' : 'mr-auto bg-general-dark/[0.1]'} ${messageToUpdate?.id === message.id ? 'animate-pulse' : ''} py-2 px-4 rounded-xl max-w-96`}
          >
-            {currentConversation?.conversationType !== ConversationType.P2P ? (
-               <div className={`flex w-full justify-start text-general-dark font-semibold text-sm`}>
-                  {`${user?.firstName} ${user?.lastName}`}
-               </div>
+            {currentConversation?.conversationType !== ConversationType.P2P && user ? (
+               <UserProfileDialog
+                  user={user}
+                  trigger={
+                     <div className={`flex w-full justify-start text-general-dark font-semibold text-sm`}>
+                        {`${user?.firstName} ${user?.lastName}`}
+                     </div>
+                  }
+               />
             ) : null}
 
             <p

@@ -1,10 +1,20 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@webapp/src/components/ui/avatar';
 
-export default function ChatIcon({ init1, init2, avatarURL }: { init1: string; init2?: string; avatarURL?: string }) {
+export default function UserAvatar({
+   firstWord,
+   secondWord,
+   avatarURL,
+   className,
+}: {
+   firstWord: string;
+   secondWord?: string;
+   avatarURL?: string;
+   className?: string;
+}) {
    return (
-      <Avatar>
+      <Avatar className={className}>
          {avatarURL ? <AvatarImage src={avatarURL} /> : null}
-         <AvatarFallback>{`${init1[0]}${init2 ? init2[0] : null}`}</AvatarFallback>
+         <AvatarFallback className="text-black bg-general-orange">{`${firstWord[0]}${secondWord ? secondWord[0] : ''}`}</AvatarFallback>
       </Avatar>
    );
 }
