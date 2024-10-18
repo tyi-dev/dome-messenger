@@ -8,10 +8,16 @@ export const API_USER_URL = {
    UPDATE: `${BASE_URL_USER}/update-profile`,
    ALL: `${BASE_URL_USER}/search`,
    BY_ID: `${BASE_URL_USER}`,
+   UPDATE_LAST_SEEN: `${BASE_URL_USER}/update-last-seen`,
 };
 
 export async function getCurrentUser(): Promise<User> {
    const res = await API.get<User>(API_USER_URL.ME);
+   return res?.data || null;
+}
+
+export async function updateLastSeen(key: string, lastSeen: Pick<User, 'lastSeen'>): Promise<User> {
+   const res = await API.put<Pick<User, 'lastSeen'>, User>(key, lastSeen);
    return res?.data || null;
 }
 

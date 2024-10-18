@@ -18,6 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import UserUpdateSchema from '@shared/src/schemas/updateProfile.ts';
 import { useUpdateUser } from '@webapp/src/api/user/hooks.ts';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { toast } from '@webapp/src/hooks/use-toast.ts';
 
 export function UserDialog() {
    const { currentUser: user } = useChatContext();
@@ -34,7 +35,18 @@ export function UserDialog() {
    const { trigger: triggerUpdateUser } = useUpdateUser();
    const [isDialogOpen, setDialogOpen] = useState(false);
    function onSubmit(values: z.infer<typeof UserUpdateSchema>) {
-      triggerUpdateUser(values);
+      triggerUpdateUser(values).then(() => {
+         if (
+            user.userName !== values.userName ||
+            user.phoneNumber !== values.phoneNumber ||
+            user.email !== values.email
+         ) {
+            toast({
+               variant: 'destructive',
+               title: 'You`ve just updated essential information, you might need to re-login',
+            });
+         }
+      });
       setDialogOpen(false);
    }
    return (

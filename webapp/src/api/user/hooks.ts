@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { API_USER_URL, getCurrentUser, getUserById, getUsers, updateProfile } from './actions.ts';
+import { API_USER_URL, getCurrentUser, getUserById, getUsers, updateLastSeen, updateProfile } from './actions.ts';
 import { User } from '@shared/types/user.ts';
 import Cookies from 'js-cookie';
 import useSWRMutation from 'swr/mutation';
@@ -16,6 +16,12 @@ export function useCurrentUser() {
 
 export function useUserById(id: number) {
    return useSWR(`${API_USER_URL.BY_ID}/${id}`, getUserById);
+}
+
+export function useUpdateLastSeen() {
+   return useSWR(`${API_USER_URL.UPDATE_LAST_SEEN}`, (key) =>
+      updateLastSeen(key, { lastSeen: new Date().toISOString() }),
+   );
 }
 
 export function useUpdateUser() {

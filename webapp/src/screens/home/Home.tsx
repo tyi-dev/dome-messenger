@@ -1,4 +1,4 @@
-import { useCurrentUser } from '@webapp/src/api/user/hooks.ts';
+import { useCurrentUser, useUpdateLastSeen } from '@webapp/src/api/user/hooks.ts';
 import HomeSidebar from '@webapp/src/components/home-sidebar/HomeSidebar';
 import Spinner from '@webapp/src/components/Spinner';
 import ChatLayout from '@webapp/src/components/ChatLayout';
@@ -11,6 +11,7 @@ import { Message } from '@shared/types/message.ts';
 export default function HomePage() {
    const { data: currentUser } = useCurrentUser();
    if (!currentUser) return <Spinner />;
+   useUpdateLastSeen();
 
    const inputRef = useRef<HTMLInputElement>(null);
    const conversationBottomRef = useRef<HTMLDivElement>(null);

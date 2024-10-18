@@ -4,6 +4,7 @@ import useSWRSubscription, { SWRSubscriptionOptions } from 'swr/subscription';
 import API from '../api.ts';
 import { Message } from '@shared/types/message.ts';
 import { WSNamespace } from '@shared/types/websockets.ts';
+import { API_USER_URL, updateLastSeen } from '@webapp/src/api/user/actions.ts';
 
 export function useConversationMessages(conversationId: number) {
    return useSWRSubscription(
@@ -18,6 +19,7 @@ export function useConversationMessages(conversationId: number) {
          API.socket.emit(WSNamespace.CONVERSATION_MESSAGES, { conversationId: conversationId });
 
          return () => {
+            updateLastSeen(API_USER_URL.UPDATE_LAST_SEEN, { lastSeen: new Date().toISOString() }).then();
             API.socket.off(WSNamespace.CONVERSATION_MESSAGES, handleUpdateMessages);
          };
       },

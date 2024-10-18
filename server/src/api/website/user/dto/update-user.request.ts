@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateUserRequest {
    @IsNumber()
@@ -22,7 +22,7 @@ export class UpdateUserRequest {
    @ApiProperty()
    lastName: string;
 
-   @IsString()
+   @IsDateString()
    @IsOptional()
    @ApiProperty()
    lastSeen: string;
