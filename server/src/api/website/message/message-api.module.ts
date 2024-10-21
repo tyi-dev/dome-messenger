@@ -10,5 +10,6 @@ import { MessageApiGateway } from '@server/src/api/website/message/message-api.g
    ],
    providers: [MessageApiService, MessageApiGateway],
    imports: [MessageModule],
+   exports: [MessageApiGateway],
 })
 export class MessageApiModule {}

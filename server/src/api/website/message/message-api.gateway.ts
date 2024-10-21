@@ -57,7 +57,7 @@ export class MessageApiGateway {
       return this.jwtService.verifyAsync<JwtAuthPayload>(token);
    }
 
-   private async emitConversationMessages(userId: number, conversationId: number) {
+   public async emitConversationMessages(userId: number, conversationId: number) {
       const conversationMessages = await this.messageApiService.getConversationMessages(userId, conversationId);
       this.server.to(`conversation-${conversationId}`).emit(WSNamespace.CONVERSATION_MESSAGES, conversationMessages);
    }
