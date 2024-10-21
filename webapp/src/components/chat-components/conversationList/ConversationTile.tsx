@@ -46,7 +46,7 @@ export default function ConversationTile({ conversation }: { conversation: Conve
    };
    return (
       <div
-         className={`flex w-full flex-row rounded-none text-general-dark hover:bg-general-green/[0.7] p-3 cursor-pointer transition-colors ${conversation.id === currentConversation?.id ? 'bg-general-green/[0.7] hover:border-transparent' : ''}`}
+         className={`flex w-full flex-row rounded-none text-general-dark hover:bg-general-gray/[0.5] p-3 cursor-pointer transition-colors ${conversation.id === currentConversation?.id ? 'bg-general-gray/[0.5] hover:border-transparent' : ''}`}
          onClick={() => {
             setCurrentConversation(conversation);
             setMessageToUpdate(null);
