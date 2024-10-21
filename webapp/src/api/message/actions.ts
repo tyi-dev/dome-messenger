@@ -1,6 +1,6 @@
 import API from '../api.ts';
 import { MessageCreatePayload, MessageUpdatePayload } from '@shared/types/message.ts';
-import { WSNamespace } from '../../../../shared/types/websockets.ts';
+import { WSNamespace } from '@shared/types/websockets.ts';
 
 export const BASE_URL_MESSAGE = 'message';
 

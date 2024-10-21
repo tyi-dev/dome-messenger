@@ -6,9 +6,9 @@ import { Message } from '@shared/types/message.ts';
 import { WSNamespace } from '@shared/types/websockets.ts';
 import { API_USER_URL, updateLastSeen } from '@webapp/src/api/user/actions.ts';
 
-export function useConversationMessages(conversationId: number) {
+export function useConversationMessages(conversationId?: number) {
    return useSWRSubscription(
-      `${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}`,
+      conversationId ? `${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}` : null,
       (_key, { next }: SWRSubscriptionOptions<Message[], Error>) => {
          const handleUpdateMessages = (data: Message[]) => {
             next(null, data);

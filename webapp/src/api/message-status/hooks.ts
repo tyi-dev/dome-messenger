@@ -5,8 +5,8 @@ import useSWRMutation from 'swr/mutation';
    return useSWRMutation(`${API_MESSAGE_STATUS_URL.UPDATE}/${conversationId}`, (key) => updateMessageStatus(key));
 }*/
 
-export function useUpdateAllUnreadStatuses(conversationId: number) {
-   return useSWRMutation(`${API_MESSAGE_STATUS_URL.UPDATE_ALL}/${conversationId}`, (key) =>
+export function useUpdateAllUnreadStatuses(conversationId?: number) {
+   return useSWRMutation(conversationId ? `${API_MESSAGE_STATUS_URL.UPDATE_ALL}/${conversationId}` : null, (key) =>
       updateAllUnreadStatuses(key),
    );
 }

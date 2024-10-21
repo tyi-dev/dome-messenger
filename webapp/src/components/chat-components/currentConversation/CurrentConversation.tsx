@@ -12,22 +12,22 @@ export default function CurrentConversation() {
    const { currentConversation, userToCreateConversationWith, conversationBottomRef, scrollToBottom } =
       useChatContext();
 
-   const containerClassName = 'w-full h-full flex justify-center items-center text-general-dark';
-
-   if (userToCreateConversationWith)
-      return <p className={containerClassName}>Start conversation with {userToCreateConversationWith.userName}</p>;
-
-   if (!currentConversation) return <p className={containerClassName}>Select conversation</p>;
-
-   const { data: messages } = useConversationMessages(currentConversation.id);
-   const { trigger: updateStatuses } = useUpdateAllUnreadStatuses(currentConversation.id);
+   const { data: messages } = useConversationMessages(currentConversation?.id);
+   const { trigger: updateStatuses } = useUpdateAllUnreadStatuses(currentConversation?.id);
 
    useEffect(() => {
       if (messages) {
          updateStatuses();
          scrollToBottom();
       }
-   }, [messages]);
+   }, [messages?.length]);
+
+   const containerClassName = 'w-full h-full flex justify-center items-center text-general-dark';
+
+   if (userToCreateConversationWith)
+      return <p className={containerClassName}>Start conversation with {userToCreateConversationWith.userName}</p>;
+
+   if (!currentConversation) return <p className={containerClassName}>Select conversation</p>;
 
    if (!messages) return <Spinner spinnerClassName="border-general-dark" />;
    if (messages.length === 0) return <p className={containerClassName}>No messages yet</p>;

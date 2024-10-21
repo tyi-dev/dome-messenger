@@ -9,8 +9,8 @@ export class MessageStatusService {
 
    public async updateStatus(userId: number, statusId: number, data: UpdateMessageStatusRequest) {
       const status = await this.messageStatusRepository.getById(statusId);
-
-      if (compareAsc(status.readAt, data.readAt) === -1) throw new NotFoundException(`Rejected`);
+      if (status.readAt !== null && compareAsc(status.readAt, data.readAt) === -1)
+         throw new NotFoundException(`Rejected`);
       if (!status) throw new NotFoundException(`Status does not exist`);
       if (status.userId !== userId) throw new NotFoundException(`Can not update status of a message that isn\`t yours`);
 
@@ -19,8 +19,9 @@ export class MessageStatusService {
 
    public async updateAllStatuses(userId: number, conversationId: number, data: UpdateMessageStatusRequest) {
       const statusesToUpdate = await this.messageStatusRepository.getAllUnread(userId, conversationId);
-      statusesToUpdate.map((status) => {
-         this.updateStatus(userId, status.id, data);
+      const updatedStatuses = statusesToUpdate.map((status) => {
+         return this.updateStatus(userId, status.id, data);
       });
+      return await Promise.allSettled(updatedStatuses);
    }
 }
