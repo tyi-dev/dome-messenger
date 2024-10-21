@@ -12,6 +12,8 @@ import { format } from 'date-fns';
 import { LuCheck, LuCheckCheck } from 'react-icons/lu';
 import { ConversationType } from '@shared/types/conversation.ts';
 import UserProfileDialog from '@webapp/src/components/chat-components/dialogs/UserProfileDialog.tsx';
+import { mutate } from 'swr';
+import { API_MESSAGE_URL } from '@webapp/src/api/message/actions.ts';
 
 export default function MessageComponent({ message }: { message: Message }) {
    const { currentUser, setMessageToUpdate, messageToUpdate, currentConversation } = useChatContext();
@@ -67,7 +69,15 @@ export default function MessageComponent({ message }: { message: Message }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                <DropdownMenuItem onClick={() => setMessageToUpdate(message)}>Edit</DropdownMenuItem>
-               <DropdownMenuItem onClick={() => deleteMessage()}>Delete</DropdownMenuItem>
+               <DropdownMenuItem
+                  onClick={() =>
+                     deleteMessage().then(() => {
+                        mutate(`${API_MESSAGE_URL.GET_LAST_CONVERSATION_MESSAGE}/${currentConversation?.id}`);
+                     })
+                  }
+               >
+                  Delete
+               </DropdownMenuItem>
             </DropdownMenuContent>
          </DropdownMenu>
       );

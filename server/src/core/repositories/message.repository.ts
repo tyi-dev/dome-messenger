@@ -35,6 +35,16 @@ export class MessageRepository {
       });
    }
 
+   public async getLastConversationMessage(conversationId: number) {
+      return this.prisma.message.findMany({
+         where: { conversationId: conversationId },
+         orderBy: {
+            createdAt: 'desc',
+         },
+         take: 1,
+      });
+   }
+
    public async getById(id: number) {
       return this.prisma.message.findUnique({ where: { id: id } });
    }

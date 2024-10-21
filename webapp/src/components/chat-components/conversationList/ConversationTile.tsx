@@ -5,22 +5,24 @@ import { useConversationParticipants } from '@webapp/src/api/conversation-partic
 import Spinner from '@webapp/src/components/Spinner.tsx';
 import UserAvatar from '@webapp/src/components/UserAvatar.tsx';
 import { LuMegaphone, LuUsers2 } from 'react-icons/lu';
+import { useLastConversationMessage } from '@webapp/src/api/message/hooks.ts';
 
 export default function ConversationTile({ conversation }: { conversation: Conversation }) {
    const { setCurrentConversation, setMessageToUpdate, setUserToCreateConversation, currentConversation } =
       useChatContext();
 
    const { data: participants } = useConversationParticipants(conversation.id);
+   const { data: lastMessage } = useLastConversationMessage(conversation.id);
 
    const returnConversationTitle = () => {
       if (!participants) return <Spinner />;
       else if (conversation.conversationType === ConversationType.P2P) {
          return (
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-row gap-2 max-w-40">
                <UserAvatar firstWord={participants[0].user.firstName} secondWord={participants[0].user.lastName} />
                <div className="flex flex-col justify-between">
-                  <p>{`${participants[0].user.firstName} ${participants[0].user.lastName}`}</p>
-                  <p>{/*LAST MESSAGE HERE*/}</p>
+                  <p className="flex truncate w-full justify-start text-general-dark">{`${participants[0].user.firstName} ${participants[0].user.lastName}`}</p>
+                  <p className="flex truncate w-full justify-start text-general-dark/[0.7]">{lastMessage?.content}</p>
                </div>
             </div>
          );
@@ -32,11 +34,11 @@ export default function ConversationTile({ conversation }: { conversation: Conve
             <div className="flex flex-row gap-2">
                <UserAvatar firstWord={conversation.title} />
                <div className="flex flex-col justify-between">
-                  <div className="flex flex-row items-center gap-1">
+                  <div className="flex flex-row items-center gap-1 truncate w-full justify-start text-general-dark">
                      {conversation.conversationType === ConversationType.CHANNEL ? <LuMegaphone /> : <LuUsers2 />}
                      {conversation.title}
                   </div>
-                  <p>{/*LAST MESSAGE HERE*/}</p>
+                  <p className="flex truncate w-full justify-start text-general-dark/[0.7]">{lastMessage?.content}</p>
                </div>
             </div>
          );
