@@ -38,9 +38,9 @@ export default function SignUpPage() {
 
    return (
       <div className="flex flex-col items-center gap-6 m-auto w-72">
-         <LogoImage className="text-general-light" onClick={() => changeTheme()} />
+         <LogoImage className="text-general-dark" onClick={() => changeTheme()} />
          <div className="flex flex-row justify-around w-44">
-            <p className="text-xl font-bold text-general-light">Sign Up</p>
+            <p className="text-xl font-bold text-general-dark">Sign Up</p>
             <SwitchModesButton callback={switchAuthMethod} />
          </div>
          <Form {...form}>
@@ -50,9 +50,9 @@ export default function SignUpPage() {
                   name="firstName"
                   render={({ field }) => (
                      <FormItem>
-                        <FormLabel>First Name</FormLabel>
+                        <FormLabel invertcolor>First Name</FormLabel>
                         <FormControl>
-                           <Input {...field} />
+                           <Input invertcolor {...field} />
                         </FormControl>
                         <FormMessage />
                      </FormItem>
@@ -63,9 +63,9 @@ export default function SignUpPage() {
                   name="lastName"
                   render={({ field }) => (
                      <FormItem>
-                        <FormLabel>Last Name</FormLabel>
+                        <FormLabel invertcolor>Last Name</FormLabel>
                         <FormControl>
-                           <Input {...field} />
+                           <Input invertcolor {...field} />
                         </FormControl>
                         <FormMessage />
                      </FormItem>
@@ -76,9 +76,9 @@ export default function SignUpPage() {
                   name="userName"
                   render={({ field }) => (
                      <FormItem>
-                        <FormLabel>UserName</FormLabel>
+                        <FormLabel invertcolor>UserName</FormLabel>
                         <FormControl>
-                           <Input {...field} />
+                           <Input invertcolor {...field} />
                         </FormControl>
                         <FormMessage />
                      </FormItem>
@@ -89,9 +89,9 @@ export default function SignUpPage() {
                   name="phoneNumber"
                   render={({ field }) => (
                      <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
+                        <FormLabel invertcolor>Phone Number</FormLabel>
                         <FormControl>
-                           <Input {...field} />
+                           <Input invertcolor {...field} />
                         </FormControl>
                         <FormMessage />
                      </FormItem>
@@ -102,9 +102,9 @@ export default function SignUpPage() {
                   name="email"
                   render={({ field }) => (
                      <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel invertcolor>Email</FormLabel>
                         <FormControl>
-                           <Input {...field} />
+                           <Input invertcolor {...field} />
                         </FormControl>
                         <FormMessage />
                      </FormItem>
@@ -115,15 +115,15 @@ export default function SignUpPage() {
                   name="password"
                   render={({ field }) => (
                      <FormItem>
-                        <FormLabel>Password</FormLabel>
+                        <FormLabel invertcolor>Password</FormLabel>
                         <FormControl>
-                           <Input {...field} />
+                           <Input invertcolor {...field} />
                         </FormControl>
                         <FormMessage />
                      </FormItem>
                   )}
                />
-               <Button type="submit" className="w-full">
+               <Button type="submit" className="w-full text-general-light bg-general-dark">
                   Register
                </Button>
             </form>

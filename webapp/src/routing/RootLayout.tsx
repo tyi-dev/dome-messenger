@@ -5,7 +5,7 @@ import { Toaster } from '@webapp/src/components/ui/toaster.tsx';
 export function RootLayout() {
    useTheme();
    return (
-      <div className="w-screen h-screen flex flex-col bg-background-primary bg-general-dark">
+      <div className="w-screen h-screen flex flex-col bg-general-light">
          <Outlet />
          <Toaster />
       </div>
