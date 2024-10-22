@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 import { ScrollArea } from '@webapp/src/components/ui/scroll-area';
 
 export default function ConversationsList() {
-   const containerClassName = 'w-96 h-full border-r border-general-dark/[0.2]';
+   const containerClassName = 'w-96 h-full';
    const { data: conversations } = useMyConversations();
    if (!conversations)
       return <Spinner spinnerClassName="border-general-dark" containerClassName={containerClassName} />;

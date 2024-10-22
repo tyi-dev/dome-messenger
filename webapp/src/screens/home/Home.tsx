@@ -8,6 +8,7 @@ import { Conversation } from '@shared/types/conversation';
 import { ChatContext, InputPayload } from '@webapp/src/components/chat-components/context.tsx';
 import { Nullable } from '@shared/types/nullable.ts';
 import { Message } from '@shared/types/message.ts';
+import { SidebarProvider } from '@webapp/src/components/ui/sidebar.tsx';
 export default function HomePage() {
    const { data: currentUser } = useCurrentUser();
    if (!currentUser) return <Spinner />;
@@ -63,12 +64,14 @@ export default function HomePage() {
             scrollToBottom: scrollToBottom,
          }}
       >
-         <div className="flex flex-row w-full h-full">
-            <HomeSidebar />
-            <div className="w-full h-full bg-general-light">
-               <ChatLayout />
+         <SidebarProvider defaultOpen={false}>
+            <div className="flex flex-row w-full h-full">
+               <HomeSidebar />
+               <div className="w-full h-full bg-general-light">
+                  <ChatLayout />
+               </div>
             </div>
-         </div>
+         </SidebarProvider>
       </ChatContext.Provider>
    );
 }

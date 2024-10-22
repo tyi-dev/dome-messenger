@@ -7,6 +7,7 @@ import EditingMessageBar from '@webapp/src/components/chat-components/EditingMes
 import { useConversationParticipant } from '@webapp/src/api/conversation-participant/hooks.ts';
 import { Conversation, ConversationType } from '@shared/types/conversation.ts';
 import { ConversationParticipantRole } from '@shared/types/conversation-participant.ts';
+/*import ConversationsHeader from '@webapp/src/components/chat-components/conversationList/Header.tsx';*/
 
 export default function ChatLayout() {
    const { currentConversation, userToCreateConversationWith } = useChatContext();
@@ -29,7 +30,11 @@ export default function ChatLayout() {
 
    return (
       <div className="w-full flex flex-row h-full">
-         <ConversationsList />
+         <div className="flex flex-col items-center justify-start border-r border-general-dark/[0.2]">
+            {/* <ConversationsHeader />*/}
+            <ConversationsList />
+         </div>
+
          <div className="w-full flex flex-col h-full">
             {currentConversation || userToCreateConversationWith ? <CurrentConversationHeader /> : null}
             <CurrentConversation />
