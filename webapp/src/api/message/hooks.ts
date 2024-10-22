@@ -1,14 +1,15 @@
 import useSWRMutation from 'swr/mutation';
-import { API_MESSAGE_URL, createMessage, deleteMessage, updateMessage } from './actions.ts';
+import { API_MESSAGE_URL, createMessage, deleteMessage, getLastConversationMessage, updateMessage } from './actions.ts';
 import useSWRSubscription, { SWRSubscriptionOptions } from 'swr/subscription';
 import API from '../api.ts';
 import { Message } from '@shared/types/message.ts';
 import { WSNamespace } from '@shared/types/websockets.ts';
 import { API_USER_URL, updateLastSeen } from '@webapp/src/api/user/actions.ts';
+import useSWR from 'swr';
 
-export function useConversationMessages(conversationId: number) {
+export function useConversationMessages(conversationId?: number) {
    return useSWRSubscription(
-      `${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}`,
+      conversationId ? `${API_MESSAGE_URL.GET_MESSAGES}/${conversationId}` : null,
       (_key, { next }: SWRSubscriptionOptions<Message[], Error>) => {
          const handleUpdateMessages = (data: Message[]) => {
             next(null, data);
@@ -32,6 +33,12 @@ export function useCreateMessage() {
 
 export function useUpdateMessage(messageId?: number) {
    return useSWRMutation(messageId ? `${API_MESSAGE_URL.UPDATE}/${messageId}` : null, updateMessage);
+}
+
+export function useLastConversationMessage(conversationId: number) {
+   return useSWR(conversationId ? `${API_MESSAGE_URL.GET_LAST_CONVERSATION_MESSAGE}/${conversationId}` : null, (key) =>
+      getLastConversationMessage(key),
+   );
 }
 
 export function useDeleteMessage(messageId: number, conversationId: number) {

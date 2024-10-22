@@ -22,4 +22,19 @@ export class MessageStatusRepository {
    public async getById(id: number) {
       return this.prisma.messageStatus.findUnique({ where: { id: id } });
    }
+
+   public async getAllUnread(userId: number, conversationId: number) {
+      return this.prisma.messageStatus.findMany({
+         where: {
+            userId: userId,
+            readAt: null,
+            message: {
+               conversationId: conversationId,
+               senderId: {
+                  not: userId,
+               },
+            },
+         },
+      });
+   }
 }

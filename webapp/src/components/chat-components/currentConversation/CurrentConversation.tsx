@@ -6,10 +6,21 @@ import { useChatContext } from '@webapp/src/components/chat-components/context.t
 import { format } from 'date-fns';
 import DateSeparator from '@webapp/src/components/chat-components/currentConversation/DateSeparator.tsx';
 import React, { useEffect } from 'react';
+import { useUpdateAllUnreadStatuses } from '@webapp/src/api/message-status/hooks.ts';
 
 export default function CurrentConversation() {
    const { currentConversation, userToCreateConversationWith, conversationBottomRef, scrollToBottom } =
       useChatContext();
+
+   const { data: messages } = useConversationMessages(currentConversation?.id);
+   const { trigger: updateStatuses } = useUpdateAllUnreadStatuses(currentConversation?.id);
+
+   useEffect(() => {
+      if (messages) {
+         updateStatuses();
+         scrollToBottom();
+      }
+   }, [messages?.length]);
 
    const containerClassName = 'w-full h-full flex justify-center items-center text-general-dark';
 
@@ -17,12 +28,6 @@ export default function CurrentConversation() {
       return <p className={containerClassName}>Start conversation with {userToCreateConversationWith.userName}</p>;
 
    if (!currentConversation) return <p className={containerClassName}>Select conversation</p>;
-
-   const { data: messages } = useConversationMessages(currentConversation.id);
-
-   useEffect(() => {
-      if (messages) scrollToBottom();
-   }, [messages]);
 
    if (!messages) return <Spinner spinnerClassName="border-general-dark" />;
    if (messages.length === 0) return <p className={containerClassName}>No messages yet</p>;

@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsDateString } from 'class-validator';
 
 export class UpdateMessageStatusRequest {
-   @IsString()
+   @IsDateString()
    @ApiProperty()
    readAt: string;
 }

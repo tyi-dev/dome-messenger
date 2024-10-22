@@ -9,6 +9,7 @@ import { useUpdateMessage } from '@webapp/src/api/message/hooks.ts';
 import { mutate } from 'swr';
 import { API_CONVERSATION_PARTICIPANT_URL } from '@webapp/src/api/conversation-participant/actions.ts';
 import { ConversationType } from '@shared/types/conversation.ts';
+import { API_MESSAGE_URL } from '@webapp/src/api/message/actions.ts';
 
 export default function MessageOperationsInput() {
    const {
@@ -47,7 +48,10 @@ export default function MessageOperationsInput() {
             sendMessage({
                content: inputValue.text ? inputValue.text : '',
                conversationId: response.id,
-            }).then(() => mutate(API_CONVERSATION_PARTICIPANT_URL.GET_PARTICIPANTS));
+            }).then(() => {
+               mutate(API_CONVERSATION_PARTICIPANT_URL.GET_PARTICIPANTS);
+               mutate(`${API_MESSAGE_URL.GET_LAST_CONVERSATION_MESSAGE}/${currentConversation?.id}`);
+            });
          });
          clearInputValues();
          return;
@@ -57,6 +61,8 @@ export default function MessageOperationsInput() {
             content: inputValue.text,
             id: messageToUpdate.id,
             conversationId: messageToUpdate.conversationId,
+         }).then(() => {
+            mutate(`${API_MESSAGE_URL.GET_LAST_CONVERSATION_MESSAGE}/${currentConversation?.id}`);
          });
          setMessageToUpdate(null);
          clearInputValues();
@@ -66,6 +72,8 @@ export default function MessageOperationsInput() {
          sendMessage({
             content: inputValue.text,
             conversationId: currentConversation.id,
+         }).then(() => {
+            mutate(`${API_MESSAGE_URL.GET_LAST_CONVERSATION_MESSAGE}/${currentConversation?.id}`);
          });
          clearInputValues();
          return;

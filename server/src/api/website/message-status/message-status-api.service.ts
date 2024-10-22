@@ -9,4 +9,8 @@ export class MessageStatusApiService {
    public async updateStatus(userId: number, statusId: number, data: UpdateMessageStatusRequest) {
       return this.messageStatusService.updateStatus(userId, statusId, data);
    }
+
+   public async updateAllStatuses(userId: number, conversationId: number, data: UpdateMessageStatusRequest) {
+      return this.messageStatusService.updateAllStatuses(userId, conversationId, data);
+   }
 }

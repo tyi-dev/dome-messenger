@@ -34,9 +34,9 @@ export default function LoginPage() {
 
    return (
       <div className="flex flex-col items-center gap-6 m-auto w-72">
-         <LogoImage className="text-general-light" onClick={() => changeTheme()} />
+         <LogoImage className="text-general-dark" onClick={() => changeTheme()} />
          <div className="flex flex-row justify-around w-44">
-            <p className="text-xl font-bold text-general-light">Sign In</p>
+            <p className="text-xl font-bold text-general-dark">Sign In</p>
             <SwitchModesButton callback={switchAuthMethod} />
          </div>
          <p className="text-xl font-bold"></p>
@@ -47,9 +47,9 @@ export default function LoginPage() {
                   name="email"
                   render={({ field }) => (
                      <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel invertcolor>Email</FormLabel>
                         <FormControl>
-                           <Input {...field} />
+                           <Input className="text-general-dark" {...field} />
                         </FormControl>
                         <FormMessage />
                      </FormItem>
@@ -60,15 +60,15 @@ export default function LoginPage() {
                   name="password"
                   render={({ field }) => (
                      <FormItem>
-                        <FormLabel>Password</FormLabel>
+                        <FormLabel invertcolor>Password</FormLabel>
                         <FormControl>
-                           <Input {...field} />
+                           <Input className="text-general-dark" {...field} />
                         </FormControl>
                         <FormMessage />
                      </FormItem>
                   )}
                />
-               <Button type="submit" className="w-full">
+               <Button type="submit" className="w-full bg-general-dark text-general-light">
                   Login
                </Button>
             </form>

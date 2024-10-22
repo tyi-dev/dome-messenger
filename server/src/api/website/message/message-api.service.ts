@@ -22,4 +22,8 @@ export class MessageApiService {
    public async getConversationMessages(userId: number, conversationId: number) {
       return this.messageService.getConversationMessages(userId, conversationId);
    }
+
+   public async getLastConversationMessage(userId: number, conversationId: number) {
+      return this.messageService.getLastConversationMessage(userId, conversationId);
+   }
 }

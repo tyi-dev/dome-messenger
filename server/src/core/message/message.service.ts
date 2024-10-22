@@ -71,6 +71,13 @@ export class MessageService {
       return this.messageRepository.getConversationMessages(conversationId);
    }
 
+   public async getLastConversationMessage(userId: number, conversationId: number) {
+      const userInConversation = await this.verifyIfUserIsInConversation(userId, conversationId);
+      if (!userInConversation) return null;
+
+      return this.messageRepository.getLastConversationMessage(conversationId);
+   }
+
    private async verifyIfUserIsInConversation(userId: number, conversationId: number) {
       const currentConversation = await this.conversationRepository.getById(conversationId);
       if (!currentConversation) throw new NotFoundException('Conversation does not exist');

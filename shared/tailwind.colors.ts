@@ -8,4 +8,5 @@ export const colors: ThemeConfig['colors'] = {
    'general-blue': 'hsla(var(--general-blue))',
    'general-orange': 'hsla(var(--general-orange))',
    'general-green': 'hsla(var(--general-green))',
+   'general-gray': 'hsla(var(--general-gray))',
 };
