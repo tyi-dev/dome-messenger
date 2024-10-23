@@ -8,6 +8,7 @@ import { ConversationParticipant } from '@shared/types/conversation-participant.
 import ParticipantsOverviewList from '@webapp/src/components/participantsLists/ParticipantsOverviewList.tsx';
 import { capitalize } from '@shared/src/utils/capitalize.ts';
 import UserAvatar from '@webapp/src/components/UserAvatar.tsx';
+import { DialogTitle } from '@radix-ui/react-dialog';
 
 export default function ChatDetailsDialog({
    conversation,
@@ -25,7 +26,8 @@ export default function ChatDetailsDialog({
          <DialogTrigger asChild>
             <div className="border-none bg-transparent w-full cursor-pointer">{trigger}</div>
          </DialogTrigger>
-         <DialogContent className="sm:max-w-[425px]">
+         <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
+            <DialogTitle className="hidden">UserInfo</DialogTitle>
             {participants ? (
                <>
                   <DialogHeader className="w-full flex flex-row justify-between items-center space-y-0">
