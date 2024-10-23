@@ -29,8 +29,8 @@ export default function ChatLayout() {
 
    return (
       <div className="w-full flex flex-row h-full">
-         <ConversationsList />
-         <div className="w-full flex flex-col h-full">
+         <ConversationsList className={`${currentConversation ? 'hidden' : 'flex'}`} />
+         <div className={`w-full lg:flex flex-col h-full ${currentConversation ? 'flex' : 'hidden'}`}>
             {currentConversation || userToCreateConversationWith ? <CurrentConversationHeader /> : null}
             <CurrentConversation />
             <EditingMessageBar />
