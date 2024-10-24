@@ -21,6 +21,8 @@ export type TChatContext = {
    inputRef: Nullable<LegacyRef<HTMLInputElement>>;
    conversationBottomRef: Ref<HTMLDivElement>;
    scrollToBottom: () => void;
+   isSidebarOpen: boolean;
+   setSidebarOpen: (isOpen: boolean) => void;
 };
 
 export const ChatContext = createContext<TChatContext>({
@@ -46,6 +48,8 @@ export const ChatContext = createContext<TChatContext>({
    inputRef: null,
    conversationBottomRef: null,
    scrollToBottom: () => {},
+   isSidebarOpen: false,
+   setSidebarOpen: () => {},
 });
 
 export const useChatContext = (): TChatContext => useContext(ChatContext);

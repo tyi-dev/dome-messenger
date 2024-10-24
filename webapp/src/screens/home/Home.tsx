@@ -31,6 +31,7 @@ export default function HomePage() {
    const [inputPayload, setInputPayload] = useState<InputPayload>({
       text: null,
    });
+   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
    const setInputPayloadFunc = async (payload: Partial<InputPayload>): Promise<void> => {
       setInputPayload((prevState) => ({ ...prevState, ...payload }));
@@ -61,9 +62,11 @@ export default function HomePage() {
             inputRef: inputRef,
             conversationBottomRef: conversationBottomRef,
             scrollToBottom: scrollToBottom,
+            isSidebarOpen: isSidebarOpen,
+            setSidebarOpen: setSidebarOpen,
          }}
       >
-         <div className="flex flex-row w-full h-full">
+         <div className="flex flex-col lg:flex-row w-full h-full">
             <HomeSidebar />
             <div className="w-full h-full bg-general-light">
                <ChatLayout />

@@ -2,14 +2,14 @@ import { Message } from '@shared/types/message';
 import { useUserById } from '@webapp/src/api/user/hooks.ts';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 import {
-   DropdownMenu,
-   DropdownMenuContent,
-   DropdownMenuItem,
-   DropdownMenuTrigger,
-} from '@webapp/src/components/ui/dropdown-menu';
+   ContextMenu,
+   ContextMenuContent,
+   ContextMenuItem,
+   ContextMenuTrigger,
+} from '@webapp/src/components/ui/context-menu';
 import { useDeleteMessage } from '@webapp/src/api/message/hooks.ts';
 import { format } from 'date-fns';
-import { LuCheck, LuCheckCheck } from 'react-icons/lu';
+import { LuCheck, LuCheckCheck, LuPenLine, LuTrash2 } from 'react-icons/lu';
 import { ConversationType } from '@shared/types/conversation.ts';
 import UserProfileDialog from '@webapp/src/components/chat-components/dialogs/UserProfileDialog.tsx';
 import { mutate } from 'swr';
@@ -61,25 +61,29 @@ export default function MessageComponent({ message }: { message: Message }) {
 
    if (isMessageMine())
       return (
-         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+         <ContextMenu>
+            <ContextMenuTrigger asChild>
                <div className="inline-flex max-w-fit ml-auto">
                   <Message />
                </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-               <DropdownMenuItem onClick={() => setMessageToUpdate(message)}>Edit</DropdownMenuItem>
-               <DropdownMenuItem
+            </ContextMenuTrigger>
+            <ContextMenuContent>
+               <ContextMenuItem onClick={() => setMessageToUpdate(message)}>
+                  <LuPenLine />
+                  Edit
+               </ContextMenuItem>
+               <ContextMenuItem
                   onClick={() =>
                      deleteMessage().then(() => {
                         mutate(`${API_MESSAGE_URL.GET_LAST_CONVERSATION_MESSAGE}/${currentConversation?.id}`);
                      })
                   }
                >
+                  <LuTrash2 />
                   Delete
-               </DropdownMenuItem>
-            </DropdownMenuContent>
-         </DropdownMenu>
+               </ContextMenuItem>
+            </ContextMenuContent>
+         </ContextMenu>
       );
    else return <Message />;
 }

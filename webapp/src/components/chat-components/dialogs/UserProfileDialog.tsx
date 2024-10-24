@@ -5,6 +5,7 @@ import returnLastSeen from '@shared/src/utils/lastSeen.ts';
 import { LuX } from 'react-icons/lu';
 import { Button } from '@webapp/src/components/ui/button.tsx';
 import UserAvatar from '@webapp/src/components/UserAvatar.tsx';
+import { DialogTitle } from '@radix-ui/react-dialog';
 
 export default function UserProfileDialog({ user, trigger }: { user: User; trigger: ReactNode }) {
    const [isDialogOpen, setDialogOpen] = useState(false);
@@ -14,7 +15,8 @@ export default function UserProfileDialog({ user, trigger }: { user: User; trigg
          <DialogTrigger asChild>
             <div className="border-none bg-transparent w-full cursor-pointer">{trigger}</div>
          </DialogTrigger>
-         <DialogContent className="sm:max-w-[425px]">
+         <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
+            <DialogTitle className="hidden">UserInfo</DialogTitle>
             <DialogHeader className="w-full flex flex-row justify-between items-center space-y-0">
                <p className="text-general-dark font-semibold">User info</p>
                <Button onClick={() => setDialogOpen(false)} className="p-1">

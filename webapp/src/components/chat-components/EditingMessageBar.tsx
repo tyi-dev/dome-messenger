@@ -1,5 +1,4 @@
-import { LuPenLine } from 'react-icons/lu';
-import { LuX } from 'react-icons/lu';
+import { LuPenLine, LuX } from 'react-icons/lu';
 import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
 
 export default function EditingMessageBar() {
