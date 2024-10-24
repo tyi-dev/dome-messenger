@@ -3,7 +3,7 @@ import { LuSendHorizonal } from 'react-icons/lu';
 import { KeyboardEventHandler } from 'react';
 import { useCreateMessage } from '@webapp/src/api/message/hooks.ts';
 import { toast } from '@webapp/src/hooks/use-toast.ts';
-import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { useChatContext } from '@webapp/src/components/chat-components/chat-context.tsx';
 import { useCreateConversation } from '@webapp/src/api/conversation/hooks.ts';
 import { useUpdateMessage } from '@webapp/src/api/message/hooks.ts';
 import { mutate } from 'swr';

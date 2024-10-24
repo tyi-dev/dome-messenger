@@ -17,7 +17,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import UserUpdateSchema from '@shared/src/schemas/updateProfile.ts';
 import { useUpdateUser } from '@webapp/src/api/user/hooks.ts';
-import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { useChatContext } from '@webapp/src/components/chat-components/chat-context.tsx';
 import { toast } from '@webapp/src/hooks/use-toast.ts';
 
 export function UserDialog() {

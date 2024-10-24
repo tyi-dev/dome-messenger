@@ -1,6 +1,6 @@
 import { Message } from '@shared/types/message';
 import { useUserById } from '@webapp/src/api/user/hooks.ts';
-import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { useChatContext } from '@webapp/src/components/chat-components/chat-context.tsx';
 import {
    ContextMenu,
    ContextMenuContent,

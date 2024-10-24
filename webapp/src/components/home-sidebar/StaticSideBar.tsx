@@ -1,6 +1,6 @@
 import LogoImage from '@shared/src/images/logo.svg?react';
 import { LuMenu } from 'react-icons/lu';
-import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { useChatContext } from '@webapp/src/components/chat-components/chat-context.tsx';
 import { useTheme } from '@webapp/src/components/theme/Theme.tsx';
 
 export default function StaticSideBar() {

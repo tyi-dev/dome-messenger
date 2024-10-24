@@ -3,7 +3,7 @@ import SideBarButton from '@webapp/src/components/home-sidebar/SideBarButton.tsx
 import { LuPlus } from 'react-icons/lu';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@webapp/src/components/ui/dialog';
 import { useState } from 'react';
-import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { useChatContext } from '@webapp/src/components/chat-components/chat-context.tsx';
 import { Tabs, TabsList, TabsTrigger } from '@webapp/src/components/ui/tabs';
 import { Conversation, ConversationType } from '@shared/types/conversation.ts';
 import { useCreateConversation } from '@webapp/src/api/conversation/hooks.ts';

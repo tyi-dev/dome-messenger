@@ -1,6 +1,6 @@
 import { Input } from '@webapp/src/components/ui/input';
 import { LuMenu } from 'react-icons/lu';
-import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { useChatContext } from '@webapp/src/components/chat-components/chat-context.tsx';
 
 export default function ConversationListHeader() {
    const { isSidebarOpen, setSidebarOpen } = useChatContext();
