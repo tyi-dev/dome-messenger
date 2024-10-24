@@ -53,7 +53,7 @@ export function UserDialog() {
       <Dialog open={isDialogOpen} onOpenChange={() => setDialogOpen(!isDialogOpen)}>
          <DialogTrigger asChild>
             <div>
-               <SideBarButton title={`${user.userName}`} icon={<LuUser className="text-general-dark" />} />
+               <SideBarButton title={`${user.userName}`} icon={<LuUser className="text-general-dark w-6 h-6" />} />
             </div>
          </DialogTrigger>
          <DialogContent className="sm:max-w-[425px]">

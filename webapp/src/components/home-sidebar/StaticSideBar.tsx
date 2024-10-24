@@ -10,7 +10,7 @@ export default function StaticSideBar() {
    return (
       <div className="hidden h-full flex-col bg-general-light border-r border-general-dark/[0.3] lg:flex">
          <LuMenu
-            className="mx-auto mt-4 w-12 h-12 text-general-dark p-2 cursor-pointer hover:bg-general-gray hover:text-black rounded"
+            className="mx-auto mt-4 w-12 h-12 text-general-dark p-2 cursor-pointer hover:bg-general-gray hover:text-black rounded transition-colors"
             onClick={() => setSidebarOpen(!isSidebarOpen)}
          />
          <LogoImage className="m-4 w-16 h-16 text-general-dark" onClick={() => changeTheme()} />

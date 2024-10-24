@@ -52,7 +52,7 @@ export default function NewConversationDialog() {
       >
          <DialogTrigger asChild>
             <div>
-               <SideBarButton title={`Create conversation`} icon={<LuPlus className="text-general-dark" />} />
+               <SideBarButton title={`Create conversation`} icon={<LuPlus className="text-general-dark w-6 h-6" />} />
             </div>
          </DialogTrigger>
          <DialogContent className="sm:max-w-[425px]">
