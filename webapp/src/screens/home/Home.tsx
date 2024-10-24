@@ -8,6 +8,8 @@ import { Conversation } from '@shared/types/conversation';
 import { ChatContext, InputPayload } from '@webapp/src/components/chat-components/chat-context';
 import { Nullable } from '@shared/types/nullable';
 import { Message } from '@shared/types/message';
+import { DialogContext, TDialogHistory } from '@webapp/src/components/dialog/dialog-context.tsx';
+import UnifiedDialog from '@webapp/src/components/dialog/UnifiedDialog.tsx';
 export default function HomePage() {
    const { data: currentUser } = useCurrentUser();
    if (!currentUser) return <Spinner />;
@@ -31,7 +33,9 @@ export default function HomePage() {
    const [inputPayload, setInputPayload] = useState<InputPayload>({
       text: null,
    });
-   const [isSidebarOpen, setSidebarOpen] = useState(false);
+   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
+   const [dialogHistory, setDialogHistory] = useState<TDialogHistory[]>([]);
+   const [isDialogOpen, setDialogOpen] = useState<boolean>(false);
 
    const setInputPayloadFunc = async (payload: Partial<InputPayload>): Promise<void> => {
       setInputPayload((prevState) => ({ ...prevState, ...payload }));
@@ -46,6 +50,20 @@ export default function HomePage() {
       }).then(() => {
          if (inputRef.current) inputRef.current.focus();
       });
+   };
+   const addToDialogHistory = (newElement: TDialogHistory) => {
+      setDialogHistory((prevState) => [...prevState, newElement]);
+   };
+   const clearDialogHistory = () => {
+      setDialogHistory([]);
+   };
+   const goBack = () => {
+      if (dialogHistory.length > 1) {
+         setDialogHistory((prevState) => {
+            prevState.splice(prevState.length - 1, 1);
+            return [...prevState];
+         });
+      } else clearDialogHistory();
    };
    return (
       <ChatContext.Provider
@@ -66,12 +84,25 @@ export default function HomePage() {
             setSidebarOpen: setSidebarOpen,
          }}
       >
-         <div className="flex flex-col lg:flex-row w-full h-full">
-            <HomeSidebar />
-            <div className="w-full h-full bg-general-light">
-               <ChatLayout />
+         <DialogContext.Provider
+            value={{
+               dialogHistory: dialogHistory,
+               clearDialogHistory: clearDialogHistory,
+               addToDialogHistory: addToDialogHistory,
+               isDialogOpen: isDialogOpen,
+               setDialogOpen: setDialogOpen,
+               goBack: goBack,
+               currentElement: dialogHistory[dialogHistory.length - 1],
+            }}
+         >
+            <div className="flex flex-col lg:flex-row w-full h-full">
+               <HomeSidebar />
+               <div className="w-full h-full bg-general-light">
+                  <ChatLayout />
+               </div>
+               <UnifiedDialog />
             </div>
-         </div>
+         </DialogContext.Provider>
       </ChatContext.Provider>
    );
 }

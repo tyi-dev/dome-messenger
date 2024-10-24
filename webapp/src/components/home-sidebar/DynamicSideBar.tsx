@@ -1,11 +1,13 @@
-import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { useChatContext } from '@webapp/src/components/chat-components/chat-context.tsx';
 import { useRef } from 'react';
-import { UserDialog } from '@webapp/src/components/home-sidebar/UserDialog.tsx';
-import NewConversationDialog from '@webapp/src/components/home-sidebar/NewConversationDialog.tsx';
 import UserAvatar from '@webapp/src/components/UserAvatar.tsx';
+import { DIALOG_TYPE, useDialogContext } from '@webapp/src/components/dialog/dialog-context.tsx';
+import { LuPlus, LuUser } from 'react-icons/lu';
+import SideBarButton from '@webapp/src/components/home-sidebar/SideBarButton.tsx';
 
 export default function DynamicSideBar() {
    const { isSidebarOpen, setSidebarOpen, currentUser } = useChatContext();
+   const { addToDialogHistory } = useDialogContext();
 
    const sidebarRef = useRef<HTMLDivElement>(null);
 
@@ -40,8 +42,28 @@ export default function DynamicSideBar() {
                         </div>
                      </div>
                   </div>
-                  <NewConversationDialog />
-                  <UserDialog />
+                  <SideBarButton
+                     title={'New conversation'}
+                     icon={<LuPlus className="text-general-dark w-6 h-6" />}
+                     onClick={() =>
+                        addToDialogHistory({
+                           title: 'Start new conversation',
+                           currentRender: DIALOG_TYPE.CREATE_CONVERSATION,
+                           data: null,
+                        })
+                     }
+                  />
+                  <SideBarButton
+                     title={'Edit profile'}
+                     icon={<LuUser className="text-general-dark w-6 h-6" />}
+                     onClick={() =>
+                        addToDialogHistory({
+                           title: 'Edit profile',
+                           currentRender: DIALOG_TYPE.EDIT_PROFILE,
+                           data: null,
+                        })
+                     }
+                  />
                </div>
             ) : null}
          </div>
