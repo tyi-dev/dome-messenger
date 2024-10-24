@@ -1,13 +1,13 @@
-import { useCurrentUser, useUpdateLastSeen } from '@webapp/src/api/user/hooks.ts';
+import { useCurrentUser, useUpdateLastSeen } from '@webapp/src/api/user/hooks';
 import HomeSidebar from '@webapp/src/components/home-sidebar/HomeSidebar';
 import Spinner from '@webapp/src/components/Spinner';
 import ChatLayout from '@webapp/src/components/ChatLayout';
-import { SearchUserRes } from '@shared/types/user.ts';
+import { SearchUserRes } from '@shared/types/user';
 import { useRef, useState } from 'react';
 import { Conversation } from '@shared/types/conversation';
-import { ChatContext, InputPayload } from '@webapp/src/components/chat-components/context.tsx';
-import { Nullable } from '@shared/types/nullable.ts';
-import { Message } from '@shared/types/message.ts';
+import { ChatContext, InputPayload } from '@webapp/src/components/chat-components/chat-context';
+import { Nullable } from '@shared/types/nullable';
+import { Message } from '@shared/types/message';
 export default function HomePage() {
    const { data: currentUser } = useCurrentUser();
    if (!currentUser) return <Spinner />;
