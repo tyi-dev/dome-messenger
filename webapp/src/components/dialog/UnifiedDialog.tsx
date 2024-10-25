@@ -39,7 +39,10 @@ export default function UnifiedDialog() {
             setDialogOpen(!isDialogOpen);
          }}
       >
-         <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
+         <DialogContent
+            className="w-screen h-screen border-0 rounded-none flex flex-col lg:max-w-lg lg:h-auto lg:border-general-dark lg:border lg:rounded"
+            aria-describedby={undefined}
+         >
             <DialogTitle className="hidden">UserInfo</DialogTitle>
             <DialogHeader className="w-full flex flex-row justify-between items-center">
                <div className="flex flex-row items-center">
