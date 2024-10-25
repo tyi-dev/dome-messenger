@@ -1,6 +1,6 @@
 import { Message } from '@shared/types/message';
 import { useUserById } from '@webapp/src/api/user/hooks.ts';
-import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { useChatContext } from '@webapp/src/components/chat-components/chat-context.tsx';
 import {
    ContextMenu,
    ContextMenuContent,
@@ -11,12 +11,13 @@ import { useDeleteMessage } from '@webapp/src/api/message/hooks.ts';
 import { format } from 'date-fns';
 import { LuCheck, LuCheckCheck, LuPenLine, LuTrash2 } from 'react-icons/lu';
 import { ConversationType } from '@shared/types/conversation.ts';
-import UserProfileDialog from '@webapp/src/components/chat-components/dialogs/UserProfileDialog.tsx';
 import { mutate } from 'swr';
 import { API_MESSAGE_URL } from '@webapp/src/api/message/actions.ts';
+import { DIALOG_TYPE, useDialogContext } from '@webapp/src/components/dialog/dialog-context.tsx';
 
 export default function MessageComponent({ message }: { message: Message }) {
    const { currentUser, setMessageToUpdate, messageToUpdate, currentConversation } = useChatContext();
+   const { addToDialogHistory } = useDialogContext();
    const { data: user } = useUserById(message.senderId);
    const { trigger: deleteMessage } = useDeleteMessage(message.id, message.conversationId);
 
@@ -30,14 +31,18 @@ export default function MessageComponent({ message }: { message: Message }) {
             className={`flex flex-col gap-2 ${isMessageMine() ? 'ml-auto bg-general-blue/[0.2]' : 'mr-auto bg-general-dark/[0.1]'} ${messageToUpdate?.id === message.id ? 'animate-pulse' : ''} py-2 px-4 rounded-xl max-w-96`}
          >
             {currentConversation?.conversationType !== ConversationType.P2P && user ? (
-               <UserProfileDialog
-                  user={user}
-                  trigger={
-                     <div className={`flex w-full justify-start text-general-dark font-semibold text-sm`}>
-                        {`${user?.firstName} ${user?.lastName}`}
-                     </div>
+               <div
+                  className={`flex w-full justify-start text-general-dark font-semibold text-sm cursor-pointer`}
+                  onClick={() =>
+                     addToDialogHistory({
+                        currentRender: DIALOG_TYPE.USER_DETAILS,
+                        title: 'User info',
+                        data: user,
+                     })
                   }
-               />
+               >
+                  {`${user?.firstName} ${user?.lastName}`}
+               </div>
             ) : null}
 
             <p

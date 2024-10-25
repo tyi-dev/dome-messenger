@@ -1,5 +1,5 @@
 import { Conversation } from '@shared/types/conversation';
-import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { useChatContext } from '@webapp/src/components/chat-components/chat-context.tsx';
 import { ConversationType } from '@shared/types/conversation.ts';
 import { useConversationParticipants } from '@webapp/src/api/conversation-participant/hooks.ts';
 import Spinner from '@webapp/src/components/Spinner.tsx';

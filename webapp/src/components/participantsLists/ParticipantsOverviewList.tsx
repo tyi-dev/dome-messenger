@@ -1,11 +1,12 @@
 import UserTile from '@webapp/src/components/participantsLists/UserTile.tsx';
 import Spinner from '@webapp/src/components/Spinner.tsx';
 import { ScrollArea } from '@webapp/src/components/ui/scroll-area.tsx';
-import UserProfileDialog from '@webapp/src/components/chat-components/dialogs/UserProfileDialog.tsx';
 import { useConversationParticipants } from '@webapp/src/api/conversation-participant/hooks.ts';
+import { DIALOG_TYPE, useDialogContext } from '@webapp/src/components/dialog/dialog-context.tsx';
 
 export default function ParticipantsOverviewList({ conversationId }: { conversationId: number }) {
    const { data: participants } = useConversationParticipants(conversationId);
+   const { addToDialogHistory } = useDialogContext();
 
    return (
       <div className="w-full flex flex-col gap-3 font-bold">
@@ -14,14 +15,16 @@ export default function ParticipantsOverviewList({ conversationId }: { conversat
             {participants ? (
                participants.length !== 0 ? (
                   participants.map((item, index) => (
-                     <UserProfileDialog
+                     <UserTile
                         user={item.user}
-                        key={`user-dialog-${index}`}
-                        trigger={
-                           <UserTile
-                              user={item.user}
-                              className="hover:border-general-green border border-transparent p-2 rounded-md"
-                           />
+                        className="hover:border-general-green border border-transparent p-2 rounded-md"
+                        key={`participant-tile-${index}`}
+                        onClick={() =>
+                           addToDialogHistory({
+                              currentRender: DIALOG_TYPE.USER_DETAILS,
+                              title: 'User info',
+                              data: item.user,
+                           })
                         }
                      />
                   ))

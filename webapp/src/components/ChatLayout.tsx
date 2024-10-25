@@ -1,7 +1,7 @@
 import ConversationsList from '@webapp/src/components/chat-components/conversationList/ConversationsList';
 import CurrentConversation from '@webapp/src/components/chat-components/currentConversation/CurrentConversation';
 import MessageOperationsInput from '@webapp/src/components/chat-components/MessageOperationsInput';
-import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { useChatContext } from '@webapp/src/components/chat-components/chat-context.tsx';
 import CurrentConversationHeader from '@webapp/src/components/chat-components/currentConversation/CurrentConversationHeader.tsx';
 import EditingMessageBar from '@webapp/src/components/chat-components/EditingMessageBar.tsx';
 import { useConversationParticipant } from '@webapp/src/api/conversation-participant/hooks.ts';

@@ -1,5 +1,5 @@
 import { LuPenLine, LuX } from 'react-icons/lu';
-import { useChatContext } from '@webapp/src/components/chat-components/context.tsx';
+import { useChatContext } from '@webapp/src/components/chat-components/chat-context.tsx';
 
 export default function EditingMessageBar() {
    const { messageToUpdate, setMessageToUpdate } = useChatContext();
